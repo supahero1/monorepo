@@ -18,12 +18,11 @@
 
 #include <shared/alloc/consts.h>
 
-#include <valgrind/memcheck.h>
-#include <valgrind/valgrind.h>
-
 #if !defined(ALLOC_RELEASE) && __has_include(<valgrind/memcheck.h>)
 	#define ALLOC_VALGRIND
 
+	#include <valgrind/memcheck.h>
+	#include <valgrind/valgrind.h>
 
 	#define ALLOC_VALGRIND_DISABLE_ERROR_REPORTING()	\
 	VALGRIND_DISABLE_ERROR_REPORTING

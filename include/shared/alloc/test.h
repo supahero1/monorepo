@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <shared/attr.h>
 #include <shared/alloc/types.h>
 
 
