@@ -1,7 +1,7 @@
 /* skip */
 
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
  */
 
 #include <shared/debug.h>
-#include <shared/alloc_ext.h>
+#include <shared/alloc/base.h>
 #include <client/ui/container.h>
 
 
-private void
+void
 UIContainerBubbleDown(
 	UIElement* Element,
 	UIBubbleCallback Callback,
@@ -43,7 +43,7 @@ UIContainerBubbleDown(
 }
 
 
-private void
+void
 UIContainerPropagateSize(
 	UIElement* Element,
 	UIElement* Child,
@@ -281,7 +281,7 @@ UIContainerPropagateSize(
 }
 
 
-private void
+void
 UIContainerPreClip(
 	UIElement* Element,
 	UIElement* Scrollable
@@ -312,7 +312,7 @@ UIContainerPreClip(
 }
 
 
-private void
+void
 UIContainerPostClip(
 	UIElement* Element,
 	rect_extent_t Clip,
@@ -324,7 +324,7 @@ UIContainerPostClip(
 }
 
 
-private bool
+bool
 UIContainerMouseOver(
 	UIElement* Element
 	)
@@ -333,7 +333,7 @@ UIContainerMouseOver(
 }
 
 
-private void
+void
 UIContainerDrawDetail(
 	UIElement* Element,
 	rect_extent_t Clip,
@@ -574,7 +574,7 @@ UIInheritPosition(
 }
 
 
-private void
+void
 UIContainerDrawChildren(
 	UIElement* Element,
 	rect_extent_t Clip,
@@ -613,7 +613,7 @@ UIContainerDrawChildren(
 }
 
 
-private UIVirtualTable ContainerVirtualTable =
+UIVirtualTable ContainerVirtualTable =
 {
 	.BubbleDown = UIContainerBubbleDown,
 	.PropagateSize = UIContainerPropagateSize,
@@ -634,7 +634,7 @@ UIElementIsContainer(
 }
 
 
-private UIContainer*
+UIContainer*
 UIAllocContainerData(
 	void
 	)
@@ -646,7 +646,7 @@ UIAllocContainerData(
 }
 
 
-private void
+void
 UIFreeContainerData(
 	UIContainer* Container,
 	void* _
@@ -689,7 +689,7 @@ UIAllocContainer(
 }
 
 
-private void
+void
 UIPropagateInsertion(
 	UIElement* Element,
 	UIElement* Parent

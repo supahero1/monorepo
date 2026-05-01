@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,13 +21,18 @@
  *
  */
 
+#include <tests/base.h>
+#include <shared/attr.h>
 #include <shared/time.h>
 #include <shared/debug.h>
 #include <shared/event.h>
+#include <shared/macro.h>
 #include <shared/threads.h>
 
+#include <stddef.h>
 
-void assert_used
+
+void attr_test_fn
 test_normal_pass__event_target_init_free(
 	void
 	)
@@ -38,7 +43,7 @@ test_normal_pass__event_target_init_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__event_target_init_null(
 	void
 	)
@@ -47,7 +52,7 @@ test_normal_fail__event_target_init_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__event_target_free_null(
 	void
 	)
@@ -56,7 +61,7 @@ test_normal_fail__event_target_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__event_target_add_null_fn(
 	void
 	)
@@ -69,7 +74,7 @@ test_normal_fail__event_target_add_null_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__event_target_add_remove_listener(
 	void
 	)
@@ -88,7 +93,7 @@ test_normal_pass__event_target_add_remove_listener(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__event_target_free_while_non_empty(
 	void
 	)
@@ -108,7 +113,7 @@ test_normal_fail__event_target_free_while_non_empty(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__event_target_add_null_target(
 	void
 	)
@@ -121,7 +126,7 @@ test_normal_fail__event_target_add_null_target(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__event_target_del_null_target(
 	void
 	)
@@ -131,7 +136,7 @@ test_normal_fail__event_target_del_null_target(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__event_target_del_null_listener(
 	void
 	)
@@ -144,7 +149,7 @@ test_normal_pass__event_target_del_null_listener(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__event_target_fire_empty(
 	void
 	)
@@ -166,7 +171,7 @@ event_listener_bool_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__event_target_fire(
 	void
 	)
@@ -192,7 +197,7 @@ test_normal_pass__event_target_fire(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__event_target_fire_once(
 	void
 	)
@@ -221,7 +226,7 @@ test_normal_pass__event_target_fire_once(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__event_target_fire_on_removed_listener(
 	void
 	)
@@ -246,7 +251,7 @@ test_normal_pass__event_target_fire_on_removed_listener(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__event_target_fire_on_removed_once_listener(
 	void
 	)
@@ -281,7 +286,7 @@ event_listener_remove_itself_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__event_listener_remove_itself(
 	void
 	)
@@ -302,7 +307,7 @@ test_normal_pass__event_listener_remove_itself(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__event_listener_remove_itself_twice(
 	void
 	)
@@ -334,7 +339,7 @@ event_target_wait_thread_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_priority_pass__event_target_wait(
 	void
 	)
@@ -361,7 +366,7 @@ test_priority_pass__event_target_wait(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__event_target_wait_null(
 	void
 	)
@@ -370,14 +375,18 @@ test_normal_fail__event_target_wait_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_timeout__event_target_wait_timeout(
 	void
 	)
 {
+	test_set_timeout(1);
+
 	event_target_t target;
 	event_target_init(&target);
 
 	event_wait_state_t* state = event_target_init_wait(&target);
 	event_target_wait(state);
+
+	assert_unreachable();
 }

@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,11 +14,15 @@
  *  limitations under the License.
  */
 
+#include <shared/sync.h>
 #include <shared/time.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
+#include <shared/atomic.h>
 #include <shared/threads.h>
-#include <shared/alloc_ext.h>
+#include <shared/alloc/base.h>
 
+#include <time.h>
 #include <stdatomic.h>
 
 
@@ -199,16 +203,16 @@ struct time_timers
 
 	time_timer_t* current_timer;
 
-	_Atomic uint64_t latest;
+	uint64_t _Atomic latest;
 };
 
 
-private uint64_t
+uint64_t
 time_timers_get_latest(
 	time_timers_t timers
 	)
 {
-	return atomic_load_explicit(&timers->latest, memory_order_acquire);
+	return atomic_load_acq(&timers->latest);
 }
 
 
@@ -225,7 +229,7 @@ time_timers_get_latest(
 	)
 
 
-private void
+void
 time_timers_set_latest(
 	time_timers_t timers
 	)
@@ -248,7 +252,7 @@ time_timers_set_latest(
 		latest = 0;
 	}
 
-	atomic_store_explicit(&timers->latest, latest, memory_order_release);
+	atomic_store_rel(&timers->latest, latest);
 
 	if(old != latest)
 	{
@@ -259,7 +263,7 @@ time_timers_set_latest(
 
 #define TIME_TIMER_DEF(name, names)																\
 																								\
-private void																					\
+void																							\
 time_timers_swap_##names (																		\
 	time_timers_t timers,																		\
 	uint32_t idx_a,																				\
@@ -275,7 +279,7 @@ time_timers_swap_##names (																		\
 }																								\
 																								\
 																								\
-private void																					\
+void																							\
 time_timers_##names##_down (																	\
 	time_timers_t timers,																		\
 	uint32_t timer_idx																			\
@@ -319,7 +323,7 @@ time_timers_##names##_down (																	\
 }																								\
 																								\
 																								\
-private bool																					\
+bool																							\
 time_timers_##names##_up (																		\
 	time_timers_t timers,																		\
 	uint32_t timer_idx																			\
@@ -350,7 +354,7 @@ time_timers_##names##_up (																		\
 }																								\
 																								\
 																								\
-private void																					\
+void																							\
 time_timers_free_##names (																		\
 	time_timers_t timers																		\
 	)																							\
@@ -359,7 +363,7 @@ time_timers_free_##names (																		\
 }																								\
 																								\
 																								\
-private void																					\
+void																							\
 time_timers_resize_##names (																	\
 	time_timers_t timers,																		\
 	uint32_t count																				\
@@ -369,7 +373,8 @@ time_timers_resize_##names (																	\
 																								\
 	if((new_used < (timers-> names##_size >> 2)) || (new_used > timers-> names##_size ))		\
 	{																							\
-		uint32_t new_size = (new_used << 1) | 1;												\
+		uint32_t new_size = (new_used << 1) | 3;												\
+		assert_neq(new_size, timers-> names##_size);											\
 																								\
 		timers-> names = alloc_remalloc(timers-> names , timers-> names##_size , new_size);		\
 		assert_not_null(timers-> names);														\
@@ -379,7 +384,7 @@ time_timers_resize_##names (																	\
 }																								\
 																								\
 																								\
-private void																					\
+void																							\
 time_timers_add_##name##_common (																\
 	time_timers_t timers,																		\
 	time_##name##_t name,																		\
@@ -403,7 +408,7 @@ time_timers_add_##name##_common (																\
 																								\
 	timers-> names [timers-> names##_used ++] = name ;											\
 																								\
-	(void) time_timers_##names##_up (timers, timers-> names##_used - 1);						\
+	time_timers_##names##_up (timers, timers-> names##_used - 1);								\
 																								\
 	time_timers_set_latest(timers);																\
 																								\
@@ -873,7 +878,7 @@ time_timers_init(
 	)
 {
 	time_timers_t timers = alloc_malloc(timers, 1);
-	assert_not_null(timers);
+	assert_ptr(timers, 1);
 
 	timers->timeouts = NULL;
 	timers->timeouts_used = 1;

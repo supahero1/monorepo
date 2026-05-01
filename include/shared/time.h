@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,8 +18,10 @@
 
 #include <shared/threads.h>
 
-#define TIME_IMMEDIATELY UINT64_C(2)
-#define TIME_STEP UINT64_C(2)
+#include <stdint.h>
+
+#define TIME_IMMEDIATELY ((uint64_t) 2)
+#define TIME_STEP ((uint64_t) 2)
 
 
 extern uint64_t

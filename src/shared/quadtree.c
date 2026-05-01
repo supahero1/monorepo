@@ -1,6 +1,6 @@
 /* skip */
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,10 +17,13 @@
 
 #include <shared/heap.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
+#include <shared/extent.h>
 #include <shared/quadtree.h>
-#include <shared/alloc_ext.h>
+#include <shared/alloc/base.h>
 
 #include <math.h>
+#include <stdint.h>
 #include <string.h>
 
 
@@ -50,7 +53,8 @@ quadtree_init(
 
 	qt->dfs_length = qt->max_depth * 3 + 1;
 
-	qt->merge_ht_size = MACRO_NEXT_OR_EQUAL_POWER_OF_2(qt->merge_threshold * 2);
+	qt->merge_ht_size = qt->merge_threshold ?
+		MACRO_NEXT_OR_EQUAL_POWER_OF_2(qt->merge_threshold * 2) : 1;
 
 	if(!qt->min_size)
 	{
@@ -58,7 +62,7 @@ quadtree_init(
 	}
 
 	qt->nodes = alloc_malloc(qt->nodes, 1);
-	assert_not_null(qt->nodes);
+	assert_ptr(qt->nodes, 1);
 
 	qt->merge_ht = alloc_malloc(qt->merge_ht, qt->merge_ht_size);
 	assert_ptr(qt->merge_ht, qt->merge_ht_size);
@@ -298,7 +302,8 @@ quadtree_insert(
 
 	if(qt->insertions_used >= qt->insertions_size)
 	{
-		uint32_t new_size = (qt->insertions_used | 1) << 1;
+		uint32_t new_size = (qt->insertions_used << 1) | 3;
+		assert_neq(new_size, qt->insertions_size);
 
 		qt->insertions = alloc_remalloc(qt->insertions, qt->insertions_size, new_size);
 		assert_not_null(qt->insertions);
@@ -327,7 +332,8 @@ quadtree_remove(
 
 	if(qt->removals_used >= qt->removals_size)
 	{
-		uint32_t new_size = (qt->removals_used | 1) << 1;
+		uint32_t new_size = (qt->removals_used << 1) | 3;
+		assert_neq(new_size, qt->removals_size);
 
 		qt->removals = alloc_remalloc(qt->removals, qt->removals_size, new_size);
 		assert_not_null(qt->removals);
@@ -477,7 +483,8 @@ quadtree_normalize(
 				{
 					if(node_entities_used >= node_entities_size)
 					{
-						uint32_t new_size = (node_entities_used | 1) << 1;
+						uint32_t new_size = (node_entities_used << 1) | 3;
+						assert_neq(new_size, node_entities_size);
 
 						node_entities.next = alloc_remalloc(node_entities.next, node_entities_size, new_size);
 						assert_not_null(node_entities.next);
@@ -620,7 +627,8 @@ quadtree_normalize(
 			{
 				if(entities_used >= entities_size)
 				{
-					uint32_t new_size = (entities_used | 1) << 1;
+					uint32_t new_size = (entities_used << 1) | 3;
+					assert_neq(new_size, entities_size);
 
 					entities = alloc_remalloc(entities, entities_size, new_size);
 					assert_not_null(entities);
@@ -674,7 +682,8 @@ quadtree_normalize(
 				{
 					if(node_entities_used >= node_entities_size)
 					{
-						uint32_t new_size = (node_entities_used | 1) << 1;
+						uint32_t new_size = (node_entities_used << 1) | 3;
+						assert_neq(new_size, node_entities_size);
 
 						node_entities.next = alloc_remalloc(node_entities.next, node_entities_size, new_size);
 						assert_not_null(node_entities.next);
@@ -761,16 +770,16 @@ quadtree_normalize(
 		}
 
 		new_nodes = alloc_malloc(new_nodes, new_nodes_size);
-		assert_not_null(new_nodes);
+		assert_ptr(new_nodes, new_nodes_size);
 
 		new_node_entities.next = alloc_malloc(new_node_entities.next, new_node_entities_size);
-		assert_not_null(new_node_entities.next);
+		assert_ptr(new_node_entities.next, new_node_entities_size);
 
 		new_node_entities.entities = alloc_malloc(new_node_entities.entities, new_node_entities_size);
-		assert_not_null(new_node_entities.entities);
+		assert_ptr(new_node_entities.entities, new_node_entities_size);
 
 		new_node_entities.flags = alloc_malloc(new_node_entities.flags, new_node_entities_size);
-		assert_not_null(new_node_entities.flags);
+		assert_ptr(new_node_entities.flags, new_node_entities_size);
 
 		new_entities = alloc_malloc(new_entities, new_entities_size);
 		assert_ptr(new_entities, new_entities_size);
@@ -937,7 +946,8 @@ quadtree_normalize(
 					{
 						if(nodes_used >= nodes_size)
 						{
-							uint32_t new_size = (nodes_used | 1) << 1;
+							uint32_t new_size = (nodes_used << 1) | 3;
+							assert_neq(new_size, nodes_size);
 
 							nodes = alloc_remalloc(nodes, nodes_size, new_size);
 							assert_not_null(nodes);
@@ -1046,7 +1056,8 @@ quadtree_normalize(
 						{
 							if(node_entities_used >= node_entities_size)
 							{
-								uint32_t new_size = (node_entities_used | 1) << 1;
+								uint32_t new_size = (node_entities_used << 1) | 3;
+								assert_neq(new_size, node_entities_size);
 
 								node_entities.next = alloc_remalloc(node_entities.next, node_entities_size, new_size);
 								assert_not_null(node_entities.next);
@@ -1242,7 +1253,7 @@ quadtree_normalize(
 }
 
 
-private void
+void
 quadtree_normalize_hard(
 	quadtree_t* qt
 	)
@@ -1345,62 +1356,17 @@ quadtree_update(
 
 			rect_extent_t extent = quadtree_get_entity_rect_extent(entity);
 
-			bool crossed_new_boundary = false;
-			uint8_t flags = *node_entities_flags;
+			uint8_t old_flags = *node_entities_flags;
+			uint8_t pos_flags = node->position_flags;
 
-			if(extent.max_y >= node_extent.max_y && !(node->position_flags & 0b1000))
-			{
-				if(!(flags & 0b1000))
-				{
-					flags |= 0b1000;
-					crossed_new_boundary = true;
-				}
-			}
-			else if(flags & 0b1000)
-			{
-				flags &= ~0b1000;
-			}
+			uint8_t new_flags =
+				((-(uint8_t)(extent.max_y >= node_extent.max_y)) & 0b1000 & ~pos_flags) |
+				((-(uint8_t)(extent.max_x >= node_extent.max_x)) & 0b0100 & ~pos_flags) |
+				((-(uint8_t)(extent.min_y <= node_extent.min_y)) & 0b0010 & ~pos_flags) |
+				((-(uint8_t)(extent.min_x <= node_extent.min_x)) & 0b0001 & ~pos_flags);
 
-			if(extent.max_x >= node_extent.max_x && !(node->position_flags & 0b0100))
-			{
-				if(!(flags & 0b0100))
-				{
-					flags |= 0b0100;
-					crossed_new_boundary = true;
-				}
-			}
-			else if(flags & 0b0100)
-			{
-				flags &= ~0b0100;
-			}
-
-			if(extent.min_y <= node_extent.min_y && !(node->position_flags & 0b0010))
-			{
-				if(!(flags & 0b0010))
-				{
-					flags |= 0b0010;
-					crossed_new_boundary = true;
-				}
-			}
-			else if(flags & 0b0010)
-			{
-				flags &= ~0b0010;
-			}
-
-			if(extent.min_x <= node_extent.min_x && !(node->position_flags & 0b0001))
-			{
-				if(!(flags & 0b0001))
-				{
-					flags |= 0b0001;
-					crossed_new_boundary = true;
-				}
-			}
-			else if(flags & 0b0001)
-			{
-				flags &= ~0b0001;
-			}
-
-			*node_entities_flags = flags;
+			*node_entities_flags = new_flags;
+			bool crossed_new_boundary = new_flags & ~old_flags;
 
 			if(crossed_new_boundary && entity->reinsertion_tick != update_tick)
 			{
@@ -1411,7 +1377,8 @@ quadtree_update(
 
 				if(reinsertions_used >= reinsertions_size)
 				{
-					uint32_t new_size = (reinsertions_used | 1) << 1;
+					uint32_t new_size = (reinsertions_used << 1) | 3;
+					assert_neq(new_size, reinsertions_size);
 
 					reinsertions = alloc_remalloc(reinsertions, reinsertions_size, new_size);
 					assert_not_null(reinsertions);
@@ -1439,7 +1406,8 @@ quadtree_update(
 
 				if(node_removals_used >= node_removals_size)
 				{
-					uint32_t new_size = (node_removals_used | 1) << 1;
+					uint32_t new_size = (node_removals_used << 1) | 3;
+					assert_neq(new_size, node_removals_size);
 
 					node_removals = alloc_remalloc(node_removals, node_removals_size, new_size);
 					assert_not_null(node_removals);
@@ -1558,7 +1526,7 @@ quadtree_query_rect(
 }
 
 
-private float
+float
 quadtree_point_to_extent_distance_sq(
 	float x,
 	float y,
@@ -1811,7 +1779,7 @@ quadtree_collide(
 #if QUADTREE_DEDUPE_COLLISIONS == 1
 	uint32_t ht_size = qt->ht_entries_used * 2;
 	uint32_t* ht = alloc_calloc(ht, ht_size);
-	assert_not_null(ht);
+	assert_ptr(ht, ht_size);
 
 	quadtree_ht_entry_t* ht_entries = qt->ht_entries;
 
@@ -1892,7 +1860,8 @@ quadtree_collide(
 
 				if(ht_entries_used >= ht_entries_size)
 				{
-					uint32_t new_size = (ht_entries_used | 1) << 1;
+					uint32_t new_size = (ht_entries_used << 1) | 3;
+					assert_neq(new_size, ht_entries_size);
 
 					ht_entries = alloc_remalloc(ht_entries, ht_entries_size, new_size);
 					assert_not_null(ht_entries);
@@ -2015,16 +1984,13 @@ typedef struct quadtree_search_item
 }
 quadtree_search_item_t;
 
-private int
+int
 quadtree_search_cmp(
-	const void* a,
-	const void* b
+	const quadtree_search_item_t* a,
+	const quadtree_search_item_t* b
 	)
 {
-	const quadtree_search_item_t* item_a = a;
-	const quadtree_search_item_t* item_b = b;
-
-	return (item_a->value > item_b->value) - (item_a->value < item_b->value);
+	return (a->value > b->value) - (a->value < b->value);
 }
 
 
@@ -2051,7 +2017,7 @@ quadtree_nearest_rect(
 	uint32_t query_tick = qt->query_tick;
 
 	heap_t heap;
-	heap.cmp_fn = quadtree_search_cmp;
+	heap.cmp_fn = (void*) quadtree_search_cmp;
 	heap.el_size = sizeof(quadtree_search_item_t);
 	heap_init(&heap);
 
@@ -2223,7 +2189,7 @@ quadtree_nearest_circle(
 	}
 
 	heap_t heap;
-	heap.cmp_fn = quadtree_search_cmp;
+	heap.cmp_fn = (void*) quadtree_search_cmp;
 	heap.el_size = sizeof(quadtree_search_item_t);
 	heap_init(&heap);
 
@@ -2537,7 +2503,7 @@ quadtree_raycast(
 }
 
 
-private quadtree_status_t
+quadtree_status_t
 quadtree_check_count_node(
 	quadtree_t* qt,
 	const quadtree_node_info_t* info,
@@ -2554,7 +2520,7 @@ quadtree_check_count_node(
 }
 
 
-private void
+void
 quadtree_check_in_nodes_count(
 	quadtree_t* qt
 	)

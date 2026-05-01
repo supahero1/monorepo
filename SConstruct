@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-#   Copyright 2025 Franciszek Balcerak
+#   Copyright 2025-2026 Franciszek Balcerak
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -28,20 +28,22 @@ flags.extend([Split(freetype2_flags)[0]])
 
 release = int(ARGUMENTS["RELEASE"] if "RELEASE" in ARGUMENTS else os.environ.get("RELEASE", "0"))
 if release <= 0:
-	flags.extend(Split("-O0 -g3 -no-pie -fno-pie"))
+	flags.extend(Split("-march=x86-64-v3 -O0 -g3 -no-pie -fno-pie"))
 	if os.name != "nt":
 		env.Append(LINKFLAGS=Split("-no-pie -fno-pie -rdynamic"))
 else:
 	if release >= 1:
-		flags.extend(Split("-O3 -DNDEBUG -flto"))
+		flags.extend(Split("-fvisibility=hidden -O3 -DNDEBUG -flto"))
 		if os.name != "nt":
 			env.Append(LINKFLAGS=Split("-flto -fuse-linker-plugin"))
 	if release >= 2:
 		flags.extend(Split("-march=native"))
+	else:
+		flags.extend(Split("-march=x86-64-v3"))
 
 env.Append(CPPFLAGS=flags)
 
-libs = Split("m zstd SDL3 harfbuzz utf8proc freetype png")
+libs = Split("m zstd SDL3 harfbuzz utf8proc freetype png atomic")
 if os.name == "nt":
 	libs.extend(Split("vulkan-1 ws2_32"))
 else:
@@ -83,11 +85,14 @@ def add_file(path):
 		with open(path, "r") as f:
 			first_line = f.readline()
 			f.seek(0)
-			include_lines = [line for line in f if line.startswith(("#include <shared/", "#include <client/", "#include <server/", "#include <tests/"))]
+			prefixes = ("#include <shared/", "#include <client/", "#include <server/", "#include <tests/")
+			include_lines = [line for line in f if line.lstrip().startswith(prefixes)]
 			headers = []
 			for line in include_lines:
 				inc_path_part = line[line.find("<")+1 : line.find(">")]
-				if inc_path_part.endswith(".c"):
+				if inc_path_part.startswith("tests/") and inc_path_part.endswith(".c"):
+					headers.append(inc_path_part)
+				elif inc_path_part.endswith(".c"):
 					headers.append("src/" + inc_path_part)
 				else:
 					headers.append("include/" + inc_path_part)

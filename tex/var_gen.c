@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,18 +17,20 @@
 #include <shared/file.h>
 #include <shared/color.h>
 #include <shared/debug.h>
-#include <shared/alloc_ext.h>
-
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include <stb/stb_image_write.h>
+#include <shared/macro.h>
+#include <shared/alloc/base.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb/stb_image_write.h>
 
 #include <math.h>
+#include <stdint.h>
+#include <string.h>
 
 
-private void
+void
 var_bg_tile(
 	void
 	)
@@ -36,7 +38,7 @@ var_bg_tile(
 	uint32_t size = 128;
 	uint32_t img_size = size * size * 3;
 	uint8_t* img = alloc_malloc(img, img_size);
-	assert_not_null(img);
+	assert_ptr(img, img_size);
 
 	uint8_t* cur = img;
 
@@ -66,7 +68,7 @@ var_bg_tile(
 }
 
 
-private void
+void
 var_rect(
 	void
 	)
@@ -74,9 +76,9 @@ var_rect(
 	uint32_t size = 4;
 	uint32_t img_size = size * size * 3;
 	uint8_t* img = alloc_malloc(img, img_size);
-	assert_not_null(img);
+	assert_ptr(img, img_size);
 
-	(void) memset(img, 0xFF, img_size);
+	memset(img, 0xFF, img_size);
 
 	int status = stbi_write_png("tex/var/rect.png", size, size, 3, img, size * 3);
 	assert_neq(status, 0);
@@ -85,7 +87,7 @@ var_rect(
 }
 
 
-private void
+void
 var_text_cursor(
 	void
 	)
@@ -93,7 +95,7 @@ var_text_cursor(
 	uint32_t size = 256;
 	uint32_t img_size = size * size * 3;
 	uint8_t* img = alloc_malloc(img, img_size);
-	assert_not_null(img);
+	assert_ptr(img, img_size);
 
 	uint32_t ratio = 6;
 	uint32_t y_thickness = 12;
@@ -127,7 +129,7 @@ var_text_cursor(
 }
 
 
-private void
+void
 var_cs_b(
 	void
 	)
@@ -135,7 +137,7 @@ var_cs_b(
 	uint32_t size = 256;
 	uint32_t img_size = size * size * 3;
 	uint8_t* img = alloc_malloc(img, img_size);
-	assert_not_null(img);
+	assert_ptr(img, img_size);
 
 	uint8_t* cur = img;
 
@@ -156,7 +158,7 @@ var_cs_b(
 }
 
 
-private void
+void
 var_cs_red(
 	void
 	)
@@ -164,7 +166,7 @@ var_cs_red(
 	uint32_t size = 256;
 	uint32_t img_size = size * size * 3;
 	uint8_t* img = alloc_malloc(img, img_size);
-	assert_not_null(img);
+	assert_ptr(img, img_size);
 
 	uint8_t* cur = img;
 
@@ -185,7 +187,7 @@ var_cs_red(
 }
 
 
-private void
+void
 var_cs_green(
 	void
 	)
@@ -193,7 +195,7 @@ var_cs_green(
 	uint32_t size = 256;
 	uint32_t img_size = size * size * 3;
 	uint8_t* img = alloc_malloc(img, img_size);
-	assert_not_null(img);
+	assert_ptr(img, img_size);
 
 	uint8_t* cur = img;
 
@@ -214,7 +216,7 @@ var_cs_green(
 }
 
 
-private void
+void
 var_cs_blue(
 	void
 	)
@@ -222,7 +224,7 @@ var_cs_blue(
 	uint32_t size = 256;
 	uint32_t img_size = size * size * 3;
 	uint8_t* img = alloc_malloc(img, img_size);
-	assert_not_null(img);
+	assert_ptr(img, img_size);
 
 	uint8_t* cur = img;
 
@@ -243,7 +245,7 @@ var_cs_blue(
 }
 
 
-private void
+void
 var_rect8_t(
 	void
 	)
@@ -251,7 +253,7 @@ var_rect8_t(
 	uint32_t size = 8;
 	uint32_t img_size = size * size * 3;
 	uint8_t* img = alloc_malloc(img, img_size);
-	assert_not_null(img);
+	assert_ptr(img, img_size);
 
 	uint8_t* cur = img;
 
@@ -285,7 +287,7 @@ var_rect8_t(
 }
 
 
-private void
+void
 var_rect128_t(
 	void
 	)
@@ -293,7 +295,7 @@ var_rect128_t(
 	uint32_t size = 128;
 	uint32_t img_size = size * size * 3;
 	uint8_t* img = alloc_malloc(img, img_size);
-	assert_not_null(img);
+	assert_ptr(img, img_size);
 
 	uint8_t* cur = img;
 
@@ -327,7 +329,7 @@ var_rect128_t(
 }
 
 
-private void
+void
 var_cs_t(
 	void
 	)
@@ -335,7 +337,7 @@ var_cs_t(
 	uint32_t size = 256;
 	uint32_t img_size = size * size * 3;
 	uint8_t* img = alloc_malloc(img, img_size);
-	assert_not_null(img);
+	assert_ptr(img, img_size);
 
 	uint8_t* cur = img;
 
@@ -369,7 +371,7 @@ var_cs_t(
 }
 
 
-private void
+void
 var_circle_t(
 	void
 	)
@@ -384,7 +386,7 @@ var_circle_t(
 	uint32_t size = 256;
 	uint32_t img_size = size * size * 4;
 	uint8_t* img = alloc_malloc(img, img_size);
-	assert_not_null(img);
+	assert_ptr(img, img_size);
 
 	uint8_t* cur = img;
 
@@ -429,7 +431,7 @@ var_circle_t(
 }
 
 
-private void
+void
 var_t_mask(
 	void
 	)
@@ -437,7 +439,7 @@ var_t_mask(
 	uint32_t size = 256;
 	uint32_t img_size = size * size * 4;
 	uint8_t* img = alloc_malloc(img, img_size);
-	assert_not_null(img);
+	assert_ptr(img, img_size);
 
 	uint8_t* cur = img;
 
@@ -459,7 +461,7 @@ var_t_mask(
 }
 
 
-private void
+void
 var_cs_hs(
 	void
 	)
@@ -467,7 +469,7 @@ var_cs_hs(
 	uint32_t size = 2048;
 	uint32_t img_size = size * size * 4;
 	uint8_t* img = alloc_malloc(img, img_size);
-	assert_not_null(img);
+	assert_ptr(img, img_size);
 
 	uint8_t* cur = img;
 	float center = (size - 1) * 0.5f;

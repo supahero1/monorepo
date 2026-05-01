@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,11 +14,15 @@
  *  limitations under the License.
  */
 
+#include <shared/str.h>
 #include <shared/debug.h>
-#include <shared/alloc_ext.h>
+#include <shared/macro.h>
+#include <shared/alloc/base.h>
 #include <shared/bit_buffer.h>
 
 #include <math.h>
+#include <stddef.h>
+#include <stdint.h>
 
 
 void

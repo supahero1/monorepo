@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,12 +14,15 @@
  *  limitations under the License.
  */
 
+#include <tests/base.h>
+#include <shared/attr.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
 
 #include <unistd.h>
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__test_normal_pass(
 	void
 	)
@@ -27,7 +30,7 @@ test_normal_pass__test_normal_pass(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__test_normal_fail(
 	void
 	)
@@ -36,10 +39,12 @@ test_normal_fail__test_normal_fail(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_timeout__test_normal_timeout(
 	void
 	)
 {
+	test_set_timeout(1);
 	sleep(99);
+	assert_unreachable();
 }

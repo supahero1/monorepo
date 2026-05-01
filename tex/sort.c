@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,15 +15,17 @@
  */
 
 #include <shared/debug.h>
+#include <shared/macro.h>
 
 #include <png.h>
+#include <stdio.h>
 #include <dirent.h>
 #include <stdint.h>
 #include <string.h>
 #include <sys/stat.h>
 
 
-private uint32_t
+uint32_t
 sort_sizeof_png(
 	const char* path
 	)
@@ -72,12 +74,13 @@ main(
 
 		sprintf(old_path, "tex/img/%s", entry->d_name);
 
-		uint32_t size = sort_sizeof_png(old_path);
-		assert_gt(size, 0);
+			uint32_t size = sort_sizeof_png(old_path);
+			assert_neq(size, 0);
+			assert_true(MACRO_IS_POWER_OF_2(size));
 
-		uint32_t size_log = __builtin_ctz(size);
-		if(sizes[size_log] == 0)
-		{
+			uint32_t size_log = MACRO_FLOOR_LOG2(size);
+			if(sizes[size_log] == 0)
+			{
 			sizes[size_log] = 1;
 
 			sprintf(dir_path, "tex/img/%u", size);

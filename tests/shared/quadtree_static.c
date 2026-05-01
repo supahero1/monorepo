@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,18 +15,21 @@
  */
 
 #include <tests/base.h>
+#include <shared/attr.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
 #include <shared/extent.h>
-#include <shared/alloc_ext.h>
+#include <shared/alloc/base.h>
 #include <tests/quadtree_static.h>
 
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 
 #define MAX_ENTITIES 16
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_init_free(
 	void
 	)
@@ -37,7 +40,7 @@ test_normal_pass__quadtree_init_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_init_null(
 	void
 	)
@@ -46,7 +49,7 @@ test_normal_fail__quadtree_init_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_free_null(
 	void
 	)
@@ -55,7 +58,7 @@ test_normal_fail__quadtree_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_insert_null_qt(
 	void
 	)
@@ -64,7 +67,7 @@ test_normal_fail__quadtree_insert_null_qt(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_insert_null_data(
 	void
 	)
@@ -75,7 +78,7 @@ test_normal_fail__quadtree_insert_null_data(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_remove_null(
 	void
 	)
@@ -84,7 +87,7 @@ test_normal_fail__quadtree_remove_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_remove_invalid_entity_idx_1(
 	void
 	)
@@ -95,7 +98,7 @@ test_normal_fail__quadtree_remove_invalid_entity_idx_1(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_remove_invalid_entity_idx_2(
 	void
 	)
@@ -106,7 +109,7 @@ test_normal_fail__quadtree_remove_invalid_entity_idx_2(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_normalize_null(
 	void
 	)
@@ -115,7 +118,7 @@ test_normal_fail__quadtree_normalize_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_update_null_qt(
 	void
 	)
@@ -124,7 +127,7 @@ test_normal_fail__quadtree_update_null_qt(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_update_null_update_fn(
 	void
 	)
@@ -135,7 +138,7 @@ test_normal_fail__quadtree_update_null_update_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_query_rect_null_qt(
 	void
 	)
@@ -144,7 +147,7 @@ test_normal_fail__quadtree_query_rect_null_qt(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_query_rect_null_query_fn(
 	void
 	)
@@ -155,7 +158,7 @@ test_normal_fail__quadtree_query_rect_null_query_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_query_circle_null_qt(
 	void
 	)
@@ -164,7 +167,7 @@ test_normal_fail__quadtree_query_circle_null_qt(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_query_circle_null_query_fn(
 	void
 	)
@@ -175,7 +178,7 @@ test_normal_fail__quadtree_query_circle_null_query_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_query_nodes_rect_null_qt(
 	void
 	)
@@ -184,7 +187,7 @@ test_normal_fail__quadtree_query_nodes_rect_null_qt(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_query_nodes_rect_null_node_query_fn(
 	void
 	)
@@ -195,7 +198,7 @@ test_normal_fail__quadtree_query_nodes_rect_null_node_query_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_query_nodes_circle_null_qt(
 	void
 	)
@@ -204,7 +207,7 @@ test_normal_fail__quadtree_query_nodes_circle_null_qt(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_query_nodes_circle_null_node_query_fn(
 	void
 	)
@@ -215,7 +218,7 @@ test_normal_fail__quadtree_query_nodes_circle_null_node_query_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_collide_null_qt(
 	void
 	)
@@ -224,7 +227,7 @@ test_normal_fail__quadtree_collide_null_qt(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_collide_null_collide_fn(
 	void
 	)
@@ -235,7 +238,7 @@ test_normal_fail__quadtree_collide_null_collide_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_nearest_rect_null_qt(
 	void
 	)
@@ -244,7 +247,7 @@ test_normal_fail__quadtree_nearest_rect_null_qt(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_nearest_rect_null_query_fn(
 	void
 	)
@@ -255,7 +258,7 @@ test_normal_fail__quadtree_nearest_rect_null_query_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_nearest_circle_null_qt(
 	void
 	)
@@ -264,7 +267,7 @@ test_normal_fail__quadtree_nearest_circle_null_qt(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_nearest_circle_null_query_fn(
 	void
 	)
@@ -275,7 +278,7 @@ test_normal_fail__quadtree_nearest_circle_null_query_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_raycast_null_qt(
 	void
 	)
@@ -284,7 +287,7 @@ test_normal_fail__quadtree_raycast_null_qt(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__quadtree_raycast_null_query_fn(
 	void
 	)
@@ -322,7 +325,7 @@ typedef struct qt_test_opts
 qt_test_opts_t;
 
 
-static qt_test_t
+qt_test_t
 qt_test_init(
 	float x,
 	float y,
@@ -350,7 +353,7 @@ qt_test_init(
 }
 
 
-static void
+void
 qt_test_insert(
 	qt_test_t* test,
 	float x,
@@ -370,7 +373,7 @@ qt_test_insert(
 }
 
 
-static quadtree_status_t
+quadtree_status_t
 qt_test_remove_update_fn(
 	quadtree_t* qt,
 	quadtree_entity_info_t info,
@@ -389,7 +392,7 @@ qt_test_remove_update_fn(
 }
 
 
-static void
+void
 qt_test_remove(
 	qt_test_t* test,
 	uint32_t entity_idx
@@ -400,7 +403,7 @@ qt_test_remove(
 }
 
 
-static quadtree_status_t
+quadtree_status_t
 qt_test_update_fn(
 	quadtree_t* qt,
 	quadtree_entity_info_t info,
@@ -416,7 +419,7 @@ qt_test_update_fn(
 }
 
 
-static void
+void
 qt_test_update(
 	qt_test_t* test,
 	uint32_t* expected,
@@ -451,7 +454,7 @@ qt_test_update(
 }
 
 
-static quadtree_status_t
+quadtree_status_t
 qt_test_query_fn(
 	quadtree_t* qt,
 	quadtree_entity_info_t info,
@@ -467,7 +470,7 @@ qt_test_query_fn(
 }
 
 
-static void
+void
 qt_test_query(
 	qt_test_t* test,
 	float x,
@@ -506,7 +509,7 @@ qt_test_query(
 }
 
 
-static void
+void
 qt_test_query_circle(
 	qt_test_t* test,
 	float x,
@@ -544,7 +547,7 @@ qt_test_query_circle(
 }
 
 
-static quadtree_status_t
+quadtree_status_t
 qt_test_query_nodes_fn(
 	quadtree_t* qt,
 	const quadtree_node_info_t* info,
@@ -560,7 +563,7 @@ qt_test_query_nodes_fn(
 }
 
 
-static void
+void
 qt_test_query_nodes(
 	qt_test_t* test,
 	float x,
@@ -594,7 +597,7 @@ qt_test_query_nodes(
 }
 
 
-static void
+void
 qt_test_collide_fn(
 	const quadtree_t* qt,
 	quadtree_entity_info_t a,
@@ -611,7 +614,7 @@ qt_test_collide_fn(
 }
 
 
-static void
+void
 qt_test_collide(
 	qt_test_t* test,
 	ipair_t* expected,
@@ -650,7 +653,7 @@ qt_test_collide(
 }
 
 
-static void
+void
 qt_test_normalize(
 	qt_test_t* test
 	)
@@ -659,7 +662,7 @@ qt_test_normalize(
 }
 
 
-static void
+void
 qt_test_free(
 	qt_test_t* test
 	)
@@ -668,7 +671,7 @@ qt_test_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_update_one(
 	void
 	)
@@ -685,7 +688,7 @@ test_normal_pass__quadtree_update_one(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_collide_one(
 	void
 	)
@@ -702,7 +705,7 @@ test_normal_pass__quadtree_collide_one(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_query_one(
 	void
 	)
@@ -719,7 +722,7 @@ test_normal_pass__quadtree_query_one(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_free_non_empty(
 	void
 	)
@@ -735,7 +738,7 @@ test_normal_pass__quadtree_free_non_empty(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_normalize_nothing(
 	void
 	)
@@ -751,7 +754,7 @@ test_normal_pass__quadtree_normalize_nothing(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_border_collide(
 	void
 	)
@@ -773,7 +776,7 @@ test_normal_pass__quadtree_border_collide(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_collide_none(
 	void
 	)
@@ -793,7 +796,7 @@ test_normal_pass__quadtree_collide_none(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_query_none(
 	void
 	)
@@ -811,7 +814,7 @@ test_normal_pass__quadtree_query_none(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_remove_one(
 	void
 	)
@@ -834,7 +837,7 @@ test_normal_pass__quadtree_remove_one(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_split_then_merge(
 	void
 	)
@@ -867,7 +870,7 @@ test_normal_pass__quadtree_split_then_merge(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_lazy_merge_one_at_a_time(
 	void
 	)
@@ -899,7 +902,7 @@ test_normal_pass__quadtree_lazy_merge_one_at_a_time(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_lazy_merge_successful(
 	void
 	)
@@ -926,7 +929,7 @@ test_normal_pass__quadtree_lazy_merge_successful(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_compaction_on_remove(
 	void
 	)
@@ -954,7 +957,7 @@ test_normal_pass__quadtree_compaction_on_remove(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_remove_all_stable_ids(
 	void
 	)
@@ -978,7 +981,7 @@ test_normal_pass__quadtree_remove_all_stable_ids(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_query_no_overlap(
 	void
 	)
@@ -998,7 +1001,7 @@ test_normal_pass__quadtree_query_no_overlap(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_query_partial_overlap(
 	void
 	)
@@ -1019,7 +1022,7 @@ test_normal_pass__quadtree_query_partial_overlap(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_query_center_point_split_entities(
 	void
 	)
@@ -1040,7 +1043,7 @@ test_normal_pass__quadtree_query_center_point_split_entities(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_deep_recursion_collide_once(
 	void
 	)
@@ -1060,7 +1063,7 @@ test_normal_pass__quadtree_deep_recursion_collide_once(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_deep_recursion_update_once(
 	void
 	)
@@ -1080,7 +1083,7 @@ test_normal_pass__quadtree_deep_recursion_update_once(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_position_flags_outside_entity(
 	void
 	)
@@ -1106,7 +1109,7 @@ test_normal_pass__quadtree_position_flags_outside_entity(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_query_tick(
 	void
 	)
@@ -1138,7 +1141,7 @@ test_normal_pass__quadtree_query_tick(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_query_nodes_not_split(
 	void
 	)
@@ -1159,7 +1162,7 @@ test_normal_pass__quadtree_query_nodes_not_split(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_query_nodes_split_once(
 	void
 	)
@@ -1181,7 +1184,7 @@ test_normal_pass__quadtree_query_nodes_split_once(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_cascading_merge_on_normalize(
 	void
 	)
@@ -1219,7 +1222,7 @@ test_normal_pass__quadtree_cascading_merge_on_normalize(
 		{
 			break;
 		}
-		
+
 		assert_lt(depth, prev_depth, fprintf(stderr, "Depth failed to decrease on iteration %d (depth: %u)\n", i, depth););
 		prev_depth = depth;
 	}
@@ -1230,7 +1233,7 @@ test_normal_pass__quadtree_cascading_merge_on_normalize(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_no_cascading_merge_on_no_normalize(
 	void
 	)
@@ -1269,7 +1272,7 @@ test_normal_pass__quadtree_no_cascading_merge_on_no_normalize(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_query_circle_one(
 	void
 	)
@@ -1286,7 +1289,7 @@ test_normal_pass__quadtree_query_circle_one(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_query_circle_none(
 	void
 	)
@@ -1303,7 +1306,7 @@ test_normal_pass__quadtree_query_circle_none(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_query_circle_partial(
 	void
 	)
@@ -1322,7 +1325,7 @@ test_normal_pass__quadtree_query_circle_partial(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_query_circle_on_boundary(
 	void
 	)
@@ -1340,7 +1343,7 @@ test_normal_pass__quadtree_query_circle_on_boundary(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_nearest_rect_one(
 	void
 	)
@@ -1360,7 +1363,7 @@ test_normal_pass__quadtree_nearest_rect_one(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_nearest_rect_order(
 	void
 	)
@@ -1384,7 +1387,7 @@ test_normal_pass__quadtree_nearest_rect_order(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_nearest_rect_max_results(
 	void
 	)
@@ -1408,7 +1411,7 @@ test_normal_pass__quadtree_nearest_rect_max_results(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_nearest_rect_zero_results(
 	void
 	)
@@ -1428,7 +1431,7 @@ test_normal_pass__quadtree_nearest_rect_zero_results(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_nearest_circle_one(
 	void
 	)
@@ -1448,7 +1451,7 @@ test_normal_pass__quadtree_nearest_circle_one(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_nearest_circle_order(
 	void
 	)
@@ -1472,7 +1475,7 @@ test_normal_pass__quadtree_nearest_circle_order(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_nearest_circle_max_results(
 	void
 	)
@@ -1496,7 +1499,7 @@ test_normal_pass__quadtree_nearest_circle_max_results(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_nearest_circle_max_distance(
 	void
 	)
@@ -1518,7 +1521,7 @@ test_normal_pass__quadtree_nearest_circle_max_distance(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_raycast_hit_one(
 	void
 	)
@@ -1538,7 +1541,7 @@ test_normal_pass__quadtree_raycast_hit_one(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_raycast_miss(
 	void
 	)
@@ -1558,7 +1561,7 @@ test_normal_pass__quadtree_raycast_miss(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_raycast_length(
 	void
 	)
@@ -1582,7 +1585,7 @@ test_normal_pass__quadtree_raycast_length(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_raycast_multiple(
 	void
 	)

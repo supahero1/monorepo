@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,10 +17,14 @@
 #pragma once
 
 #include <shared/str.h>
+#include <shared/sync.h>
+#include <shared/debug.h>
 #include <shared/event.h>
 #include <shared/macro.h>
 #include <shared/extent.h>
 #include <shared/threads.h>
+
+#include <stdint.h>
 
 
 typedef enum window_cursor : uint32_t
@@ -90,11 +94,11 @@ typedef enum window_mod : uint32_t
 	WINDOW_MOD_CAPS_LOCK,
 	MACRO_ENUM_BITS_EXP(WINDOW_MOD),
 
-	WINDOW_MOD_SHIFT_BIT		= MACRO_POWER_OF_2(WINDOW_MOD_SHIFT),
-	WINDOW_MOD_CTRL_BIT			= MACRO_POWER_OF_2(WINDOW_MOD_CTRL),
-	WINDOW_MOD_ALT_BIT			= MACRO_POWER_OF_2(WINDOW_MOD_ALT),
-	WINDOW_MOD_GUI_BIT			= MACRO_POWER_OF_2(WINDOW_MOD_GUI),
-	WINDOW_MOD_CAPS_LOCK_BIT	= MACRO_POWER_OF_2(WINDOW_MOD_CAPS_LOCK)
+	WINDOW_MOD_SHIFT_BIT		= 1 << WINDOW_MOD_SHIFT,
+	WINDOW_MOD_CTRL_BIT			= 1 << WINDOW_MOD_CTRL,
+	WINDOW_MOD_ALT_BIT			= 1 << WINDOW_MOD_ALT,
+	WINDOW_MOD_GUI_BIT			= 1 << WINDOW_MOD_GUI,
+	WINDOW_MOD_CAPS_LOCK_BIT	= 1 << WINDOW_MOD_CAPS_LOCK
 }
 window_mod_t;
 
@@ -116,6 +120,7 @@ typedef enum window_user_event : uint32_t
 	WINDOW_USER_EVENT_STOP_TYPING,
 	WINDOW_USER_EVENT_SET_CLIPBOARD,
 	WINDOW_USER_EVENT_GET_CLIPBOARD,
+	WINDOW_USER_EVENT_RUN,
 	MACRO_ENUM_BITS(WINDOW_USER_EVENT)
 }
 window_user_event_t;
@@ -179,6 +184,14 @@ typedef struct window_user_event_get_clipboard_data
 }
 window_user_event_get_clipboard_data_t;
 
+typedef struct window_user_event_run_data
+{
+	thread_data_t run;
+	sync_sem_t* sem;
+	bool wait;
+}
+window_user_event_run_data_t;
+
 
 typedef struct window_manager* window_manager_t;
 
@@ -214,14 +227,6 @@ window_manager_push_event(
 
 
 extern bool
-window_manager_run_on_main_thread(
-	window_manager_t manager,
-	thread_data_t data,
-	bool wait
-	);
-
-
-extern bool
 window_manager_is_running(
 	window_manager_t manager
 	);
@@ -229,6 +234,18 @@ window_manager_is_running(
 
 extern void
 window_manager_stop_running(
+	window_manager_t manager
+	);
+
+
+extern void
+window_manager_ref(
+	window_manager_t manager
+	);
+
+
+extern void
+window_manager_unref(
 	window_manager_t manager
 	);
 
@@ -281,11 +298,17 @@ typedef struct window_blur_event_data
 }
 window_blur_event_data_t;
 
-typedef struct window_close_event_data
+typedef struct window_close_request_event_data
 {
 	window_t window;
 }
-window_close_event_data_t;
+window_close_request_event_data_t;
+
+typedef struct window_closing_event_data
+{
+	window_t window;
+}
+window_closing_event_data_t;
 
 typedef struct window_fullscreen_event_data
 {
@@ -385,7 +408,8 @@ typedef struct window_event_table
 	event_target_t resize_target;
 	event_target_t focus_target;
 	event_target_t blur_target;
-	event_target_t close_target;
+	event_target_t close_request_target;
+	event_target_t closing_target;
 	event_target_t fullscreen_target;
 	event_target_t key_down_target;
 	event_target_t key_up_target;
@@ -532,9 +556,27 @@ window_free_vulkan_surface(
 	);
 
 
-extern bool
+extern void
 window_run_on_main_thread(
 	window_t window,
 	thread_data_t data,
 	bool wait
+	);
+
+
+extern void
+window_ref(
+	window_t window
+	);
+
+
+extern void
+window_unref(
+	window_t window
+	);
+
+
+extern bool
+window_is_closed(
+	window_t window
 	);

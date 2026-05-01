@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@
 
 #include <shared/str.h>
 #include <shared/debug.h>
-#include <shared/alloc_ext.h>
+#include <shared/macro.h>
+#include <shared/alloc/base.h>
 
 #include <string.h>
+#include <strings.h>
 
 
 void*
@@ -27,7 +29,7 @@ cstr_alloc(
 	)
 {
 	uint8_t* cstr = alloc_malloc(cstr, len + 1);
-	assert_not_null(cstr);
+	assert_ptr(cstr, len + 1);
 
 	cstr[len] = '\0';
 
@@ -90,7 +92,7 @@ cstr_init_len(
 	assert_ptr(cstr, len);
 
 	void* copy = cstr_alloc(len);
-	(void) memcpy(copy, cstr, len);
+	memcpy(copy, cstr, len);
 	return copy;
 }
 
@@ -159,7 +161,7 @@ str_init(
 	)
 {
 	str_t str = alloc_malloc(str, 1);
-	assert_not_null(str);
+	assert_ptr(str, 1);
 
 	str->str = NULL;
 	str->len = 0;
@@ -266,7 +268,7 @@ str_init_move(
 }
 
 
-private void
+void
 str_free_str(
 	str_t str
 	)

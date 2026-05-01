@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,8 +15,10 @@
  */
 
 #include <tests/base.h>
+#include <shared/attr.h>
 #include <shared/heap.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
 
 #include <string.h>
 
@@ -28,7 +30,7 @@ typedef struct heap_test_el
 heap_test_el_t;
 
 
-static int
+int
 heap_test_cmp(
 	const heap_test_el_t* a,
 	const heap_test_el_t* b
@@ -38,7 +40,7 @@ heap_test_cmp(
 }
 
 
-static heap_t
+heap_t
 heap_test_init(
 	void
 	)
@@ -51,7 +53,7 @@ heap_test_init(
 }
 
 
-static void
+void
 heap_test_push(
 	heap_t* heap,
 	int value
@@ -61,7 +63,7 @@ heap_test_push(
 }
 
 
-static int
+int
 heap_test_pop(
 	heap_t* heap
 	)
@@ -75,7 +77,7 @@ heap_test_pop(
 }
 
 
-static int
+int
 heap_test_peek(
 	heap_t* heap
 	)
@@ -89,7 +91,7 @@ heap_test_peek(
 }
 
 
-static void
+void
 heap_test_replace(
 	heap_t* heap,
 	int value
@@ -99,7 +101,7 @@ heap_test_replace(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_init_free(
 	void
 	)
@@ -109,7 +111,7 @@ test_normal_pass__heap_init_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__heap_init_null(
 	void
 	)
@@ -118,7 +120,7 @@ test_normal_fail__heap_init_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__heap_init_null_cmp_fn(
 	void
 	)
@@ -130,7 +132,7 @@ test_normal_fail__heap_init_null_cmp_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__heap_init_zero_el_size(
 	void
 	)
@@ -142,7 +144,7 @@ test_normal_fail__heap_init_zero_el_size(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__heap_free_null(
 	void
 	)
@@ -151,7 +153,7 @@ test_normal_fail__heap_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__heap_push_null_heap(
 	void
 	)
@@ -160,7 +162,7 @@ test_normal_fail__heap_push_null_heap(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__heap_push_null_el(
 	void
 	)
@@ -170,7 +172,7 @@ test_normal_fail__heap_push_null_el(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__heap_pop_null(
 	void
 	)
@@ -179,7 +181,7 @@ test_normal_fail__heap_pop_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__heap_peek_null(
 	void
 	)
@@ -188,7 +190,7 @@ test_normal_fail__heap_peek_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__heap_replace_null_heap(
 	void
 	)
@@ -197,7 +199,7 @@ test_normal_fail__heap_replace_null_heap(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__heap_replace_null_el(
 	void
 	)
@@ -207,7 +209,7 @@ test_normal_fail__heap_replace_null_el(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_push_one(
 	void
 	)
@@ -221,7 +223,7 @@ test_normal_pass__heap_push_one(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_pop_empty(
 	void
 	)
@@ -235,7 +237,7 @@ test_normal_pass__heap_pop_empty(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_peek_empty(
 	void
 	)
@@ -249,7 +251,7 @@ test_normal_pass__heap_peek_empty(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_push_pop_one(
 	void
 	)
@@ -265,7 +267,7 @@ test_normal_pass__heap_push_pop_one(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_push_peek_one(
 	void
 	)
@@ -281,7 +283,7 @@ test_normal_pass__heap_push_peek_one(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_min_order(
 	void
 	)
@@ -305,7 +307,7 @@ test_normal_pass__heap_min_order(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_reverse_order_insert(
 	void
 	)
@@ -332,7 +334,7 @@ test_normal_pass__heap_reverse_order_insert(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_already_sorted_insert(
 	void
 	)
@@ -353,7 +355,7 @@ test_normal_pass__heap_already_sorted_insert(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_duplicates(
 	void
 	)
@@ -376,7 +378,7 @@ test_normal_pass__heap_duplicates(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_replace_empty(
 	void
 	)
@@ -390,7 +392,7 @@ test_normal_pass__heap_replace_empty(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_replace_single(
 	void
 	)
@@ -407,7 +409,7 @@ test_normal_pass__heap_replace_single(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_replace_maintains_order(
 	void
 	)
@@ -428,7 +430,7 @@ test_normal_pass__heap_replace_maintains_order(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_interleaved_push_pop(
 	void
 	)
@@ -452,7 +454,7 @@ test_normal_pass__heap_interleaved_push_pop(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_large_count(
 	void
 	)
@@ -475,7 +477,7 @@ test_normal_pass__heap_large_count(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_peek_doesnt_remove(
 	void
 	)
@@ -494,7 +496,7 @@ test_normal_pass__heap_peek_doesnt_remove(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_negative_values(
 	void
 	)
@@ -517,7 +519,7 @@ test_normal_pass__heap_negative_values(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__heap_single_element_many_ops(
 	void
 	)

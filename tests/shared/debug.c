@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,12 +14,14 @@
  *  limitations under the License.
  */
 
+#include <shared/attr.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
 
 #include <stddef.h>
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__assert_eq(
 	void
 	)
@@ -36,7 +38,7 @@ test_normal_pass__assert_eq(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_eq_int(
 	void
 	)
@@ -45,7 +47,7 @@ test_normal_fail__assert_eq_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_eq_bool(
 	void
 	)
@@ -54,7 +56,7 @@ test_normal_fail__assert_eq_bool(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_eq_negative(
 	void
 	)
@@ -63,7 +65,7 @@ test_normal_fail__assert_eq_negative(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_eq_float(
 	void
 	)
@@ -72,7 +74,7 @@ test_normal_fail__assert_eq_float(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__assert_true(
 	void
 	)
@@ -84,7 +86,7 @@ test_normal_pass__assert_true(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_true_int(
 	void
 	)
@@ -93,7 +95,7 @@ test_normal_fail__assert_true_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_true_false(
 	void
 	)
@@ -102,7 +104,7 @@ test_normal_fail__assert_true_false(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_true_float(
 	void
 	)
@@ -111,7 +113,7 @@ test_normal_fail__assert_true_float(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__assert_false(
 	void
 	)
@@ -122,7 +124,7 @@ test_normal_pass__assert_false(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_false_int(
 	void
 	)
@@ -131,7 +133,7 @@ test_normal_fail__assert_false_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_false_true(
 	void
 	)
@@ -140,7 +142,7 @@ test_normal_fail__assert_false_true(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_false_negative(
 	void
 	)
@@ -149,7 +151,7 @@ test_normal_fail__assert_false_negative(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_false_float(
 	void
 	)
@@ -158,7 +160,7 @@ test_normal_fail__assert_false_float(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__assert_null(
 	void
 	)
@@ -167,7 +169,7 @@ test_normal_pass__assert_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_null(
 	void
 	)
@@ -176,7 +178,7 @@ test_normal_fail__assert_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__assert_not_null(
 	void
 	)
@@ -196,7 +198,7 @@ test_normal_pass__assert_not_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_not_null(
 	void
 	)
@@ -205,7 +207,7 @@ test_normal_fail__assert_not_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__assert_ptr(
 	void
 	)
@@ -217,7 +219,7 @@ test_normal_pass__assert_ptr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_ptr_null_with_non_zero_size(
 	void
 	)
@@ -226,7 +228,7 @@ test_normal_fail__assert_ptr_null_with_non_zero_size(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__assert_lt(
 	void
 	)
@@ -241,7 +243,7 @@ test_normal_pass__assert_lt(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_lt_different_int(
 	void
 	)
@@ -250,7 +252,7 @@ test_normal_fail__assert_lt_different_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_lt_same_int(
 	void
 	)
@@ -259,7 +261,7 @@ test_normal_fail__assert_lt_same_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_lt_different_negative_int(
 	void
 	)
@@ -268,7 +270,7 @@ test_normal_fail__assert_lt_different_negative_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_lt_same_negative_int(
 	void
 	)
@@ -277,7 +279,7 @@ test_normal_fail__assert_lt_same_negative_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_lt_different_ptr(
 	void
 	)
@@ -286,7 +288,7 @@ test_normal_fail__assert_lt_different_ptr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_lt_same_ptr(
 	void
 	)
@@ -295,7 +297,7 @@ test_normal_fail__assert_lt_same_ptr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_lt_different_float(
 	void
 	)
@@ -304,7 +306,7 @@ test_normal_fail__assert_lt_different_float(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_lt_same_float(
 	void
 	)
@@ -313,7 +315,7 @@ test_normal_fail__assert_lt_same_float(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__assert_le(
 	void
 	)
@@ -334,7 +336,7 @@ test_normal_pass__assert_le(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_le_different_int(
 	void
 	)
@@ -343,7 +345,7 @@ test_normal_fail__assert_le_different_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_le_different_negative_int(
 	void
 	)
@@ -352,7 +354,7 @@ test_normal_fail__assert_le_different_negative_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_le_different_ptr(
 	void
 	)
@@ -361,7 +363,7 @@ test_normal_fail__assert_le_different_ptr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_le_different_float(
 	void
 	)
@@ -370,7 +372,7 @@ test_normal_fail__assert_le_different_float(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__assert_gt(
 	void
 	)
@@ -385,7 +387,7 @@ test_normal_pass__assert_gt(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_gt_different_int(
 	void
 	)
@@ -394,7 +396,7 @@ test_normal_fail__assert_gt_different_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_gt_same_int(
 	void
 	)
@@ -403,7 +405,7 @@ test_normal_fail__assert_gt_same_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_gt_different_negative_int(
 	void
 	)
@@ -412,7 +414,7 @@ test_normal_fail__assert_gt_different_negative_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_gt_same_negative_int(
 	void
 	)
@@ -421,7 +423,7 @@ test_normal_fail__assert_gt_same_negative_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_gt_different_ptr(
 	void
 	)
@@ -430,7 +432,7 @@ test_normal_fail__assert_gt_different_ptr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_gt_same_ptr(
 	void
 	)
@@ -439,7 +441,7 @@ test_normal_fail__assert_gt_same_ptr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_gt_different_float(
 	void
 	)
@@ -448,7 +450,7 @@ test_normal_fail__assert_gt_different_float(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_gt_same_float(
 	void
 	)
@@ -457,7 +459,7 @@ test_normal_fail__assert_gt_same_float(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__assert_ge(
 	void
 	)
@@ -478,7 +480,7 @@ test_normal_pass__assert_ge(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_ge_different_int(
 	void
 	)
@@ -487,7 +489,7 @@ test_normal_fail__assert_ge_different_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_ge_different_negative_int(
 	void
 	)
@@ -496,7 +498,7 @@ test_normal_fail__assert_ge_different_negative_int(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_ge_different_ptr(
 	void
 	)
@@ -505,7 +507,7 @@ test_normal_fail__assert_ge_different_ptr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_ge_different_float(
 	void
 	)
@@ -514,7 +516,7 @@ test_normal_fail__assert_ge_different_float(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__assert_unreachable(
 	void
 	)
@@ -526,7 +528,7 @@ test_normal_pass__assert_unreachable(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__assert_unreachable(
 	void
 	)
@@ -535,7 +537,7 @@ test_normal_fail__assert_unreachable(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__assert_log(
 	void
 	)

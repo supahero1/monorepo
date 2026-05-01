@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <shared/attr.h>
+
 #include <stdint.h>
 #include <pthread.h>
 #include <semaphore.h>
@@ -26,6 +28,12 @@ typedef pthread_mutex_t sync_mtx_t;
 
 extern void
 sync_mtx_init(
+	sync_mtx_t* mtx
+	);
+
+
+extern void
+sync_mtx_init_recursive(
 	sync_mtx_t* mtx
 	);
 

@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,10 +16,15 @@
 
 #pragma once
 
+#include <shared/debug.h>
 #include <shared/macro.h>
 #include <shared/extent.h>
 
-#define QUADTREE_DEDUPE_COLLISIONS 1
+#include <stdint.h>
+
+#ifndef QUADTREE_DEDUPE_COLLISIONS
+	#define QUADTREE_DEDUPE_COLLISIONS 1
+#endif
 
 
 typedef enum quadtree_node_type

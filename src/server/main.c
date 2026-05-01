@@ -1,10 +1,3 @@
-#include "../include/quadtree.h"
-#include "../include/shared.h"
-#include "../include/debug.h"
-#include "../include/rand.h"
-#include "../include/sort.h"
-#include "../include/io.h"
-
 #include <math.h>
 #include <time.h>
 #include <errno.h>
@@ -12,8 +5,14 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/epoll.h>
-#include <sys/socket.h>
 #include <netinet/in.h>
+#include <sys/socket.h>
+#include <../include/io.h>
+#include <../include/rand.h>
+#include <../include/sort.h>
+#include <../include/debug.h>
+#include <../include/shared.h>
+#include <../include/quadtree.h>
 
 
 typedef struct GameClient
@@ -50,20 +49,20 @@ typedef struct GameClient
 GameClient;
 
 
-private GameClient Clients[GAME_CONST_MAX_PLAYERS];
-private uint32_t ClientsUsed = 0;
-private uint32_t FreeClient = -1;
+GameClient Clients[GAME_CONST_MAX_PLAYERS];
+uint32_t ClientsUsed = 0;
+uint32_t FreeClient = -1;
 
-private uint8_t* EntityBits;
-private uint16_t* EntitiesInView;
-private uint16_t EntitiesInViewCount;
+uint8_t* EntityBits;
+uint16_t* EntitiesInView;
+uint16_t EntitiesInViewCount;
 
-private GameClient* Client = NULL;
-private uint64_t CurrentTick = 0;
-private uint64_t LastTickAt;
-private uint64_t CurrentTickAt;
+GameClient* Client = NULL;
+uint64_t CurrentTick = 0;
+uint64_t LastTickAt;
+uint64_t CurrentTickAt;
 
-private QUADTREE Quadtree = {0};
+QUADTREE Quadtree = {0};
 
 typedef struct GameEntity
 {
@@ -95,10 +94,10 @@ typedef struct GameEntity
 }
 GameEntity;
 
-private GameEntity* Entities = NULL;
+GameEntity* Entities = NULL;
 
 
-private GameEntity*
+GameEntity*
 GetEntity(
 	const QUADTREE_ENTITY* Entity
 	)
@@ -113,7 +112,7 @@ GetEntity(
 }
 
 
-private void
+void
 RetEntity(
 	const GameEntity* Entity
 	)
@@ -122,7 +121,7 @@ RetEntity(
 }
 
 
-private GameClient*
+GameClient*
 GetClient(
 	void
 	)
@@ -146,7 +145,7 @@ GetClient(
 }
 
 
-private void
+void
 RetClient(
 	void
 	)
@@ -157,7 +156,7 @@ RetClient(
 }
 
 
-private float
+float
 LerpF(
 	float old,
 	float New,
@@ -168,7 +167,7 @@ LerpF(
 }
 
 
-private void
+void
 GetSpawnCoords(
 	QUADTREE_ENTITY* QTEntity
 	)
@@ -178,7 +177,7 @@ GetSpawnCoords(
 }
 
 
-private void
+void
 SpawnShape(
 	Shape Subtype
 	)
@@ -203,7 +202,7 @@ SpawnShape(
 }
 
 
-private int
+int
 QuadtreeUpdateFN(
 	QUADTREE* Quadtree,
 	uint32_t EntityIdx
@@ -292,7 +291,7 @@ QuadtreeUpdateFN(
 }
 
 
-private int
+int
 QuadtreeIsCollidingFN(
 	const QUADTREE* Quadtree,
 	uint32_t EntityIdxA,
@@ -310,7 +309,7 @@ QuadtreeIsCollidingFN(
 }
 
 
-private void
+void
 QuadtreeCollideFN(
 	QUADTREE* Quadtree,
 	uint32_t EntityIdxA,
@@ -360,7 +359,7 @@ QuadtreeCollideFN(
 }
 
 
-private void
+void
 QuadtreeViewQueryFN(
 	QUADTREE* Quadtree,
 	uint32_t EntityIdx
@@ -371,7 +370,7 @@ QuadtreeViewQueryFN(
 }
 
 
-private void
+void
 ClientChangeFoV(
 	float FoV
 	)
@@ -382,7 +381,7 @@ ClientChangeFoV(
 }
 
 
-private void
+void
 ClientCreate(
 	void
 	)
@@ -412,7 +411,7 @@ ClientCreate(
 }
 
 
-private void
+void
 ClientClose(
 	void
 	)
@@ -421,7 +420,7 @@ ClientClose(
 }
 
 
-private void
+void
 ClientSend(
 	const bit_buffer_t* buffer
 	)
@@ -435,7 +434,7 @@ ClientSend(
 }
 
 
-private uint32_t
+uint32_t
 ClientRead(
 	void
 	)
@@ -532,7 +531,7 @@ ClientRead(
 }
 
 
-private void
+void
 ClientDestroy(
 	void
 	)
@@ -542,7 +541,7 @@ ClientDestroy(
 }
 
 
-private void
+void
 GameUpdate(
 	void
 	)

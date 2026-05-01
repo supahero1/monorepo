@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,12 +14,72 @@
  *  limitations under the License.
  */
 
+#include <shared/sync.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
 #include <shared/threads.h>
-#include <shared/alloc_ext.h>
+#include <shared/alloc/base.h>
 
+#include <time.h>
 #include <errno.h>
+#include <stdint.h>
 #include <string.h>
+#include <pthread.h>
+
+
+void
+thread_once(
+	thread_once_t* once,
+	thread_once_init_fn_t init_fn
+	)
+{
+	int err = pthread_once(once, init_fn);
+	assert_eq(err, 0);
+}
+
+
+thread_key_t
+thread_key_create(
+	tls_dtor_fn_t dtor
+	)
+{
+	pthread_key_t key;
+	int err = pthread_key_create(&key, dtor);
+	assert_eq(err, 0);
+
+	return key;
+}
+
+
+void
+thread_key_free(
+	thread_key_t key
+	)
+{
+	int err = pthread_key_delete(key);
+	assert_eq(err, 0);
+}
+
+
+void*
+thread_key_get(
+	thread_key_t key
+	)
+{
+	return pthread_getspecific(key);
+}
+
+
+void
+thread_key_set(
+	thread_key_t key,
+	void* value
+	)
+{
+	int err = pthread_setspecific(key, value);
+	assert_eq(err, 0);
+}
+
 
 
 typedef struct thread_init_data
@@ -29,7 +89,7 @@ typedef struct thread_init_data
 thread_init_data_t;
 
 
-private void*
+void*
 thread_fn(
 	thread_init_data_t* init_data
 	)
@@ -53,12 +113,11 @@ thread_init(
 	thread_t id;
 
 	thread_init_data_t* init_data = alloc_malloc(init_data, 1);
-	assert_not_null(init_data);
+	assert_ptr(init_data, 1);
 
 	init_data->data = data;
 
-	int status = pthread_create(&id, NULL,
-		(void* (*)(void*)) thread_fn, init_data);
+	int status = pthread_create(&id, NULL, (void*) thread_fn, init_data);
 	hard_assert_eq(status, 0);
 
 	if(thread)
@@ -147,7 +206,7 @@ thread_join(
 }
 
 
-private void
+void
 thread_cancel(
 	thread_t thread
 	)
@@ -240,7 +299,7 @@ thread_sleep(
 }
 
 
-private void
+void
 threads_resize(
 	threads_t* threads,
 	uint32_t count
@@ -250,7 +309,8 @@ threads_resize(
 
 	if((new_used < (threads->size >> 2)) || (new_used > threads->size))
 	{
-		uint32_t new_size = (new_used << 1) | 1;
+		uint32_t new_size = (new_used << 1) | 3;
+		assert_neq(new_size, threads->size);
 
 		threads->threads = alloc_remalloc(threads->threads, threads->size, new_size);
 		assert_not_null(threads->threads);
@@ -479,7 +539,7 @@ thread_pool_unlock(
 }
 
 
-private void
+void
 thread_pool_resize(
 	thread_pool_t* pool,
 	uint32_t count
@@ -489,7 +549,8 @@ thread_pool_resize(
 
 	if((new_used < (pool->size >> 2)) || (new_used > pool->size))
 	{
-		uint32_t new_size = (new_used << 1) | 1;
+		uint32_t new_size = (new_used << 1) | 3;
+		assert_neq(new_size, pool->size);
 
 		pool->queue = alloc_remalloc(pool->queue, pool->size, new_size);
 		assert_not_null(pool->queue);
@@ -499,7 +560,7 @@ thread_pool_resize(
 }
 
 
-private void
+void
 thread_pool_add_common(
 	thread_pool_t* pool,
 	thread_data_t data,
@@ -547,7 +608,7 @@ thread_pool_add(
 }
 
 
-private bool
+bool
 thread_pool_try_work_common(
 	thread_pool_t* pool,
 	bool lock
@@ -574,8 +635,7 @@ thread_pool_try_work_common(
 
 	if(pool->used - 1)
 	{
-		(void) memmove(pool->queue, pool->queue + 1,
-			sizeof(*pool->queue) * (pool->used - 1));
+		memmove(pool->queue, pool->queue + 1, sizeof(*pool->queue) * (pool->used - 1));
 	}
 
 	thread_pool_resize(pool, -1);
@@ -621,7 +681,7 @@ thread_pool_work_u(
 
 	thread_async_off();
 		thread_cancel_off();
-			(void) thread_pool_try_work_u(pool);
+			thread_pool_try_work_u(pool);
 		thread_cancel_on();
 	thread_async_on();
 }
@@ -638,7 +698,7 @@ thread_pool_work(
 
 	thread_async_off();
 		thread_cancel_off();
-			(void) thread_pool_try_work(pool);
+			thread_pool_try_work(pool);
 		thread_cancel_on();
 	thread_async_on();
 }

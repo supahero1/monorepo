@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,6 +17,53 @@
 #pragma once
 
 #include <shared/sync.h>
+
+#include <stdint.h>
+#include <pthread.h>
+
+#define THREAD_ONCE_INIT PTHREAD_ONCE_INIT
+
+
+typedef pthread_once_t thread_once_t;
+
+typedef void (*thread_once_init_fn_t)(void);
+
+
+extern void
+thread_once(
+	thread_once_t* once,
+	thread_once_init_fn_t init_fn
+	);
+
+
+typedef pthread_key_t thread_key_t;
+
+typedef void (*tls_dtor_fn_t)(void*);
+
+
+extern thread_key_t
+thread_key_create(
+	tls_dtor_fn_t dtor
+	);
+
+
+extern void
+thread_key_free(
+	thread_key_t key
+	);
+
+
+extern void*
+thread_key_get(
+	thread_key_t key
+	);
+
+
+extern void
+thread_key_set(
+	thread_key_t key,
+	void* value
+	);
 
 
 typedef pthread_t thread_t;
@@ -83,13 +130,13 @@ thread_join(
 	);
 
 
-thread_t
+extern thread_t
 thread_self(
 	void
 	);
 
 
-bool
+extern bool
 thread_equal(
 	thread_t a,
 	thread_t b

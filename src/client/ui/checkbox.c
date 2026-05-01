@@ -1,7 +1,7 @@
 /* skip */
 
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@
  */
 
 #include <shared/debug.h>
-#include <shared/alloc_ext.h>
+#include <shared/alloc/base.h>
 #include <client/ui/checkbox.h>
 #include <client/ui/container.h>
 
 
-private void
+void
 UICheckboxBubbleDown(
 	UIElement* Element,
 	UIBubbleCallback Callback,
@@ -32,7 +32,7 @@ UICheckboxBubbleDown(
 }
 
 
-private void
+void
 UICheckboxPropagateSize(
 	UIElement* Element,
 	UIElement* Child,
@@ -42,7 +42,7 @@ UICheckboxPropagateSize(
 }
 
 
-private void
+void
 UICheckboxPreClip(
 	UIElement* Element,
 	UIElement* Scrollable
@@ -52,7 +52,7 @@ UICheckboxPreClip(
 }
 
 
-private void
+void
 UICheckboxPostClip(
 	UIElement* Element,
 	rect_extent_t Clip,
@@ -66,7 +66,7 @@ UICheckboxPostClip(
 }
 
 
-private bool
+bool
 UICheckboxMouseOver(
 	UIElement* Element
 	)
@@ -75,7 +75,7 @@ UICheckboxMouseOver(
 }
 
 
-private void
+void
 UICheckboxDrawDetail(
 	UIElement* Element,
 	rect_extent_t Clip,
@@ -103,7 +103,7 @@ UICheckboxDrawDetail(
 }
 
 
-private void
+void
 UICheckboxDrawChildren(
 	UIElement* Element,
 	rect_extent_t Clip,
@@ -114,7 +114,7 @@ UICheckboxDrawChildren(
 }
 
 
-private UIVirtualTable CheckboxVirtualTable =
+UIVirtualTable CheckboxVirtualTable =
 {
 	.BubbleDown = UICheckboxBubbleDown,
 	.PropagateSize = UICheckboxPropagateSize,
@@ -135,7 +135,7 @@ UIElementIsCheckbox(
 }
 
 
-private UICheckbox*
+UICheckbox*
 UIAllocCheckboxData(
 	void
 	)
@@ -147,7 +147,7 @@ UIAllocCheckboxData(
 }
 
 
-private void
+void
 UIFreeCheckboxData(
 	UICheckbox* Checkbox,
 	void* _
@@ -158,7 +158,7 @@ UIFreeCheckboxData(
 }
 
 
-private void
+void
 UICheckboxMouseUpCallback(
 	UICheckbox* Checkbox,
 	UIMouseUpData* data

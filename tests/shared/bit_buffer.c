@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,13 +14,17 @@
  *  limitations under the License.
  */
 
+#include <shared/str.h>
+#include <shared/attr.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
 #include <shared/bit_buffer.h>
 
+#include <stdint.h>
 #include <string.h>
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__bit_buffer_empty_functions(
 	void
 	)
@@ -80,7 +84,7 @@ test_normal_pass__bit_buffer_empty_functions(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__bit_buffer_set_get_bits(
 	void
 	)
@@ -205,7 +209,7 @@ test_normal_pass__bit_buffer_set_get_bits(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__bit_buffer_set_get_float(
 	void
 	)
@@ -283,7 +287,7 @@ test_normal_pass__bit_buffer_set_get_float(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__bit_buffer_set_get_bytes(
 	void
 	)
@@ -346,7 +350,7 @@ test_normal_pass__bit_buffer_set_get_bytes(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_set_null_buffer(
 	void
 	)
@@ -355,7 +359,7 @@ test_normal_fail__bit_buffer_set_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_set_null_ptr(
 	void
 	)
@@ -365,7 +369,7 @@ test_normal_fail__bit_buffer_set_null_ptr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_reset_null(
 	void
 	)
@@ -374,7 +378,7 @@ test_normal_fail__bit_buffer_reset_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_available_bits_null(
 	void
 	)
@@ -383,7 +387,7 @@ test_normal_fail__bit_buffer_available_bits_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_available_bytes_null(
 	void
 	)
@@ -392,7 +396,7 @@ test_normal_fail__bit_buffer_available_bytes_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_consumed_bits_null(
 	void
 	)
@@ -401,7 +405,7 @@ test_normal_fail__bit_buffer_consumed_bits_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_consumed_bytes_null(
 	void
 	)
@@ -410,7 +414,7 @@ test_normal_fail__bit_buffer_consumed_bytes_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_skip_bits_null(
 	void
 	)
@@ -419,7 +423,7 @@ test_normal_fail__bit_buffer_skip_bits_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_skip_bits_safe_null_buffer(
 	void
 	)
@@ -429,7 +433,7 @@ test_normal_fail__bit_buffer_skip_bits_safe_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_skip_bits_safe_null_status(
 	void
 	)
@@ -439,7 +443,7 @@ test_normal_fail__bit_buffer_skip_bits_safe_null_status(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_skip_bits_safe_null(
 	void
 	)
@@ -448,7 +452,7 @@ test_normal_fail__bit_buffer_skip_bits_safe_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_skip_bytes_null(
 	void
 	)
@@ -457,7 +461,7 @@ test_normal_fail__bit_buffer_skip_bytes_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_skip_bytes_safe_null_buffer(
 	void
 	)
@@ -467,7 +471,7 @@ test_normal_fail__bit_buffer_skip_bytes_safe_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_skip_bytes_safe_null_status(
 	void
 	)
@@ -477,7 +481,7 @@ test_normal_fail__bit_buffer_skip_bytes_safe_null_status(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_skip_bytes_safe_null(
 	void
 	)
@@ -486,7 +490,7 @@ test_normal_fail__bit_buffer_skip_bytes_safe_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_save_null(
 	void
 	)
@@ -495,7 +499,7 @@ test_normal_fail__bit_buffer_save_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_restore_null_buffer(
 	void
 	)
@@ -505,7 +509,7 @@ test_normal_fail__bit_buffer_restore_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_restore_null_ctx(
 	void
 	)
@@ -515,7 +519,7 @@ test_normal_fail__bit_buffer_restore_null_ctx(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_restore_null(
 	void
 	)
@@ -524,7 +528,7 @@ test_normal_fail__bit_buffer_restore_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_set_bits_null(
 	void
 	)
@@ -533,7 +537,7 @@ test_normal_fail__bit_buffer_set_bits_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_bits_null(
 	void
 	)
@@ -542,7 +546,7 @@ test_normal_fail__bit_buffer_get_bits_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_bits_safe_null_buffer(
 	void
 	)
@@ -552,7 +556,7 @@ test_normal_fail__bit_buffer_get_bits_safe_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_bits_safe_null_status(
 	void
 	)
@@ -562,7 +566,7 @@ test_normal_fail__bit_buffer_get_bits_safe_null_status(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_bits_safe_null(
 	void
 	)
@@ -571,7 +575,7 @@ test_normal_fail__bit_buffer_get_bits_safe_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_set_signed_bits_null(
 	void
 	)
@@ -580,7 +584,7 @@ test_normal_fail__bit_buffer_set_signed_bits_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_signed_bits_null(
 	void
 	)
@@ -589,7 +593,7 @@ test_normal_fail__bit_buffer_get_signed_bits_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_signed_bits_safe_null_buffer(
 	void
 	)
@@ -599,7 +603,7 @@ test_normal_fail__bit_buffer_get_signed_bits_safe_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_signed_bits_safe_null_status(
 	void
 	)
@@ -609,7 +613,7 @@ test_normal_fail__bit_buffer_get_signed_bits_safe_null_status(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_signed_bits_safe_null(
 	void
 	)
@@ -618,7 +622,7 @@ test_normal_fail__bit_buffer_get_signed_bits_safe_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_set_bits_var_null(
 	void
 	)
@@ -627,7 +631,7 @@ test_normal_fail__bit_buffer_set_bits_var_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_bits_var_null(
 	void
 	)
@@ -636,7 +640,7 @@ test_normal_fail__bit_buffer_get_bits_var_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_bits_var_safe_null_buffer(
 	void
 	)
@@ -646,7 +650,7 @@ test_normal_fail__bit_buffer_get_bits_var_safe_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_bits_var_safe_null_status(
 	void
 	)
@@ -656,7 +660,7 @@ test_normal_fail__bit_buffer_get_bits_var_safe_null_status(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_bits_var_safe_null(
 	void
 	)
@@ -665,7 +669,7 @@ test_normal_fail__bit_buffer_get_bits_var_safe_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_set_signed_bits_var_null(
 	void
 	)
@@ -674,7 +678,7 @@ test_normal_fail__bit_buffer_set_signed_bits_var_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_signed_bits_var_null(
 	void
 	)
@@ -683,7 +687,7 @@ test_normal_fail__bit_buffer_get_signed_bits_var_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_signed_bits_var_safe_null_buffer(
 	void
 	)
@@ -693,7 +697,7 @@ test_normal_fail__bit_buffer_get_signed_bits_var_safe_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_signed_bits_var_safe_null_status(
 	void
 	)
@@ -703,7 +707,7 @@ test_normal_fail__bit_buffer_get_signed_bits_var_safe_null_status(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_signed_bits_var_safe_null(
 	void
 	)
@@ -712,7 +716,7 @@ test_normal_fail__bit_buffer_get_signed_bits_var_safe_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_set_fixed_point_null(
 	void
 	)
@@ -721,7 +725,7 @@ test_normal_fail__bit_buffer_set_fixed_point_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_fixed_point_null(
 	void
 	)
@@ -730,7 +734,7 @@ test_normal_fail__bit_buffer_get_fixed_point_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_fixed_point_safe_null_buffer(
 	void
 	)
@@ -740,7 +744,7 @@ test_normal_fail__bit_buffer_get_fixed_point_safe_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_fixed_point_safe_null_status(
 	void
 	)
@@ -750,7 +754,7 @@ test_normal_fail__bit_buffer_get_fixed_point_safe_null_status(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_fixed_point_safe_null(
 	void
 	)
@@ -759,7 +763,7 @@ test_normal_fail__bit_buffer_get_fixed_point_safe_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_set_signed_fixed_point_null(
 	void
 	)
@@ -768,7 +772,7 @@ test_normal_fail__bit_buffer_set_signed_fixed_point_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_signed_fixed_point_null(
 	void
 	)
@@ -777,7 +781,7 @@ test_normal_fail__bit_buffer_get_signed_fixed_point_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_signed_fixed_point_safe_null_buffer(
 	void
 	)
@@ -787,7 +791,7 @@ test_normal_fail__bit_buffer_get_signed_fixed_point_safe_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_signed_fixed_point_safe_null_status(
 	void
 	)
@@ -797,7 +801,7 @@ test_normal_fail__bit_buffer_get_signed_fixed_point_safe_null_status(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_signed_fixed_point_safe_null(
 	void
 	)
@@ -806,7 +810,7 @@ test_normal_fail__bit_buffer_get_signed_fixed_point_safe_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_set_bytes_null_buffer(
 	void
 	)
@@ -815,7 +819,7 @@ test_normal_fail__bit_buffer_set_bytes_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_set_bytes_null_data(
 	void
 	)
@@ -825,7 +829,7 @@ test_normal_fail__bit_buffer_set_bytes_null_data(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_bytes_null_buffer(
 	void
 	)
@@ -834,7 +838,7 @@ test_normal_fail__bit_buffer_get_bytes_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_bytes_null_data(
 	void
 	)
@@ -844,7 +848,7 @@ test_normal_fail__bit_buffer_get_bytes_null_data(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_bytes_safe_null_buffer(
 	void
 	)
@@ -854,7 +858,7 @@ test_normal_fail__bit_buffer_get_bytes_safe_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_bytes_safe_null_data(
 	void
 	)
@@ -865,7 +869,7 @@ test_normal_fail__bit_buffer_get_bytes_safe_null_data(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_bytes_safe_null_status(
 	void
 	)
@@ -875,7 +879,7 @@ test_normal_fail__bit_buffer_get_bytes_safe_null_status(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_bytes_safe_null(
 	void
 	)
@@ -884,7 +888,7 @@ test_normal_fail__bit_buffer_get_bytes_safe_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_set_str_null_buffer(
 	void
 	)
@@ -894,7 +898,7 @@ test_normal_fail__bit_buffer_set_str_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_str_null_buffer(
 	void
 	)
@@ -903,7 +907,7 @@ test_normal_fail__bit_buffer_get_str_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_str_safe_null_buffer(
 	void
 	)
@@ -913,7 +917,7 @@ test_normal_fail__bit_buffer_get_str_safe_null_buffer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_str_safe_null_status(
 	void
 	)
@@ -923,7 +927,7 @@ test_normal_fail__bit_buffer_get_str_safe_null_status(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__bit_buffer_get_str_safe_null(
 	void
 	)

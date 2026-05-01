@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,12 +14,16 @@
  *  limitations under the License.
  */
 
+#include <shared/attr.h>
 #include <shared/time.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
 #include <shared/threads.h>
 
+#include <stddef.h>
 
-void assert_used
+
+void attr_test_fn
 test_normal_pass__time_time_conversion(
 	void
 	)
@@ -64,7 +68,7 @@ test_normal_pass__time_time_conversion(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__time_timers_init_free(
 	void
 	)
@@ -74,7 +78,7 @@ test_normal_pass__time_timers_init_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_free_null(
 	void
 	)
@@ -83,7 +87,7 @@ test_normal_fail__time_timers_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_lock_null(
 	void
 	)
@@ -92,7 +96,7 @@ test_normal_fail__time_timers_lock_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_unlock_null(
 	void
 	)
@@ -101,7 +105,7 @@ test_normal_fail__time_timers_unlock_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__time_timer_init_free(
 	void
 	)
@@ -112,7 +116,7 @@ test_normal_pass__time_timer_init_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timer_init_null(
 	void
 	)
@@ -121,7 +125,7 @@ test_normal_fail__time_timer_init_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timer_free_null(
 	void
 	)
@@ -130,7 +134,7 @@ test_normal_fail__time_timer_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__time_timers_is_timer_expired_u(
 	void
 	)
@@ -146,7 +150,7 @@ test_normal_pass__time_timers_is_timer_expired_u(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_is_timer_expired_u_timers_null(
 	void
 	)
@@ -158,7 +162,7 @@ test_normal_fail__time_timers_is_timer_expired_u_timers_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_is_timer_expired_u_timer_null(
 	void
 	)
@@ -169,7 +173,7 @@ test_normal_fail__time_timers_is_timer_expired_u_timer_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_is_timer_expired_u_null(
 	void
 	)
@@ -178,7 +182,7 @@ test_normal_fail__time_timers_is_timer_expired_u_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__time_timers_is_timer_expired(
 	void
 	)
@@ -194,7 +198,7 @@ test_normal_pass__time_timers_is_timer_expired(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_is_timer_expired_timers_null(
 	void
 	)
@@ -206,7 +210,7 @@ test_normal_fail__time_timers_is_timer_expired_timers_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_is_timer_expired_timer_null(
 	void
 	)
@@ -217,7 +221,7 @@ test_normal_fail__time_timers_is_timer_expired_timer_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_is_timer_expired_null(
 	void
 	)
@@ -226,7 +230,7 @@ test_normal_fail__time_timers_is_timer_expired_null(
 }
 
 
-static void
+void
 timer_never_fn(
 	void* data
 	)
@@ -236,7 +240,7 @@ timer_never_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_priority_pass__time_timers_add_timeout_and_cancel(
 	void
 	)
@@ -281,7 +285,7 @@ test_priority_pass__time_timers_add_timeout_and_cancel(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_add_timeout_null_fn(
 	void
 	)
@@ -293,7 +297,7 @@ test_normal_fail__time_timers_add_timeout_null_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_add_timeout_u_null_fn(
 	void
 	)
@@ -305,7 +309,7 @@ test_normal_fail__time_timers_add_timeout_u_null_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_add_timeout_null_timers(
 	void
 	)
@@ -321,7 +325,7 @@ test_normal_fail__time_timers_add_timeout_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_add_timeout_u_null_timers(
 	void
 	)
@@ -337,7 +341,7 @@ test_normal_fail__time_timers_add_timeout_u_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_add_timeout_null(
 	void
 	)
@@ -346,7 +350,7 @@ test_normal_fail__time_timers_add_timeout_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_add_timeout_u_null(
 	void
 	)
@@ -355,7 +359,7 @@ test_normal_fail__time_timers_add_timeout_u_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_get_timeout_null_timer(
 	void
 	)
@@ -366,7 +370,7 @@ test_normal_fail__time_timers_get_timeout_null_timer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_get_timeout_u_null_timer(
 	void
 	)
@@ -377,7 +381,7 @@ test_normal_fail__time_timers_get_timeout_u_null_timer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_get_timeout_null_timers(
 	void
 	)
@@ -389,7 +393,7 @@ test_normal_fail__time_timers_get_timeout_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_get_timeout_u_null_timers(
 	void
 	)
@@ -401,7 +405,7 @@ test_normal_fail__time_timers_get_timeout_u_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_get_timeout_null(
 	void
 	)
@@ -410,7 +414,7 @@ test_normal_fail__time_timers_get_timeout_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_get_timeout_u_null(
 	void
 	)
@@ -419,7 +423,7 @@ test_normal_fail__time_timers_get_timeout_u_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__time_timers_get_timeout_expired(
 	void
 	)
@@ -435,7 +439,7 @@ test_normal_pass__time_timers_get_timeout_expired(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__time_timers_get_timeout_u_expired(
 	void
 	)
@@ -451,7 +455,7 @@ test_normal_pass__time_timers_get_timeout_u_expired(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_open_timeout_null_timer(
 	void
 	)
@@ -462,7 +466,7 @@ test_normal_fail__time_timers_open_timeout_null_timer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_open_timeout_u_null_timer(
 	void
 	)
@@ -473,7 +477,7 @@ test_normal_fail__time_timers_open_timeout_u_null_timer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_open_timeout_null_timers(
 	void
 	)
@@ -485,7 +489,7 @@ test_normal_fail__time_timers_open_timeout_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_open_timeout_u_null_timers(
 	void
 	)
@@ -497,7 +501,7 @@ test_normal_fail__time_timers_open_timeout_u_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_open_timeout_null(
 	void
 	)
@@ -506,7 +510,7 @@ test_normal_fail__time_timers_open_timeout_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_open_timeout_u_null(
 	void
 	)
@@ -515,7 +519,7 @@ test_normal_fail__time_timers_open_timeout_u_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__time_timers_open_timeout_expired(
 	void
 	)
@@ -531,7 +535,7 @@ test_normal_pass__time_timers_open_timeout_expired(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__time_timers_open_timeout_u_expired(
 	void
 	)
@@ -547,7 +551,7 @@ test_normal_pass__time_timers_open_timeout_u_expired(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_close_timeout_null_timer(
 	void
 	)
@@ -558,7 +562,7 @@ test_normal_fail__time_timers_close_timeout_null_timer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_close_timeout_u_null_timer(
 	void
 	)
@@ -569,7 +573,7 @@ test_normal_fail__time_timers_close_timeout_u_null_timer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_close_timeout_null_timers(
 	void
 	)
@@ -581,7 +585,7 @@ test_normal_fail__time_timers_close_timeout_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_close_timeout_u_null_timers(
 	void
 	)
@@ -593,7 +597,7 @@ test_normal_fail__time_timers_close_timeout_u_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_close_timeout_null(
 	void
 	)
@@ -602,7 +606,7 @@ test_normal_fail__time_timers_close_timeout_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_close_timeout_u_null(
 	void
 	)
@@ -611,7 +615,7 @@ test_normal_fail__time_timers_close_timeout_u_null(
 }
 
 
-static void
+void
 timer_set_flag_fn(
 	bool* flag
 	)
@@ -620,7 +624,7 @@ timer_set_flag_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_priority_pass__time_timers_set_timeout_u(
 	void
 	)
@@ -672,7 +676,7 @@ test_priority_pass__time_timers_set_timeout_u(
 }
 
 
-void assert_used
+void attr_test_fn
 test_priority_pass__time_timers_set_timeout_long_u(
 	void
 	)
@@ -733,7 +737,7 @@ test_priority_pass__time_timers_set_timeout_long_u(
 }
 
 
-void assert_used
+void attr_test_fn
 test_priority_pass__time_timers_open_cancel_timeout(
 	void
 	)
@@ -781,7 +785,7 @@ typedef struct timer_cancel_data
 timer_cancel_data_t;
 
 
-static void
+void
 timer_timeout_cancel_timer_fn(
 	timer_cancel_data_t* data
 	)
@@ -797,7 +801,7 @@ timer_timeout_cancel_timer_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_priority_pass__time_timers_timeout_cancel_timeout(
 	void
 	)
@@ -846,7 +850,7 @@ test_priority_pass__time_timers_timeout_cancel_timeout(
 }
 
 
-static void
+void
 timer_nothing_fn(
 	void* data
 	)
@@ -855,7 +859,7 @@ timer_nothing_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_timeout_cancel_timeout_too_late(
 	void
 	)
@@ -898,7 +902,7 @@ test_normal_fail__time_timers_timeout_cancel_timeout_too_late(
 }
 
 
-void assert_used
+void attr_test_fn
 test_priority_pass__time_timers_timeout_cancel_interval(
 	void
 	)
@@ -949,7 +953,7 @@ test_priority_pass__time_timers_timeout_cancel_interval(
 }
 
 
-void assert_used
+void attr_test_fn
 test_priority_pass__time_timers_add_interval_and_cancel(
 	void
 	)
@@ -996,7 +1000,7 @@ test_priority_pass__time_timers_add_interval_and_cancel(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_add_interval_null_fn(
 	void
 	)
@@ -1008,7 +1012,7 @@ test_normal_fail__time_timers_add_interval_null_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_add_interval_u_null_fn(
 	void
 	)
@@ -1020,7 +1024,7 @@ test_normal_fail__time_timers_add_interval_u_null_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_add_interval_null_timers(
 	void
 	)
@@ -1036,7 +1040,7 @@ test_normal_fail__time_timers_add_interval_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_add_interval_u_null_timers(
 	void
 	)
@@ -1052,7 +1056,7 @@ test_normal_fail__time_timers_add_interval_u_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_add_interval_null(
 	void
 	)
@@ -1061,7 +1065,7 @@ test_normal_fail__time_timers_add_interval_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_add_interval_u_null(
 	void
 	)
@@ -1070,7 +1074,7 @@ test_normal_fail__time_timers_add_interval_u_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_get_interval_null_timer(
 	void
 	)
@@ -1081,7 +1085,7 @@ test_normal_fail__time_timers_get_interval_null_timer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_get_interval_u_null_timer(
 	void
 	)
@@ -1092,7 +1096,7 @@ test_normal_fail__time_timers_get_interval_u_null_timer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_get_interval_null_timers(
 	void
 	)
@@ -1104,7 +1108,7 @@ test_normal_fail__time_timers_get_interval_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_get_interval_u_null_timers(
 	void
 	)
@@ -1116,7 +1120,7 @@ test_normal_fail__time_timers_get_interval_u_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_get_interval_null(
 	void
 	)
@@ -1125,7 +1129,7 @@ test_normal_fail__time_timers_get_interval_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_get_interval_u_null(
 	void
 	)
@@ -1134,7 +1138,7 @@ test_normal_fail__time_timers_get_interval_u_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__time_timers_get_interval_expired(
 	void
 	)
@@ -1150,7 +1154,7 @@ test_normal_pass__time_timers_get_interval_expired(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__time_timers_get_interval_u_expired(
 	void
 	)
@@ -1166,7 +1170,7 @@ test_normal_pass__time_timers_get_interval_u_expired(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_open_interval_null_timer(
 	void
 	)
@@ -1177,7 +1181,7 @@ test_normal_fail__time_timers_open_interval_null_timer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_open_interval_u_null_timer(
 	void
 	)
@@ -1188,7 +1192,7 @@ test_normal_fail__time_timers_open_interval_u_null_timer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_open_interval_null_timers(
 	void
 	)
@@ -1200,7 +1204,7 @@ test_normal_fail__time_timers_open_interval_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_open_interval_u_null_timers(
 	void
 	)
@@ -1212,7 +1216,7 @@ test_normal_fail__time_timers_open_interval_u_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_open_interval_null(
 	void
 	)
@@ -1221,7 +1225,7 @@ test_normal_fail__time_timers_open_interval_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_open_interval_u_null(
 	void
 	)
@@ -1230,7 +1234,7 @@ test_normal_fail__time_timers_open_interval_u_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__time_timers_open_interval_expired(
 	void
 	)
@@ -1246,7 +1250,7 @@ test_normal_pass__time_timers_open_interval_expired(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__time_timers_open_interval_u_expired(
 	void
 	)
@@ -1262,7 +1266,7 @@ test_normal_pass__time_timers_open_interval_u_expired(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_close_interval_null_timer(
 	void
 	)
@@ -1273,7 +1277,7 @@ test_normal_fail__time_timers_close_interval_null_timer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_close_interval_u_null_timer(
 	void
 	)
@@ -1284,7 +1288,7 @@ test_normal_fail__time_timers_close_interval_u_null_timer(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_close_interval_null_timers(
 	void
 	)
@@ -1296,7 +1300,7 @@ test_normal_fail__time_timers_close_interval_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_close_interval_u_null_timers(
 	void
 	)
@@ -1308,7 +1312,7 @@ test_normal_fail__time_timers_close_interval_u_null_timers(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_close_interval_null(
 	void
 	)
@@ -1317,7 +1321,7 @@ test_normal_fail__time_timers_close_interval_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__time_timers_close_interval_u_null(
 	void
 	)
@@ -1326,7 +1330,7 @@ test_normal_fail__time_timers_close_interval_u_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_priority_pass__time_timers_set_interval_u(
 	void
 	)
@@ -1388,7 +1392,7 @@ test_priority_pass__time_timers_set_interval_u(
 }
 
 
-void assert_used
+void attr_test_fn
 test_priority_pass__time_timers_set_interval_long_u(
 	void
 	)
@@ -1459,7 +1463,7 @@ test_priority_pass__time_timers_set_interval_long_u(
 }
 
 
-void assert_used
+void attr_test_fn
 test_priority_pass__time_timers_open_cancel_interval(
 	void
 	)
@@ -1498,7 +1502,7 @@ test_priority_pass__time_timers_open_cancel_interval(
 }
 
 
-static void
+void
 timer_interval_cancel_timer_fn(
 	timer_cancel_data_t* data
 	)
@@ -1521,7 +1525,7 @@ timer_interval_cancel_timer_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_priority_pass__time_timers_interval_cancel_interval(
 	void
 	)
@@ -1574,7 +1578,7 @@ test_priority_pass__time_timers_interval_cancel_interval(
 }
 
 
-static void
+void
 timer_cancel_itself(
 	time_timers_t timers
 	)
@@ -1588,7 +1592,7 @@ timer_cancel_itself(
 }
 
 
-void assert_used
+void attr_test_fn
 test_priority_fail__time_timers_interval_cancel_interval_too_late(
 	void
 	)
@@ -1637,7 +1641,7 @@ test_priority_fail__time_timers_interval_cancel_interval_too_late(
 }
 
 
-void assert_used
+void attr_test_fn
 test_priority_pass__time_timers_interval_cancel_timeout(
 	void
 	)

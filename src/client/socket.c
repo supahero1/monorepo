@@ -1,7 +1,7 @@
 /* skip */
 
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,24 +16,21 @@
  *  limitations under the License.
  */
 
-#include "../include/socket.h"
-#include "../include/debug.h"
-
-#include <stdlib.h> // todo alloc_ext.h
+#include <errno.h>
+#include <fcntl.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <ws2tcpip.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <../include/debug.h>
+#include <../include/socket.h>
 
-#ifdef _WIN32
-	#include <ws2tcpip.h>
-#else
-	#include <errno.h>
-	#include <fcntl.h>
-	#include <unistd.h>
-	#include <arpa/inet.h>
-	#include <netinet/in.h>
 #endif
 
 
-private void
+void
 TcpSocketThreadFN(
 	void* _Socket
 	)

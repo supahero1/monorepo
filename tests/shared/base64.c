@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,10 +14,13 @@
  *  limitations under the License.
  */
 
+#include <shared/attr.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
 #include <shared/base64.h>
-#include <shared/alloc_ext.h>
+#include <shared/alloc/base.h>
 
+#include <stdint.h>
 #include <string.h>
 
 
@@ -62,7 +65,7 @@ run_decode_test(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_encode_empty(
 	void
 	)
@@ -72,7 +75,7 @@ test_normal_pass__base64_encode_empty(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_encode_mod_0(
 	void
 	)
@@ -82,7 +85,7 @@ test_normal_pass__base64_encode_mod_0(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_encode_mod_1(
 	void
 	)
@@ -92,7 +95,7 @@ test_normal_pass__base64_encode_mod_1(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_encode_all_mod_1(
 	void
 	)
@@ -111,7 +114,7 @@ test_normal_pass__base64_encode_all_mod_1(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_encode_mod_2(
 	void
 	)
@@ -121,7 +124,7 @@ test_normal_pass__base64_encode_mod_2(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_encode_all_mod_2(
 	void
 	)
@@ -136,7 +139,7 @@ test_normal_pass__base64_encode_all_mod_2(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_encode_f(
 	void
 	)
@@ -146,7 +149,7 @@ test_normal_pass__base64_encode_f(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_encode_fo(
 	void
 	)
@@ -156,7 +159,7 @@ test_normal_pass__base64_encode_fo(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_encode_foo(
 	void
 	)
@@ -166,7 +169,7 @@ test_normal_pass__base64_encode_foo(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_encode_foob(
 	void
 	)
@@ -176,7 +179,7 @@ test_normal_pass__base64_encode_foob(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_encode_fooba(
 	void
 	)
@@ -186,7 +189,7 @@ test_normal_pass__base64_encode_fooba(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_encode_foobar(
 	void
 	)
@@ -196,7 +199,7 @@ test_normal_pass__base64_encode_foobar(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_encode_no_out_len(
 	void
 	)
@@ -208,7 +211,7 @@ test_normal_pass__base64_encode_no_out_len(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_encode_null_zero_len(
 	void
 	)
@@ -218,7 +221,7 @@ test_normal_pass__base64_encode_null_zero_len(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__base64_encode_null_nonzero_len(
 	void
 	)
@@ -227,7 +230,7 @@ test_normal_fail__base64_encode_null_nonzero_len(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_decode_empty(
 	void
 	)
@@ -237,7 +240,7 @@ test_normal_pass__base64_decode_empty(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_decode_mod_0(
 	void
 	)
@@ -247,7 +250,7 @@ test_normal_pass__base64_decode_mod_0(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_decode_mod_1(
 	void
 	)
@@ -257,7 +260,7 @@ test_normal_pass__base64_decode_mod_1(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_decode_some_mod_1(
 	void
 	)
@@ -276,7 +279,7 @@ test_normal_pass__base64_decode_some_mod_1(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_decode_mod_2(
 	void
 	)
@@ -286,7 +289,7 @@ test_normal_pass__base64_decode_mod_2(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_decode_all_mod_2(
 	void
 	)
@@ -301,7 +304,7 @@ test_normal_pass__base64_decode_all_mod_2(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_decode_f(
 	void
 	)
@@ -311,7 +314,7 @@ test_normal_pass__base64_decode_f(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_decode_fo(
 	void
 	)
@@ -321,7 +324,7 @@ test_normal_pass__base64_decode_fo(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_decode_foo(
 	void
 	)
@@ -331,7 +334,7 @@ test_normal_pass__base64_decode_foo(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_decode_foob(
 	void
 	)
@@ -341,7 +344,7 @@ test_normal_pass__base64_decode_foob(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_decode_fooba(
 	void
 	)
@@ -351,7 +354,7 @@ test_normal_pass__base64_decode_fooba(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_decode_foobar(
 	void
 	)
@@ -361,7 +364,7 @@ test_normal_pass__base64_decode_foobar(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_decode_no_out_len(
 	void
 	)
@@ -373,7 +376,7 @@ test_normal_pass__base64_decode_no_out_len(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__base64_decode_null_zero_len(
 	void
 	)
@@ -383,7 +386,7 @@ test_normal_pass__base64_decode_null_zero_len(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__base64_decode_null_nonzero_len(
 	void
 	)
@@ -392,7 +395,7 @@ test_normal_fail__base64_decode_null_nonzero_len(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__base64_decode_bad_input(
 	void
 	)
@@ -401,7 +404,7 @@ test_normal_fail__base64_decode_bad_input(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__base64_decode_bad_len_mod_1(
 	void
 	)
@@ -410,7 +413,7 @@ test_normal_fail__base64_decode_bad_len_mod_1(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__base64_decode_bad_len_mod_2(
 	void
 	)
@@ -419,7 +422,7 @@ test_normal_fail__base64_decode_bad_len_mod_2(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__base64_decode_bad_len_mod_3(
 	void
 	)

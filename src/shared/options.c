@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,13 +14,17 @@
  *  limitations under the License.
  */
 
+#include <shared/str.h>
 #include <shared/hash.h>
+#include <shared/color.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
 #include <shared/options.h>
-#include <shared/alloc_ext.h>
+#include <shared/alloc/base.h>
 
-#include <string.h>
+#include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 options_t global_options = NULL;
@@ -32,7 +36,7 @@ struct options
 };
 
 
-private void
+void
 options_key_free_fn(
 	str_t key
 	)
@@ -41,7 +45,7 @@ options_key_free_fn(
 }
 
 
-private void
+void
 options_value_free_fn(
 	str_t value
 	)
@@ -57,7 +61,7 @@ options_init(
 	)
 {
 	options_t options = alloc_malloc(options, 1);
-	assert_not_null(options);
+	assert_ptr(options, 1);
 
 	options->table = hash_table_init(64, (void*) options_key_free_fn, (void*) options_value_free_fn);
 
@@ -230,7 +234,7 @@ options_get_str(
 }
 
 
-private uint8_t
+uint8_t
 hex_char_to_value(
 	char c
 	)

@@ -1,7 +1,7 @@
 /* skip */
 
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,24 +19,20 @@
 // #include <socket.h>
 
 #include <shared/base.h>
-#include <shared/time.h>
 #include <shared/rand.h>
+#include <shared/time.h>
 #include <shared/debug.h>
-// #include <client/window.h>
+#include <shared/base64.h>
 #include <shared/threads.h>
-#include <shared/alloc_ext.h>
+#include <shared/alloc/base.h>
 #include <shared/bit_buffer.h>
-
 #include <client/window/base.h>
 
-#include <shared/base64.h>
-
-
-
-#include <time.h>
 #include <math.h>
+#include <time.h>
 #include <stdio.h>
 #include <string.h>
+
 
 /*
 #define INTERPOLATED(value) value[2]
@@ -84,14 +80,14 @@ GameState;
 #undef INTERPOLATED
 
 
-private GameState States[GAME_CONST_BUFFERED_STATES];
-private sync_mtx_t StateMutex;
-private uintptr_t CurrentStateIdx;
-private uint64_t CompletedStates = -1;
-private uint64_t CompletedTime;
+GameState States[GAME_CONST_BUFFERED_STATES];
+sync_mtx_t StateMutex;
+uintptr_t CurrentStateIdx;
+uint64_t CompletedStates = -1;
+uint64_t CompletedTime;
 
 
-private float
+float
 LerpF(
 	float old,
 	float New,
@@ -102,7 +98,7 @@ LerpF(
 }
 
 
-private float
+float
 ShortestAngleDifference(
 	float A,
 	float b
@@ -136,7 +132,7 @@ ShortestAngleDifference(
 #define COPY_OVER(To) new_state->To[OLD] = old_state->To[NEW]
 #define SHIFT_OVER(To) NewEntity->To[OLD] = NewEntity->To[NEW]
 
-private void
+void
 OnPacket(
 	bit_buffer_t* buffer,
 	ServerOpCode OpCode
@@ -473,11 +469,11 @@ SocketOnClose(
 }
 
 *//*
-private VkVertexInstanceInput* DrawInput;
-private uint32_t DrawCount;
+VkVertexInstanceInput* DrawInput;
+uint32_t DrawCount;
 
 
-private void
+void
 DrawBar(
 	float x,
 	float y,
@@ -591,7 +587,7 @@ DrawBar(
 }
 
 
-private float
+float
 TextWidth(
 	const char* Text,
 	uint32_t FontSize
@@ -626,7 +622,7 @@ typedef enum TextBaseline
 }
 TextBaseline;
 
-private void
+void
 DrawAText(
 	const char* Text,
 	float x,
@@ -1468,7 +1464,7 @@ VulkanGetDrawData(
 }
 
 
-private void
+void
 GameInit(
 	void
 	)
@@ -1483,7 +1479,7 @@ GameInit(
 }
 
 
-private void
+void
 GameFree(
 	void
 	)
@@ -1492,7 +1488,7 @@ GameFree(
 }
 
 
-private void
+void
 CreateUI(
 	void
 	)

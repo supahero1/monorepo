@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,23 +16,31 @@
 
 #pragma once
 
+#include <shared/attr.h>
+
 #define TEST_PTR ((void*) 0x1)
 
 
 extern bool test_is_on_valgrind;
 
 
-void
-__attribute__((format(printf, 1, 2)))
+extern void
+attr_format(printf, 1, 2)
 test_say(
 	const char* format,
 	...
 	);
 
 
-void
-__attribute__((format(printf, 1, 2)))
+extern void
+attr_format(printf, 1, 2)
 test_shout(
 	const char* format,
 	...
+	);
+
+
+extern void
+test_set_timeout(
+	unsigned int seconds
 	);

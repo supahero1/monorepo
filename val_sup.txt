@@ -138,7 +138,7 @@
 	libtest arr
 	Memcheck:Leak
 	...
-	fun:alloc_realloc_h
+	fun:alloc_remalloc_e
 	fun:main
 	...
 }

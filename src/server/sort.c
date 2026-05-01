@@ -2,7 +2,7 @@
 #include <shared/debug.h>
 
 
-private void
+void
 Swap(
 	uint16_t* a,
 	uint16_t* b
@@ -14,7 +14,7 @@ Swap(
 }
 
 
-private int32_t
+int32_t
 Partition(
 	uint16_t* Array,
 	int32_t Low,

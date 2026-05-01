@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,13 +14,16 @@
  *  limitations under the License.
  */
 
-#include <shared/time.h>
+#include <shared/attr.h>
 #include <shared/sync.h>
+#include <shared/time.h>
 #include <shared/debug.h>
 #include <shared/threads.h>
 
+#include <stddef.h>
 
-void assert_used
+
+void attr_test_fn
 test_normal_pass__sync_mtx_init_free(
 	void
 	)
@@ -31,7 +34,18 @@ test_normal_pass__sync_mtx_init_free(
 }
 
 
-void assert_used
+void attr_test_fn
+test_normal_pass__sync_mtx_init_recursive_free(
+	void
+	)
+{
+	sync_mtx_t mtx;
+	sync_mtx_init_recursive(&mtx);
+	sync_mtx_free(&mtx);
+}
+
+
+void attr_test_fn
 test_normal_pass__sync_mtx_lock_unlock(
 	void
 	)
@@ -46,7 +60,24 @@ test_normal_pass__sync_mtx_lock_unlock(
 }
 
 
-void assert_used
+void attr_test_fn
+test_normal_pass__sync_mtx_lock_unlock_recursive(
+	void
+	)
+{
+	sync_mtx_t mtx;
+	sync_mtx_init_recursive(&mtx);
+
+	sync_mtx_lock(&mtx);
+	sync_mtx_lock(&mtx);
+	sync_mtx_unlock(&mtx);
+	sync_mtx_unlock(&mtx);
+
+	sync_mtx_free(&mtx);
+}
+
+
+void attr_test_fn
 test_normal_pass__sync_mtx_try_lock_unlock(
 	void
 	)
@@ -61,7 +92,7 @@ test_normal_pass__sync_mtx_try_lock_unlock(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_mtx_init_null(
 	void
 	)
@@ -70,7 +101,16 @@ test_normal_fail__sync_mtx_init_null(
 }
 
 
-void assert_used
+void attr_test_fn
+test_normal_fail__sync_mtx_init_recursive_null(
+	void
+	)
+{
+	sync_mtx_init_recursive(NULL);
+}
+
+
+void attr_test_fn
 test_normal_fail__sync_mtx_free_null(
 	void
 	)
@@ -79,7 +119,7 @@ test_normal_fail__sync_mtx_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_mtx_lock_null(
 	void
 	)
@@ -88,7 +128,7 @@ test_normal_fail__sync_mtx_lock_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_mtx_try_lock_null(
 	void
 	)
@@ -97,7 +137,7 @@ test_normal_fail__sync_mtx_try_lock_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_mtx_unlock_null(
 	void
 	)
@@ -106,7 +146,7 @@ test_normal_fail__sync_mtx_unlock_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__sync_rwlock_init_free(
 	void
 	)
@@ -117,7 +157,7 @@ test_normal_pass__sync_rwlock_init_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__sync_rwlock_rdlock_unlock(
 	void
 	)
@@ -132,7 +172,7 @@ test_normal_pass__sync_rwlock_rdlock_unlock(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__sync_rwlock_try_rdlock_unlock(
 	void
 	)
@@ -147,7 +187,7 @@ test_normal_pass__sync_rwlock_try_rdlock_unlock(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__sync_rwlock_wrlock_unlock(
 	void
 	)
@@ -162,7 +202,7 @@ test_normal_pass__sync_rwlock_wrlock_unlock(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__sync_rwlock_try_wrlock_unlock(
 	void
 	)
@@ -177,7 +217,7 @@ test_normal_pass__sync_rwlock_try_wrlock_unlock(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_rwlock_init_null(
 	void
 	)
@@ -186,7 +226,7 @@ test_normal_fail__sync_rwlock_init_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_rwlock_free_null(
 	void
 	)
@@ -195,7 +235,7 @@ test_normal_fail__sync_rwlock_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_rwlock_rdlock_null(
 	void
 	)
@@ -204,7 +244,7 @@ test_normal_fail__sync_rwlock_rdlock_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_rwlock_try_rdlock_null(
 	void
 	)
@@ -213,7 +253,7 @@ test_normal_fail__sync_rwlock_try_rdlock_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_rwlock_wrlock_null(
 	void
 	)
@@ -222,7 +262,7 @@ test_normal_fail__sync_rwlock_wrlock_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_rwlock_try_wrlock_null(
 	void
 	)
@@ -231,7 +271,7 @@ test_normal_fail__sync_rwlock_try_wrlock_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_rwlock_unlock_null(
 	void
 	)
@@ -240,7 +280,7 @@ test_normal_fail__sync_rwlock_unlock_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__sync_sem_init_free(
 	void
 	)
@@ -251,7 +291,7 @@ test_normal_pass__sync_sem_init_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__sync_sem_wait_post(
 	void
 	)
@@ -266,7 +306,7 @@ test_normal_pass__sync_sem_wait_post(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_sem_init_null(
 	void
 	)
@@ -275,7 +315,7 @@ test_normal_fail__sync_sem_init_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_sem_free_null(
 	void
 	)
@@ -284,7 +324,7 @@ test_normal_fail__sync_sem_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_sem_wait_null(
 	void
 	)
@@ -293,7 +333,7 @@ test_normal_fail__sync_sem_wait_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_sem_post_null(
 	void
 	)
@@ -302,7 +342,7 @@ test_normal_fail__sync_sem_post_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__sync_cond_init_free(
 	void
 	)
@@ -321,7 +361,7 @@ typedef struct thread_cond_wake_data
 thread_cond_wake_data_t;
 
 
-static void
+void
 thread_cond_wake_fn(
 	thread_cond_wake_data_t* data
 	)
@@ -334,7 +374,7 @@ thread_cond_wake_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__sync_cond_wait_wake(
 	void
 	)
@@ -370,7 +410,7 @@ test_normal_pass__sync_cond_wait_wake(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_cond_init_null(
 	void
 	)
@@ -379,7 +419,7 @@ test_normal_fail__sync_cond_init_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_cond_free_null(
 	void
 	)
@@ -388,7 +428,7 @@ test_normal_fail__sync_cond_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_cond_wait_cond_null(
 	void
 	)
@@ -397,7 +437,7 @@ test_normal_fail__sync_cond_wait_cond_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_cond_wait_mtx_null(
 	void
 	)
@@ -406,7 +446,7 @@ test_normal_fail__sync_cond_wait_mtx_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_cond_wait_null(
 	void
 	)
@@ -415,7 +455,7 @@ test_normal_fail__sync_cond_wait_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__sync_cond_wake_null(
 	void
 	)

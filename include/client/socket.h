@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,19 +17,10 @@
 #pragma once
 
 #include <stdint.h>
-#include <stdatomic.h>
-
-#ifdef _WIN32
-	#include <winsock2.h>
-
-	typedef SOCKET SocketID;
-#else
-	#include <sys/socket.h>
-
-	typedef int SocketID;
-#endif
-
 #include <threads.h>
+#include <winsock2.h>
+#include <stdatomic.h>
+#include <sys/socket.h>
 
 
 typedef void

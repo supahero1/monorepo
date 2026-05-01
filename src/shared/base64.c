@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +15,15 @@
  */
 
 #include <shared/debug.h>
+#include <shared/macro.h>
 #include <shared/base64.h>
-#include <shared/alloc_ext.h>
+#include <shared/alloc/base.h>
+
+#include <stddef.h>
+#include <stdint.h>
 
 
-private uint64_t
+uint64_t
 base64_encoded_len(
 	uint64_t len
 	)
@@ -28,7 +32,7 @@ base64_encoded_len(
 }
 
 
-private uint8_t
+uint8_t
 base64_encode_table[] =
 {
 	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
@@ -108,7 +112,7 @@ base64_encode(
 }
 
 
-private uint64_t
+uint64_t
 base64_decoded_len(
 	uint64_t len
 	)
@@ -117,7 +121,7 @@ base64_decoded_len(
 }
 
 
-private uint8_t
+uint8_t
 base64_decode_table[256] =
 {
 	-1, -1, -1, -1, -1, -1, -1, -1,

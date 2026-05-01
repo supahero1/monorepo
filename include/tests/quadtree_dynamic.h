@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,6 +17,9 @@
 #pragma once
 
 #include <shared/extent.h>
+
+#include <stdint.h>
+
 
 typedef struct qt_dyn_test_entity_data
 {

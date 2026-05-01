@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,22 +14,41 @@
  *  limitations under the License.
  */
 
+#include <shared/str.h>
+#include <shared/attr.h>
+#include <shared/sync.h>
 #include <shared/debug.h>
+#include <shared/event.h>
+#include <shared/macro.h>
 #include <shared/atomic.h>
-#include <shared/alloc_ext.h>
+#include <shared/extent.h>
+#include <shared/threads.h>
+#include <shared/alloc/base.h>
 #include <client/window/base.h>
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_init.h>
+#include <SDL3/SDL_error.h>
+#include <SDL3/SDL_hints.h>
+#include <SDL3/SDL_mouse.h>
+#include <SDL3/SDL_video.h>
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_stdinc.h>
 #include <SDL3/SDL_vulkan.h>
+#include <SDL3/SDL_keycode.h>
+#include <SDL3/SDL_keyboard.h>
+#include <SDL3/SDL_clipboard.h>
+#include <SDL3/SDL_properties.h>
 
 #include <stdio.h>
+#include <stdint.h>
 
 
 #define ___(x) WINDOW_KEY_##x
 #define __(x) SDLK_##x
 #define _(x) case __(x): return ___(x);
 
-private window_key_t
+window_key_t
 window_map_sdl_key(
 	int sdl_key
 	)
@@ -70,7 +89,7 @@ window_map_sdl_key(
 #undef ___
 
 
-private window_mod_t
+window_mod_t
 window_map_sdl_mod(
 	int sdl_mods
 	)
@@ -87,7 +106,7 @@ window_map_sdl_mod(
 }
 
 
-private window_button_t
+window_button_t
 window_map_sdl_button(
 	int button
 	)
@@ -106,7 +125,7 @@ window_map_sdl_button(
 }
 
 
-private void
+void
 window_sdl_log_error(
 	void
 	)
@@ -119,7 +138,7 @@ window_sdl_log_error(
 }
 
 
-private assert_ctor void
+attr_ctor void
 window_sdl_init(
 	void
 	)
@@ -129,7 +148,7 @@ window_sdl_init(
 }
 
 
-private assert_dtor void
+attr_dtor void
 window_sdl_free(
 	void
 	)
@@ -140,6 +159,9 @@ window_sdl_free(
 
 struct window
 {
+	bool _Atomic closed;
+	uint32_t _Atomic refcount;
+
 	window_manager_t manager;
 
 	window_t next;
@@ -150,14 +172,13 @@ struct window
 	SDL_PropertiesID props;
 
 	sync_mtx_t mtx;
-
 	window_info_t info;
 
 	window_event_table_t event_table;
 };
 
 
-private void
+void
 window_free_once_fn(
 	window_t window,
 	window_free_event_data_t* event_data
@@ -175,7 +196,8 @@ window_free_once_fn(
 	event_target_free(&window->event_table.key_up_target);
 	event_target_free(&window->event_table.key_down_target);
 	event_target_free(&window->event_table.fullscreen_target);
-	event_target_free(&window->event_table.close_target);
+	event_target_free(&window->event_table.closing_target);
+	event_target_free(&window->event_table.close_request_target);
 	event_target_free(&window->event_table.blur_target);
 	event_target_free(&window->event_table.focus_target);
 	event_target_free(&window->event_table.resize_target);
@@ -191,7 +213,10 @@ window_init(
 	)
 {
 	window_t window = alloc_malloc(window, 1);
-	assert_not_null(window);
+	assert_ptr(window, 1);
+
+	atomic_store_rel(&window->closed, false);
+	atomic_store_rel(&window->refcount, 1);
 
 	event_target_init(&window->event_table.init_target);
 	event_target_init(&window->event_table.free_target);
@@ -199,7 +224,8 @@ window_init(
 	event_target_init(&window->event_table.resize_target);
 	event_target_init(&window->event_table.focus_target);
 	event_target_init(&window->event_table.blur_target);
-	event_target_init(&window->event_table.close_target);
+	event_target_init(&window->event_table.close_request_target);
+	event_target_init(&window->event_table.closing_target);
 	event_target_init(&window->event_table.fullscreen_target);
 	event_target_init(&window->event_table.key_down_target);
 	event_target_init(&window->event_table.key_up_target);
@@ -216,7 +242,7 @@ window_init(
 		.fn = (void*) window_free_once_fn,
 		.data = window
 	};
-	(void) event_target_once(&window->event_table.free_target, free_data);
+	event_target_once(&window->event_table.free_target, free_data);
 
 	sync_mtx_init(&window->mtx);
 
@@ -224,7 +250,7 @@ window_init(
 }
 
 
-private void
+void
 window_free(
 	window_t window
 	)
@@ -251,15 +277,18 @@ window_close(
 {
 	assert_not_null(window);
 
-	window_user_event_window_close_data_t* data = alloc_malloc(data, 1);
-	assert_ptr(data, 1);
-
-	*data =
-	(window_user_event_window_close_data_t)
+	if(atomic_exchange_acq_rel(&window->closed, true))
 	{
-	};
+		return;
+	}
 
-	window_push_event(window, WINDOW_USER_EVENT_WINDOW_CLOSE, data);
+	window_closing_event_data_t event_data =
+	{
+		.window = window
+	};
+	event_target_fire(&window->event_table.closing_target, &event_data);
+
+	window_unref(window);
 }
 
 
@@ -540,20 +569,90 @@ window_free_vulkan_surface(
 }
 
 
-bool
+void
 window_run_on_main_thread(
 	window_t window,
-	thread_data_t data,
+	thread_data_t run,
 	bool wait
 	)
 {
 	assert_not_null(window);
 
-	return window_manager_run_on_main_thread(window->manager, data, wait);
+	sync_sem_t sem;
+	sync_sem_init(&sem, 0);
+
+	window_user_event_run_data_t* data = alloc_malloc(data, 1);
+	assert_ptr(data, 1);
+
+	*data =
+	(window_user_event_run_data_t)
+	{
+		.run = run,
+		.sem = &sem,
+		.wait = wait
+	};
+
+	window_push_event(window, WINDOW_USER_EVENT_RUN, data);
+
+	if(wait)
+	{
+		sync_sem_wait(&sem);
+	}
+
+	sync_sem_free(&sem);
 }
 
 
-private void
+void
+window_ref(
+	window_t window
+	)
+{
+	assert_not_null(window);
+
+	atomic_fetch_add_acq_rel(&window->refcount, 1);
+}
+
+
+void
+window_unref(
+	window_t window
+	)
+{
+	assert_not_null(window);
+
+	uint32_t refcount = atomic_fetch_sub_acq_rel(&window->refcount, 1);
+	assert_neq(refcount, 0);
+
+	if(refcount != 1)
+	{
+		return;
+	}
+
+	window_user_event_window_close_data_t* data = alloc_malloc(data, 1);
+	assert_ptr(data, 1);
+
+	*data =
+	(window_user_event_window_close_data_t)
+	{
+	};
+
+	window_push_event(window, WINDOW_USER_EVENT_WINDOW_CLOSE, data);
+}
+
+
+bool
+window_is_closed(
+	window_t window
+	)
+{
+	assert_not_null(window);
+
+	return atomic_load_acq(&window->closed);
+}
+
+
+void
 window_process_event(
 	window_t window,
 	SDL_Event* event
@@ -636,11 +735,11 @@ window_process_event(
 
 	case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
 	{
-		window_close_event_data_t event_data =
+		window_close_request_event_data_t event_data =
 		{
 			.window = window
 		};
-		event_target_fire(&window->event_table.close_target, &event_data);
+		event_target_fire(&window->event_table.close_request_target, &event_data);
 
 		break;
 	}
@@ -765,7 +864,8 @@ window_process_event(
 
 struct window_manager
 {
-	_Atomic bool running;
+	bool _Atomic running;
+	uint32_t refcount;
 
 	window_t window_head;
 	SDL_Cursor* cursors[WINDOW_CURSOR__COUNT];
@@ -781,9 +881,10 @@ window_manager_init(
 	)
 {
 	window_manager_t manager = alloc_malloc(manager, 1);
-	assert_not_null(manager);
+	assert_ptr(manager, 1);
 
 	atomic_store_rel(&manager->running, true);
+	manager->refcount = 0;
 
 	manager->window_head = NULL;
 	manager->window_count = 0;
@@ -836,6 +937,8 @@ window_manager_add(
 	assert_not_null(window);
 	assert_not_null(title);
 
+	window_manager_ref(manager);
+
 	window->manager = manager;
 
 	window->next = manager->window_head;
@@ -848,13 +951,10 @@ window_manager_add(
 	manager->window_head = window;
 	++manager->window_count;
 
-	window_user_event_window_init_data_t* data = alloc_malloc(data, 1);
-	assert_ptr(data, 1);
-
 	str_t title_str = str_init_copy_cstr(title);
 
 	window_history_t* history_copy = alloc_malloc(history_copy, 1);
-	assert_not_null(history_copy);
+	assert_ptr(history_copy, 1);
 
 	if(history)
 	{
@@ -886,6 +986,9 @@ window_manager_add(
 	{
 		history_copy->extent.y = SDL_WINDOWPOS_CENTERED;
 	}
+
+	window_user_event_window_init_data_t* data = alloc_malloc(data, 1);
+	assert_ptr(data, 1);
 
 	*data =
 	(window_user_event_window_init_data_t)
@@ -922,28 +1025,6 @@ window_manager_push_event(
 
 
 bool
-window_manager_run_on_main_thread(
-	window_manager_t manager,
-	thread_data_t data,
-	bool wait
-	)
-{
-	assert_not_null(manager);
-	assert_not_null(data.fn);
-
-	if(!window_manager_is_running(manager))
-	{
-		return false;
-	}
-
-	bool status = SDL_RunOnMainThread(data.fn, data.data, wait);
-	hard_assert_true(status, window_sdl_log_error());
-
-	return true;
-}
-
-
-bool
 window_manager_is_running(
 	window_manager_t manager
 	)
@@ -965,7 +1046,29 @@ window_manager_stop_running(
 }
 
 
-private void
+void
+window_manager_ref(
+	window_manager_t manager
+	)
+{
+	assert_not_null(manager);
+
+	++manager->refcount;
+}
+
+
+void
+window_manager_unref(
+	window_manager_t manager
+	)
+{
+	assert_not_null(manager);
+
+	--manager->refcount;
+}
+
+
+void
 window_manager_process_user_event(
 	window_manager_t manager,
 	SDL_Event* event
@@ -1101,6 +1204,8 @@ window_manager_process_user_event(
 		{
 			window->next->prev = window->prev;
 		}
+
+		window_manager_unref(manager);
 
 		if(--manager->window_count == 0)
 		{
@@ -1273,13 +1378,29 @@ window_manager_process_user_event(
 		break;
 	}
 
+	case WINDOW_USER_EVENT_RUN:
+	{
+		window_user_event_run_data_t* data = event_data;
+
+		data->run.fn(data->run.data);
+
+		if(data->wait)
+		{
+			sync_sem_post(data->sem);
+		}
+
+		alloc_free(data, 1);
+
+		break;
+	}
+
 	default: assert_unreachable();
 
 	}
 }
 
 
-private void
+void
 window_manager_process_global_event(
 	window_manager_t manager,
 	SDL_Event* event
@@ -1300,7 +1421,7 @@ window_manager_process_global_event(
 }
 
 
-private void
+void
 window_manager_process_event(
 	window_manager_t manager,
 	SDL_Event* event
@@ -1354,6 +1475,27 @@ window_manager_run(
 	}
 
 	window_t window = manager->window_head;
+	while(window)
+	{
+		window_t next = window->next;
+		window_close(window);
+		window = next;
+	}
+
+	while(manager->refcount)
+	{
+		SDL_Event event;
+		SDL_WaitEvent(&event);
+
+		if(event.type == SDL_EVENT_QUIT)
+		{
+			continue;
+		}
+
+		window_manager_process_event(manager, &event);
+	}
+
+	window = manager->window_head;
 	while(window)
 	{
 		window_t next = window->next;

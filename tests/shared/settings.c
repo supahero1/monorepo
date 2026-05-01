@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,18 +14,25 @@
  *  limitations under the License.
  */
 
+#include <shared/str.h>
 #include <tests/base.h>
+#include <shared/attr.h>
+#include <shared/time.h>
+#include <shared/color.h>
 #include <shared/debug.h>
+#include <shared/event.h>
+#include <shared/macro.h>
 #include <shared/options.h>
 #include <shared/settings.h>
 
+#include <stdint.h>
 #include <string.h>
 
 #define TEST_FILENAME	\
 (test_is_on_valgrind ? "bin/tests/shared/settings.bin.val" : "bin/tests/shared/settings.bin")
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__settings_init_free(
 	void
 	)
@@ -39,7 +46,7 @@ test_normal_pass__settings_init_free(
 }
 
 
-static void
+void
 settings_onsave_fn(
 	bool* save,
 	settings_save_event_data_t* data
@@ -50,7 +57,7 @@ settings_onsave_fn(
 }
 
 
-static void
+void
 settings_onload_fn(
 	bool* load,
 	settings_load_event_data_t* data
@@ -61,7 +68,7 @@ settings_onload_fn(
 }
 
 
-static void
+void
 setting_change_i64_fn(
 	int64_t* change,
 	setting_change_event_data_t* data
@@ -71,7 +78,7 @@ setting_change_i64_fn(
 }
 
 
-static void
+void
 setting_change_f32_fn(
 	float* change,
 	setting_change_event_data_t* data
@@ -81,7 +88,7 @@ setting_change_f32_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__settings_save_load(
 	void
 	)
@@ -123,7 +130,7 @@ test_normal_pass__settings_save_load(
 	assert_false(saved);
 	assert_false(loaded);
 
-	(void) settings_add_i64(settings, "foobar", 2, 1, 3, NULL);
+	settings_add_i64(settings, "foobar", 2, 1, 3, NULL);
 	assert_eq(i64_change, 0);
 	assert_false(saved);
 	assert_false(loaded);
@@ -141,7 +148,7 @@ test_normal_pass__settings_save_load(
 	};
 	event_listener_t* f32_listener = event_target_add(&f32_change_target, f32_listener_data);
 
-	(void) settings_add_f32(settings, "barfoo", 2.0f, 1.0f, 3.0f, NULL);
+	settings_add_f32(settings, "barfoo", 2.0f, 1.0f, 3.0f, NULL);
 	assert_eq(f32_change, 0.0f);
 	assert_false(saved);
 	assert_false(loaded);
@@ -202,7 +209,7 @@ test_normal_pass__settings_save_load(
 	save_listener = event_target_add(&event_table->save_target, save_listener_data);
 	load_listener = event_target_add(&event_table->load_target, load_listener_data);
 
-	(void) settings_add_f32(settings, "barfoo", 2.0f, 1.0f, 3.0f, NULL);
+	settings_add_f32(settings, "barfoo", 2.0f, 1.0f, 3.0f, NULL);
 	assert_eq(f32_change, 0.0f);
 	assert_false(saved);
 	assert_false(loaded);
@@ -217,7 +224,7 @@ test_normal_pass__settings_save_load(
 	assert_false(saved);
 	assert_false(loaded);
 
-	(void) settings_add_i64(settings, "foobar", 2, 1, 3, NULL);
+	settings_add_i64(settings, "foobar", 2, 1, 3, NULL);
 	assert_eq(i64_change, 0);
 	assert_false(saved);
 	assert_false(loaded);
@@ -245,7 +252,7 @@ test_normal_pass__settings_save_load(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_init_null_path(
 	void
 	)
@@ -254,7 +261,7 @@ test_normal_fail__settings_init_null_path(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_free_null(
 	void
 	)
@@ -263,7 +270,7 @@ test_normal_fail__settings_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_save_null(
 	void
 	)
@@ -272,7 +279,7 @@ test_normal_fail__settings_save_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_load_null(
 	void
 	)
@@ -281,7 +288,7 @@ test_normal_fail__settings_load_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_load_unsealed(
 	void
 	)
@@ -291,7 +298,7 @@ test_normal_fail__settings_load_unsealed(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_i64_null_settings(
 	void
 	)
@@ -300,7 +307,7 @@ test_normal_fail__settings_add_i64_null_settings(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_i64_null_name(
 	void
 	)
@@ -311,7 +318,7 @@ test_normal_fail__settings_add_i64_null_name(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_i64_null(
 	void
 	)
@@ -320,7 +327,7 @@ test_normal_fail__settings_add_i64_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_i64_invalid_value(
 	void
 	)
@@ -331,7 +338,7 @@ test_normal_fail__settings_add_i64_invalid_value(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_i64_invalid_constaint(
 	void
 	)
@@ -342,7 +349,7 @@ test_normal_fail__settings_add_i64_invalid_constaint(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_f32_null_settings(
 	void
 	)
@@ -351,7 +358,7 @@ test_normal_fail__settings_add_f32_null_settings(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_f32_null_name(
 	void
 	)
@@ -362,7 +369,7 @@ test_normal_fail__settings_add_f32_null_name(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_f32_null(
 	void
 	)
@@ -371,7 +378,7 @@ test_normal_fail__settings_add_f32_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_f32_invalid_value(
 	void
 	)
@@ -382,7 +389,7 @@ test_normal_fail__settings_add_f32_invalid_value(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_f32_invalid_constaint(
 	void
 	)
@@ -393,7 +400,7 @@ test_normal_fail__settings_add_f32_invalid_constaint(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_boolean_null_settings(
 	void
 	)
@@ -402,7 +409,7 @@ test_normal_fail__settings_add_boolean_null_settings(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_boolean_null_name(
 	void
 	)
@@ -413,7 +420,7 @@ test_normal_fail__settings_add_boolean_null_name(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_boolean_null(
 	void
 	)
@@ -422,7 +429,7 @@ test_normal_fail__settings_add_boolean_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_str_null_settings(
 	void
 	)
@@ -433,7 +440,7 @@ test_normal_fail__settings_add_str_null_settings(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_str_null_name(
 	void
 	)
@@ -446,7 +453,7 @@ test_normal_fail__settings_add_str_null_name(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_str_null(
 	void
 	)
@@ -457,7 +464,7 @@ test_normal_fail__settings_add_str_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_color_null_settings(
 	void
 	)
@@ -467,7 +474,7 @@ test_normal_fail__settings_add_color_null_settings(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_color_null_name(
 	void
 	)
@@ -479,7 +486,7 @@ test_normal_fail__settings_add_color_null_name(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_add_color_null(
 	void
 	)
@@ -489,7 +496,7 @@ test_normal_fail__settings_add_color_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_i64_null_settings(
 	void
 	)
@@ -498,7 +505,7 @@ test_normal_fail__settings_modify_i64_null_settings(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_i64_null_name(
 	void
 	)
@@ -507,7 +514,7 @@ test_normal_fail__settings_modify_i64_null_name(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_i64_null(
 	void
 	)
@@ -516,7 +523,7 @@ test_normal_fail__settings_modify_i64_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_f32_null_settings(
 	void
 	)
@@ -525,7 +532,7 @@ test_normal_fail__settings_modify_f32_null_settings(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_f32_null_name(
 	void
 	)
@@ -534,7 +541,7 @@ test_normal_fail__settings_modify_f32_null_name(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_f32_null(
 	void
 	)
@@ -543,7 +550,7 @@ test_normal_fail__settings_modify_f32_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_boolean_null_settings(
 	void
 	)
@@ -552,7 +559,7 @@ test_normal_fail__settings_modify_boolean_null_settings(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_boolean_null_name(
 	void
 	)
@@ -561,7 +568,7 @@ test_normal_fail__settings_modify_boolean_null_name(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_boolean_null(
 	void
 	)
@@ -570,7 +577,7 @@ test_normal_fail__settings_modify_boolean_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_str_null_settings(
 	void
 	)
@@ -581,7 +588,7 @@ test_normal_fail__settings_modify_str_null_settings(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_str_null_name(
 	void
 	)
@@ -594,7 +601,7 @@ test_normal_fail__settings_modify_str_null_name(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_str_null(
 	void
 	)
@@ -605,7 +612,7 @@ test_normal_fail__settings_modify_str_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_color_null_settings(
 	void
 	)
@@ -615,7 +622,7 @@ test_normal_fail__settings_modify_color_null_settings(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_color_null_name(
 	void
 	)
@@ -627,7 +634,7 @@ test_normal_fail__settings_modify_color_null_name(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__settings_modify_color_null(
 	void
 	)
@@ -637,7 +644,7 @@ test_normal_fail__settings_modify_color_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__setting_get_i64_null(
 	void
 	)
@@ -646,7 +653,7 @@ test_normal_fail__setting_get_i64_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__setting_get_f32_null(
 	void
 	)
@@ -655,7 +662,7 @@ test_normal_fail__setting_get_f32_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__setting_get_boolean_null(
 	void
 	)
@@ -664,7 +671,7 @@ test_normal_fail__setting_get_boolean_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__setting_get_str_null(
 	void
 	)
@@ -673,7 +680,7 @@ test_normal_fail__setting_get_str_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__setting_get_color_null(
 	void
 	)
@@ -682,7 +689,7 @@ test_normal_fail__setting_get_color_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__settings_with_options_override(
 	void
 	)

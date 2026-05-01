@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,29 +14,36 @@
  *  limitations under the License.
  */
 
-#include <tests/base.h>
 #include <shared/str.h>
+#include <tests/base.h>
 #include <shared/debug.h>
-#include <shared/alloc_ext.h>
+#include <shared/macro.h>
+#include <shared/alloc/base.h>
 
-#include <gelf.h>
 #include <valgrind/valgrind.h>
 
+#include <elf.h>
+#include <gelf.h>
 #include <dlfcn.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <libelf.h>
+#include <signal.h>
+#include <stdarg.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <sys/wait.h>
 
 
 bool test_is_on_valgrind;
-static int tty_fd = 1;
-static bool has_file = false;
-static char* test_name = NULL;
+int tty_fd = 1;
+bool has_file = false;
+char* test_name = NULL;
 
 
-static void
+void
 test_say_common(
 	const char* format,
 	bool important,
@@ -51,7 +58,7 @@ test_say_common(
 
 	va_list copy;
 	va_copy(copy, args);
-	vdprintf(tty_fd, buffer, copy);
+		vdprintf(tty_fd, buffer, copy);
 	va_end(copy);
 
 	if(has_file)
@@ -86,7 +93,7 @@ test_say(
 {
 	va_list args;
 	va_start(args, format);
-	test_say_common(format, false, args);
+		test_say_common(format, false, args);
 	va_end(args);
 }
 
@@ -99,8 +106,17 @@ test_shout(
 {
 	va_list args;
 	va_start(args, format);
-	test_say_common(format, true, args);
+		test_say_common(format, true, args);
 	va_end(args);
+}
+
+
+void
+test_set_timeout(
+	unsigned int seconds
+	)
+{
+	alarm(seconds);
 }
 
 
@@ -113,14 +129,14 @@ typedef struct test
 }
 test_t;
 
-static test_t* tests = NULL;
-static uint32_t tests_count = 0;
-static uint32_t tests_ran = 0;
-static uint32_t tests_passed = 0;
-static uint32_t tests_failed = 0;
+test_t* tests = NULL;
+uint32_t tests_count = 0;
+uint32_t tests_ran = 0;
+uint32_t tests_passed = 0;
+uint32_t tests_failed = 0;
 
 
-static void
+void
 wait_and_run_tests(
 	void
 	)
@@ -200,7 +216,10 @@ main(
 	test_is_on_valgrind = RUNNING_ON_VALGRIND;
 
 	tty_fd = open("/dev/tty", O_WRONLY);
-	assert_neq(tty_fd, -1);
+	if(tty_fd == -1)
+	{
+		tty_fd = STDERR_FILENO;
+	}
 
 	int num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
 	int max_concurrent_tests = MACRO_MAX(1, num_cpus / 2);
@@ -346,7 +365,8 @@ main(
 				{
 					nice(priority ? 5 : 20);
 
-					alarm(6);
+					alloc_reset();
+					test_set_timeout(60);
 
 					test_func();
 

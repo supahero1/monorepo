@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,13 +14,16 @@
  *  limitations under the License.
  */
 
+#include <shared/str.h>
+#include <shared/attr.h>
 #include <shared/hash.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
 
 #include <string.h>
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__hash_table_init_free(
 	void
 	)
@@ -30,7 +33,7 @@ test_normal_pass__hash_table_init_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_init_zero_buckets(
 	void
 	)
@@ -39,7 +42,7 @@ test_normal_fail__hash_table_init_zero_buckets(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_free_null(
 	void
 	)
@@ -57,7 +60,7 @@ typedef struct for_each_data
 for_each_data_t;
 
 
-static void
+void
 hash_table_for_each_fn(
 	str_t key,
 	void* value,
@@ -75,7 +78,7 @@ hash_table_for_each_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__hash_table_functions(
 	void
 	)
@@ -161,7 +164,7 @@ test_normal_pass__hash_table_functions(
 }
 
 
-static void
+void
 hash_table_key_dtor(
 	str_t key
 	)
@@ -173,7 +176,7 @@ hash_table_key_dtor(
 }
 
 
-static void
+void
 hash_table_value_dtor(
 	void* value
 	)
@@ -185,7 +188,7 @@ hash_table_value_dtor(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__hash_table_key_value_dtors(
 	void
 	)
@@ -219,7 +222,7 @@ test_normal_pass__hash_table_key_value_dtors(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_has_null_table(
 	void
 	)
@@ -228,7 +231,7 @@ test_normal_fail__hash_table_has_null_table(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_has_null_key(
 	void
 	)
@@ -238,7 +241,7 @@ test_normal_fail__hash_table_has_null_key(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_has_null(
 	void
 	)
@@ -247,7 +250,7 @@ test_normal_fail__hash_table_has_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_add_null_table(
 	void
 	)
@@ -256,7 +259,7 @@ test_normal_fail__hash_table_add_null_table(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_add_null_key(
 	void
 	)
@@ -266,7 +269,7 @@ test_normal_fail__hash_table_add_null_key(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_add_null(
 	void
 	)
@@ -275,7 +278,7 @@ test_normal_fail__hash_table_add_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_get_null_table(
 	void
 	)
@@ -284,7 +287,7 @@ test_normal_fail__hash_table_get_null_table(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_get_null_key(
 	void
 	)
@@ -294,7 +297,7 @@ test_normal_fail__hash_table_get_null_key(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_get_null(
 	void
 	)
@@ -303,7 +306,7 @@ test_normal_fail__hash_table_get_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_del_null_table(
 	void
 	)
@@ -312,7 +315,7 @@ test_normal_fail__hash_table_del_null_table(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_del_null_key(
 	void
 	)
@@ -322,7 +325,7 @@ test_normal_fail__hash_table_del_null_key(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_del_null(
 	void
 	)
@@ -331,7 +334,7 @@ test_normal_fail__hash_table_del_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_for_each_null_table(
 	void
 	)
@@ -340,7 +343,7 @@ test_normal_fail__hash_table_for_each_null_table(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_for_each_null_fn(
 	void
 	)
@@ -350,7 +353,7 @@ test_normal_fail__hash_table_for_each_null_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_for_each_null(
 	void
 	)
@@ -359,7 +362,7 @@ test_normal_fail__hash_table_for_each_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_clear_null_table(
 	void
 	)
@@ -368,7 +371,7 @@ test_normal_fail__hash_table_clear_null_table(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_set_null_table(
 	void
 	)
@@ -377,7 +380,7 @@ test_normal_fail__hash_table_set_null_table(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_set_null_key(
 	void
 	)
@@ -387,7 +390,7 @@ test_normal_fail__hash_table_set_null_key(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_set_null(
 	void
 	)
@@ -396,7 +399,7 @@ test_normal_fail__hash_table_set_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_modify_null_table(
 	void
 	)
@@ -405,7 +408,7 @@ test_normal_fail__hash_table_modify_null_table(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_modify_null_key(
 	void
 	)
@@ -415,7 +418,7 @@ test_normal_fail__hash_table_modify_null_key(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__hash_table_modify_null(
 	void
 	)

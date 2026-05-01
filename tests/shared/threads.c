@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,15 +14,235 @@
  *  limitations under the License.
  */
 
+#include <tests/base.h>
+#include <shared/attr.h>
 #include <shared/sync.h>
 #include <shared/time.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
+#include <shared/atomic.h>
 #include <shared/threads.h>
 
-#include <stdatomic.h>
+#include <stddef.h>
+#include <stdint.h>
 
 
-void assert_used
+uint32_t _Atomic thread_once_counter;
+
+
+void
+thread_once_fn(
+	void
+	)
+{
+	atomic_fetch_add_rx(&thread_once_counter, 1);
+}
+
+
+void
+thread_once_thread_fn(
+	void* data
+	)
+{
+	thread_once_t* once = data;
+
+	thread_once(once, thread_once_fn);
+	thread_once(once, thread_once_fn);
+}
+
+
+void attr_test_fn
+test_normal_pass__thread_once(
+	void
+	)
+{
+	thread_once_t once = THREAD_ONCE_INIT;
+	atomic_store_rx(&thread_once_counter, 0);
+
+	thread_t threads[32];
+
+	for(uint32_t i = 0; i < 32; i++)
+	{
+		thread_data_t data =
+		{
+			.fn = (void*) thread_once_thread_fn,
+			.data = &once
+		};
+
+		thread_init(&threads[i], data);
+	}
+
+	for(uint32_t i = 0; i < 32; i++)
+	{
+		thread_join(threads[i]);
+		thread_free(&threads[i]);
+	}
+
+	assert_eq(thread_once_counter, 1);
+}
+
+
+void attr_test_fn
+test_normal_pass__thread_once_reuse(
+	void
+	)
+{
+	thread_once_t once = THREAD_ONCE_INIT;
+	atomic_store_rx(&thread_once_counter, 0);
+
+	for(uint32_t i = 0; i < 1024; i++)
+	{
+		thread_once(&once, thread_once_fn);
+	}
+
+	assert_eq(thread_once_counter, 1);
+}
+
+
+typedef struct thread_key_data
+{
+	thread_key_t key;
+	void* value;
+	bool keep;
+}
+thread_key_data_t;
+
+uint32_t _Atomic thread_key_dtor_count;
+uintptr_t _Atomic thread_key_dtor_sum;
+
+
+void
+thread_key_dtor_fn(
+	void* value
+	)
+{
+	hard_assert_not_null(value);
+	atomic_fetch_add_rx(&thread_key_dtor_count, 1);
+	atomic_fetch_add_rx(&thread_key_dtor_sum, (uintptr_t) value);
+}
+
+
+void
+thread_key_thread_fn(
+	thread_key_data_t* data
+	)
+{
+	assert_null(thread_key_get(data->key));
+
+	thread_key_set(data->key, data->value);
+	assert_eq(thread_key_get(data->key), data->value);
+
+	thread_key_set(data->key, data->value);
+	assert_eq(thread_key_get(data->key), data->value);
+
+	if(!data->keep)
+	{
+		thread_key_set(data->key, NULL);
+		assert_null(thread_key_get(data->key));
+	}
+}
+
+
+void attr_test_fn
+test_normal_pass__thread_key_local(
+	void
+	)
+{
+	thread_key_t key = thread_key_create(NULL);
+
+	assert_null(thread_key_get(key));
+
+	uint32_t local = 7;
+	thread_key_set(key, &local);
+	assert_eq(thread_key_get(key), &local);
+
+	thread_key_set(key, NULL);
+	assert_null(thread_key_get(key));
+
+	thread_key_free(key);
+}
+
+
+void attr_test_fn
+test_normal_pass__thread_key_xthread_isolation(
+	void
+	)
+{
+	thread_key_t key = thread_key_create(thread_key_dtor_fn);
+	thread_t threads[32];
+	thread_key_data_t data[32];
+	uint32_t values[32];
+
+	atomic_store_rx(&thread_key_dtor_count, 0);
+	atomic_store_rx(&thread_key_dtor_sum, 0);
+
+	for(uint32_t i = 0; i < 32; i++)
+	{
+		values[i] = i + 1;
+		data[i] =
+		(thread_key_data_t)
+		{
+			.key = key,
+			.value = &values[i],
+			.keep = i & 1
+		};
+
+		thread_data_t thread_data =
+		{
+			.fn = (void*) thread_key_thread_fn,
+			.data = &data[i]
+		};
+
+		thread_init(&threads[i], thread_data);
+	}
+
+	for(uint32_t i = 0; i < 32; i++)
+	{
+		thread_join(threads[i]);
+		thread_free(&threads[i]);
+	}
+
+	assert_null(thread_key_get(key));
+	assert_eq(thread_key_dtor_count, 16);
+
+	uintptr_t expected_sum = 0;
+	for(uint32_t i = 0; i < 32; i++)
+	{
+		if(data[i].keep)
+		{
+			expected_sum += (uintptr_t) data[i].value;
+		}
+	}
+
+	assert_eq(thread_key_dtor_sum, expected_sum);
+
+	thread_key_free(key);
+}
+
+
+void attr_test_fn
+test_normal_fail__thread_key_free_freed(
+	void
+	)
+{
+	thread_key_t key = thread_key_create(NULL);
+	thread_key_free(key);
+	thread_key_free(key);
+}
+
+
+void attr_test_fn
+test_normal_fail__thread_key_set_freed(
+	void
+	)
+{
+	thread_key_t key = thread_key_create(NULL);
+	thread_key_free(key);
+	thread_key_set(key, NULL);
+}
+
+
+void attr_test_fn
 test_normal_fail__thread_init_null_fn(
 	void
 	)
@@ -32,7 +252,7 @@ test_normal_fail__thread_init_null_fn(
 }
 
 
-static void
+void
 dummy_thread_fn(
 	void* data
 	)
@@ -41,7 +261,7 @@ dummy_thread_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__thread_init_free(
 	void
 	)
@@ -57,7 +277,7 @@ test_normal_pass__thread_init_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_free_null(
 	void
 	)
@@ -66,22 +286,26 @@ test_normal_fail__thread_free_null(
 }
 
 
-static void
+void
 thread_cancel_off_fn(
 	void* data
 	)
 {
 	(void) data;
+
 	thread_cancel_off();
 	thread_sleep(time_sec_to_ns(99));
+	assert_unreachable();
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_timeout__thread_cancel_off(
 	void
 	)
 {
+	test_set_timeout(1);
+
 	thread_t thread;
 	thread_data_t data =
 	{
@@ -96,18 +320,19 @@ test_normal_timeout__thread_cancel_off(
 }
 
 
-static void
+void
 thread_cancel_on_fn(
 	void* data
 	)
 {
 	(void) data;
+
 	thread_cancel_on();
 	thread_sleep(time_sec_to_ns(99));
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__thread_cancel_on(
 	void
 	)
@@ -126,18 +351,21 @@ test_normal_pass__thread_cancel_on(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_timeout__thread_cancel_off_self(
 	void
 	)
 {
+	test_set_timeout(1);
+
 	thread_cancel_off();
 	thread_cancel_async(thread_self());
 	thread_sleep(time_sec_to_ns(99));
+	assert_unreachable();
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__thread_cancel_on_self(
 	void
 	)
@@ -148,7 +376,7 @@ test_normal_pass__thread_cancel_on_self(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_detach_freed(
 	void
 	)
@@ -165,7 +393,7 @@ test_normal_fail__thread_detach_freed(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_join_freed(
 	void
 	)
@@ -182,7 +410,7 @@ test_normal_fail__thread_join_freed(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_cancel_freed(
 	void
 	)
@@ -199,60 +427,58 @@ test_normal_fail__thread_cancel_freed(
 }
 
 
-static void
+void
 sync_thread_fn(
-	sync_mtx_t* mtx
+	sync_sem_t* sem
 	)
 {
-	sync_mtx_unlock(mtx);
+	sync_sem_post(sem);
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__thread_auto_detach(
 	void
 	)
 {
-	sync_mtx_t mtx;
-	sync_mtx_init(&mtx);
-	sync_mtx_lock(&mtx);
+	sync_sem_t sem;
+	sync_sem_init(&sem, 0);
 
 	thread_data_t data =
 	{
 		.fn = (void*) sync_thread_fn,
-		.data = &mtx
+		.data = &sem
 	};
 
 	thread_init(NULL, data);
 
-	sync_mtx_lock(&mtx);
-	sync_mtx_unlock(&mtx);
-	sync_mtx_free(&mtx);
+	sync_sem_wait(&sem);
+	sync_sem_free(&sem);
 }
 
 
 typedef struct thread_pool_work_data
 {
-	_Atomic uint32_t counter;
+	uint32_t _Atomic counter;
 	uint32_t max;
-	sync_mtx_t mtx;
+	sync_sem_t sem;
 }
 thread_pool_work_data_t;
 
 
-static void
+void
 thread_pool_work_fn(
 	thread_pool_work_data_t* data
 	)
 {
-	if(atomic_fetch_add_explicit(&data->counter, 1, memory_order_relaxed) + 1 == data->max)
+	if(atomic_fetch_add_rx(&data->counter, 1) + 1 == data->max)
 	{
-		sync_mtx_unlock(&data->mtx);
+		sync_sem_post(&data->sem);
 	}
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__thread_pool_and_threads(
 	void
 	)
@@ -262,8 +488,7 @@ test_normal_pass__thread_pool_and_threads(
 		.counter = 0,
 		.max = 100
 	};
-	sync_mtx_init(&data.mtx);
-	sync_mtx_lock(&data.mtx);
+	sync_sem_init(&data.sem, 0);
 
 	thread_pool_t pool;
 	thread_pool_init(&pool);
@@ -294,10 +519,8 @@ test_normal_pass__thread_pool_and_threads(
 
 	threads_add(&threads, threads_data, 16);
 
-	sync_mtx_lock(&data.mtx);
-
-	sync_mtx_unlock(&data.mtx);
-	sync_mtx_free(&data.mtx);
+	sync_sem_wait(&data.sem);
+	sync_sem_free(&data.sem);
 
 	threads_cancel_all_sync(&threads);
 	threads_free(&threads);
@@ -308,7 +531,7 @@ test_normal_pass__thread_pool_and_threads(
 }
 
 
-static void
+void
 thread_pool_work_manually_fn(
 	uint32_t* counter
 	)
@@ -317,7 +540,7 @@ thread_pool_work_manually_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__thread_pool_try_work(
 	void
 	)
@@ -355,7 +578,7 @@ test_normal_pass__thread_pool_try_work(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__threads_init_null(
 	void
 	)
@@ -364,7 +587,7 @@ test_normal_fail__threads_init_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__threads_free_null(
 	void
 	)
@@ -373,7 +596,7 @@ test_normal_fail__threads_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__threads_add_null(
 	void
 	)
@@ -382,7 +605,7 @@ test_normal_fail__threads_add_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__threads_cancel_sync_null(
 	void
 	)
@@ -391,7 +614,7 @@ test_normal_fail__threads_cancel_sync_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__threads_cancel_sync_too_many(
 	void
 	)
@@ -403,7 +626,7 @@ test_normal_fail__threads_cancel_sync_too_many(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__threads_cancel_async_null(
 	void
 	)
@@ -412,7 +635,7 @@ test_normal_fail__threads_cancel_async_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__threads_cancel_async_too_many(
 	void
 	)
@@ -424,7 +647,7 @@ test_normal_fail__threads_cancel_async_too_many(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__threads_cancel_zero(
 	void
 	)
@@ -442,7 +665,7 @@ test_normal_pass__threads_cancel_zero(
 
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_pool_init_null(
 	void
 	)
@@ -451,7 +674,7 @@ test_normal_fail__thread_pool_init_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_pool_free_null(
 	void
 	)
@@ -460,7 +683,7 @@ test_normal_fail__thread_pool_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_pool_lock_null(
 	void
 	)
@@ -469,7 +692,7 @@ test_normal_fail__thread_pool_lock_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_pool_unlock_null(
 	void
 	)
@@ -478,7 +701,7 @@ test_normal_fail__thread_pool_unlock_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_pool_add_null(
 	void
 	)
@@ -487,7 +710,7 @@ test_normal_fail__thread_pool_add_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_pool_add_u_null(
 	void
 	)
@@ -496,7 +719,7 @@ test_normal_fail__thread_pool_add_u_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_pool_add_null_fn(
 	void
 	)
@@ -508,7 +731,7 @@ test_normal_fail__thread_pool_add_null_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_pool_add_u_null_fn(
 	void
 	)
@@ -520,7 +743,7 @@ test_normal_fail__thread_pool_add_u_null_fn(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_pool_try_work_null(
 	void
 	)
@@ -529,7 +752,7 @@ test_normal_fail__thread_pool_try_work_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_pool_try_work_u_null(
 	void
 	)
@@ -538,7 +761,7 @@ test_normal_fail__thread_pool_try_work_u_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_pool_work_null(
 	void
 	)
@@ -547,7 +770,7 @@ test_normal_fail__thread_pool_work_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__thread_pool_work_u_null(
 	void
 	)

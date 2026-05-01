@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,13 +14,18 @@
  *  limitations under the License.
  */
 
+#include <shared/str.h>
+#include <shared/attr.h>
+#include <shared/color.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
 #include <shared/options.h>
 
 #include <stddef.h>
+#include <stdint.h>
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__options_init_free(
 	void
 	)
@@ -30,7 +35,7 @@ test_normal_pass__options_init_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__options_parse(
 	void
 	)
@@ -92,7 +97,7 @@ test_normal_pass__options_parse(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__options_get_typed(
 	void
 	)
@@ -224,7 +229,7 @@ test_normal_pass__options_get_typed(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_free_null(
 	void
 	)
@@ -233,7 +238,7 @@ test_normal_fail__options_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_exists_null_options(
 	void
 	)
@@ -242,7 +247,7 @@ test_normal_fail__options_exists_null_options(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_exists_null_key(
 	void
 	)
@@ -252,7 +257,7 @@ test_normal_fail__options_exists_null_key(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_exists_null(
 	void
 	)
@@ -261,7 +266,7 @@ test_normal_fail__options_exists_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_i64_null_options(
 	void
 	)
@@ -271,7 +276,7 @@ test_normal_fail__options_get_i64_null_options(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_i64_null_key(
 	void
 	)
@@ -282,7 +287,7 @@ test_normal_fail__options_get_i64_null_key(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_i64_null_out_value(
 	void
 	)
@@ -292,7 +297,7 @@ test_normal_fail__options_get_i64_null_out_value(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_i64_null(
 	void
 	)
@@ -301,7 +306,7 @@ test_normal_fail__options_get_i64_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_f32_null_options(
 	void
 	)
@@ -311,7 +316,7 @@ test_normal_fail__options_get_f32_null_options(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_f32_null_key(
 	void
 	)
@@ -322,7 +327,7 @@ test_normal_fail__options_get_f32_null_key(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_f32_null_out_value(
 	void
 	)
@@ -332,7 +337,7 @@ test_normal_fail__options_get_f32_null_out_value(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_f32_null(
 	void
 	)
@@ -341,7 +346,7 @@ test_normal_fail__options_get_f32_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_boolean_null_options(
 	void
 	)
@@ -351,7 +356,7 @@ test_normal_fail__options_get_boolean_null_options(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_boolean_null_key(
 	void
 	)
@@ -362,7 +367,7 @@ test_normal_fail__options_get_boolean_null_key(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_boolean_null_out_value(
 	void
 	)
@@ -372,7 +377,7 @@ test_normal_fail__options_get_boolean_null_out_value(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_boolean_null(
 	void
 	)
@@ -381,7 +386,7 @@ test_normal_fail__options_get_boolean_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_str_null_options(
 	void
 	)
@@ -391,7 +396,7 @@ test_normal_fail__options_get_str_null_options(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_str_null_key(
 	void
 	)
@@ -402,7 +407,7 @@ test_normal_fail__options_get_str_null_key(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_str_null_out_value(
 	void
 	)
@@ -412,7 +417,7 @@ test_normal_fail__options_get_str_null_out_value(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_str_null(
 	void
 	)
@@ -421,7 +426,7 @@ test_normal_fail__options_get_str_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_color_null_options(
 	void
 	)
@@ -431,7 +436,7 @@ test_normal_fail__options_get_color_null_options(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_color_null_key(
 	void
 	)
@@ -442,7 +447,7 @@ test_normal_fail__options_get_color_null_key(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_color_null_out_value(
 	void
 	)
@@ -452,7 +457,7 @@ test_normal_fail__options_get_color_null_out_value(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__options_get_color_null(
 	void
 	)

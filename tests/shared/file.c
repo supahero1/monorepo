@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,9 +15,12 @@
  */
 
 #include <tests/base.h>
+#include <shared/attr.h>
 #include <shared/file.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
 
+#include <stdint.h>
 #include <string.h>
 
 #define TEST_WRITE_FILENAME	\
@@ -34,7 +37,7 @@ uint8_t data[] = "test\n";
 uint64_t len = sizeof(data) - 1;
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__file_exists_remove(
 	void
 	)
@@ -66,7 +69,7 @@ test_normal_pass__file_exists_remove(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__file_read_not_empty(
 	void
 	)
@@ -82,7 +85,7 @@ test_normal_pass__file_read_not_empty(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__file_read_empty(
 	void
 	)
@@ -97,7 +100,7 @@ test_normal_pass__file_read_empty(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__file_read_non_existent(
 	void
 	)
@@ -108,7 +111,7 @@ test_normal_pass__file_read_non_existent(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__file_read_cap(
 	void
 	)
@@ -124,7 +127,7 @@ test_normal_pass__file_read_cap(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__file_read_cap_too_small(
 	void
 	)
@@ -135,7 +138,7 @@ test_normal_pass__file_read_cap_too_small(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__file_read_cap_non_existent(
 	void
 	)
@@ -146,7 +149,7 @@ test_normal_pass__file_read_cap_non_existent(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__file_write(
 	void
 	)
@@ -169,7 +172,7 @@ test_normal_pass__file_write(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__file_read_multiple_not_move_cursor(
 	void
 	)
@@ -193,7 +196,7 @@ test_normal_pass__file_read_multiple_not_move_cursor(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__file_write_multiple_not_append(
 	void
 	)
@@ -219,7 +222,7 @@ test_normal_pass__file_write_multiple_not_append(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__dir_exists_create(
 	void
 	)

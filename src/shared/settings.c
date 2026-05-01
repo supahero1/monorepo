@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,16 +14,24 @@
  *  limitations under the License.
  */
 
+#include <shared/str.h>
 #include <shared/file.h>
 #include <shared/hash.h>
+#include <shared/sync.h>
+#include <shared/time.h>
+#include <shared/color.h>
 #include <shared/debug.h>
+#include <shared/event.h>
+#include <shared/macro.h>
 #include <shared/options.h>
 #include <shared/threads.h>
 #include <shared/settings.h>
-#include <shared/alloc_ext.h>
+#include <shared/alloc/base.h>
 #include <shared/bit_buffer.h>
 
 #include <zstd.h>
+#include <stddef.h>
+#include <stdint.h>
 
 
 struct setting
@@ -54,7 +62,7 @@ struct settings
 };
 
 
-private void
+void
 settings_value_free_fn(
 	setting_t* setting
 	)
@@ -79,7 +87,7 @@ settings_init(
 	assert_not_null(path);
 
 	settings_t settings = alloc_malloc(settings, 1);
-	assert_not_null(settings);
+	assert_ptr(settings, 1);
 
 	sync_rwlock_init(&settings->rwlock);
 
@@ -128,7 +136,7 @@ settings_free(
 }
 
 
-private void
+void
 settings_for_each_sum_fn(
 	str_t name,
 	setting_t* setting,
@@ -178,7 +186,7 @@ settings_for_each_sum_fn(
 }
 
 
-private void
+void
 settings_for_each_set_fn(
 	str_t name,
 	setting_t* setting,
@@ -249,7 +257,7 @@ settings_save(
 
 	bit_buffer_t buffer;
 	bit_buffer_set(&buffer, alloc_calloc(NULL, sum), sum);
-	assert_not_null(buffer.data);
+	assert_ptr(buffer.data, sum);
 
 	uint32_t magic = 0x015FF510;
 	bit_buffer_set_bits(&buffer, magic, 60);
@@ -262,7 +270,7 @@ settings_save(
 
 	uint64_t compressed_size = ZSTD_compressBound(buffer.len);
 	uint8_t* compressed = alloc_malloc(compressed, compressed_size);
-	assert_not_null(compressed);
+	assert_ptr(compressed, compressed_size);
 
 	uint64_t actual_compressed_size = ZSTD_compress(
 		compressed, compressed_size, buffer.data, buffer.len, 10);
@@ -287,7 +295,7 @@ settings_save(
 }
 
 
-private void
+void
 settings_save_fn(
 	settings_t settings
 	)
@@ -517,7 +525,7 @@ settings_add_i64(
 	assert_le(value, max);
 
 	setting_t* setting_ptr = alloc_malloc(setting_ptr, 1);
-	assert_not_null(setting_ptr);
+	assert_ptr(setting_ptr, 1);
 
 	*setting_ptr =
 	(setting_t)
@@ -560,7 +568,7 @@ settings_add_f32(
 	assert_le(value, max);
 
 	setting_t* setting_ptr = alloc_malloc(setting_ptr, 1);
-	assert_not_null(setting_ptr);
+	assert_ptr(setting_ptr, 1);
 
 	*setting_ptr =
 	(setting_t)
@@ -597,7 +605,7 @@ settings_add_boolean(
 	assert_false(settings->sealed);
 
 	setting_t* setting_ptr = alloc_malloc(setting_ptr, 1);
-	assert_not_null(setting_ptr);
+	assert_ptr(setting_ptr, 1);
 
 	*setting_ptr =
 	(setting_t)
@@ -635,7 +643,7 @@ settings_add_str(
 	assert_le(value->len, max_len);
 
 	setting_t* setting_ptr = alloc_malloc(setting_ptr, 1);
-	assert_not_null(setting_ptr);
+	assert_ptr(setting_ptr, 1);
 
 	*setting_ptr =
 	(setting_t)
@@ -671,7 +679,7 @@ settings_add_color(
 	assert_false(settings->sealed);
 
 	setting_t* setting_ptr = alloc_malloc(setting_ptr, 1);
-	assert_not_null(setting_ptr);
+	assert_ptr(setting_ptr, 1);
 
 	*setting_ptr =
 	(setting_t)
@@ -693,7 +701,7 @@ settings_add_color(
 }
 
 
-static void
+void
 settings_modify(
 	settings_t settings
 	)

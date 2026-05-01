@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,7 +17,11 @@
 #include <shared/sync.h>
 #include <shared/debug.h>
 #include <shared/event.h>
-#include <shared/alloc_ext.h>
+#include <shared/macro.h>
+#include <shared/alloc/base.h>
+#include <shared/alloc/types.h>
+
+#include <stddef.h>
 
 
 void
@@ -60,7 +64,7 @@ typedef struct event_once_data
 event_once_data_t;
 
 
-private void
+void
 event_once_fn(
 	event_once_data_t* data,
 	void* event_data
@@ -72,7 +76,7 @@ event_once_fn(
 }
 
 
-private event_listener_t*
+event_listener_t*
 event_target_add_common(
 	event_target_t* target,
 	event_listener_data_t data,
@@ -87,7 +91,7 @@ event_target_add_common(
 	if(once)
 	{
 		event_once_data_t* once_data = alloc_malloc(once_data, 1);
-		assert_not_null(once_data);
+		assert_ptr(once_data, 1);
 
 		once_data->once =
 		(event_once_payload_t)
@@ -108,7 +112,7 @@ event_target_add_common(
 	else
 	{
 		listener = alloc_malloc(listener, 1);
-		assert_not_null(listener);
+		assert_ptr(listener, 1);
 	}
 
 	listener->prev = NULL;
@@ -146,7 +150,7 @@ event_target_once(
 }
 
 
-private void
+void
 event_target_del_common(
 	event_target_t* target,
 	event_listener_t* listener,
@@ -236,7 +240,7 @@ event_target_fire(
 
 typedef struct event_wait_data
 {
-	sync_mtx_t mtx;
+	sync_sem_t sem;
 	void* event_data;
 }
 event_wait_data_t;
@@ -249,14 +253,14 @@ struct event_wait_state
 };
 
 
-private void
+void
 event_target_wait_fn(
 	event_wait_data_t* data,
 	void* event_data
 	)
 {
 	data->event_data = event_data;
-	sync_mtx_unlock(&data->mtx);
+	sync_sem_post(&data->sem);
 }
 
 
@@ -266,11 +270,10 @@ event_target_init_wait(
 	)
 {
 	event_wait_state_t* state = alloc_malloc(state, 1);
-	assert_not_null(state);
+	assert_ptr(state, 1);
 
 	state->target = target;
-	sync_mtx_init(&state->wait_data.mtx);
-	sync_mtx_lock(&state->wait_data.mtx);
+	sync_sem_init(&state->wait_data.sem, 0);
 
 	event_listener_data_t data =
 	{
@@ -290,12 +293,10 @@ event_target_wait(
 {
 	assert_not_null(state);
 
-	sync_mtx_lock(&state->wait_data.mtx);
+	sync_sem_wait(&state->wait_data.sem);
 
 	event_target_del(state->target, state->listener);
-
-	sync_mtx_unlock(&state->wait_data.mtx);
-	sync_mtx_free(&state->wait_data.mtx);
+	sync_sem_free(&state->wait_data.sem);
 
 	void* event_data = state->wait_data.event_data;
 	alloc_free(state, 1);

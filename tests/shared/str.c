@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,12 +15,14 @@
  */
 
 #include <shared/str.h>
+#include <shared/attr.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
 
 #include <string.h>
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__cstr_alloc_free(
 	void
 	)
@@ -29,13 +31,13 @@ test_normal_pass__cstr_alloc_free(
 	assert_true(cstr_cmp(cstr, ""));
 	cstr_free(cstr);
 
-	cstr = cstr_alloc(5);
+	cstr = cstr_alloc(4);
 	memcpy(cstr, "test", 4);
 	cstr_free(cstr);
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__cstr_resize(
 	void
 	)
@@ -43,7 +45,7 @@ test_normal_pass__cstr_resize(
 	void* cstr = cstr_alloc(0);
 	assert_true(cstr_cmp(cstr, ""));
 
-	cstr = cstr_resize(cstr, 5);
+	cstr = cstr_resize(cstr, 4);
 	memcpy(cstr, "test", 4);
 	assert_true(cstr_cmp(cstr, "test"));
 
@@ -54,7 +56,7 @@ test_normal_pass__cstr_resize(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__cstr_resize_len(
 	void
 	)
@@ -62,18 +64,18 @@ test_normal_pass__cstr_resize_len(
 	void* cstr = cstr_alloc(0);
 	assert_true(cstr_cmp(cstr, ""));
 
-	cstr = cstr_resize_len(cstr, 0, 5);
+	cstr = cstr_resize_len(cstr, 0, 4);
 	memcpy(cstr, "test", 4);
 	assert_true(cstr_cmp(cstr, "test"));
 
-	cstr = cstr_resize_len(cstr, 5, 0);
+	cstr = cstr_resize_len(cstr, 4, 0);
 	assert_true(cstr_cmp(cstr, ""));
 
 	cstr_free(cstr);
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__cstr_init_free(
 	void
 	)
@@ -83,7 +85,7 @@ test_normal_pass__cstr_init_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__cstr_init_len_free(
 	void
 	)
@@ -94,7 +96,7 @@ test_normal_pass__cstr_init_len_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__cstr_init_len_free_null(
 	void
 	)
@@ -105,7 +107,7 @@ test_normal_pass__cstr_init_len_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__cstr_cmp(
 	void
 	)
@@ -136,7 +138,7 @@ test_normal_pass__cstr_cmp(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__cstr_case_cmp(
 	void
 	)
@@ -167,7 +169,7 @@ test_normal_pass__cstr_case_cmp(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail___cstr_resize_null(
 	void
 	)
@@ -176,12 +178,12 @@ test_normal_fail___cstr_resize_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__cstr_resize_len_null(
 	void
 	)
 {
-	void* cstr = cstr_resize_len(NULL, 0, 5);
+	void* cstr = cstr_resize_len(NULL, 0, 4);
 	memcpy(cstr, "test", 4);
 	assert_true(cstr_cmp(cstr, "test"));
 
@@ -189,7 +191,7 @@ test_normal_pass__cstr_resize_len_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__cstr_resize_len_null_non_zero_len(
 	void
 	)
@@ -198,7 +200,7 @@ test_normal_fail__cstr_resize_len_null_non_zero_len(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__cstr_init_null(
 	void
 	)
@@ -207,7 +209,7 @@ test_normal_fail__cstr_init_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__cstr_init_len_null_non_zero_len(
 	void
 	)
@@ -216,7 +218,7 @@ test_normal_fail__cstr_init_len_null_non_zero_len(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__cstr_free_null(
 	void
 	)
@@ -225,7 +227,7 @@ test_normal_pass__cstr_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__cstr_free_null_len(
 	void
 	)
@@ -234,7 +236,7 @@ test_normal_pass__cstr_free_null_len(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__cstr_free_null_len_non_zero_len(
 	void
 	)
@@ -243,7 +245,7 @@ test_normal_fail__cstr_free_null_len_non_zero_len(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__cstr_cmp_null_cstr1(
 	void
 	)
@@ -252,7 +254,7 @@ test_normal_fail__cstr_cmp_null_cstr1(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__cstr_cmp_null_cstr2(
 	void
 	)
@@ -261,7 +263,7 @@ test_normal_fail__cstr_cmp_null_cstr2(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__cstr_cmp_null(
 	void
 	)
@@ -270,7 +272,7 @@ test_normal_fail__cstr_cmp_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__cstr_case_cmp_null_cstr1(
 	void
 	)
@@ -279,7 +281,7 @@ test_normal_fail__cstr_case_cmp_null_cstr1(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__cstr_case_cmp_null_cstr2(
 	void
 	)
@@ -288,7 +290,7 @@ test_normal_fail__cstr_case_cmp_null_cstr2(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__cstr_case_cmp_null(
 	void
 	)
@@ -297,7 +299,7 @@ test_normal_fail__cstr_case_cmp_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_init_free(
 	void
 	)
@@ -307,7 +309,7 @@ test_normal_pass__str_init_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_init_copy_cstr(
 	void
 	)
@@ -318,7 +320,7 @@ test_normal_pass__str_init_copy_cstr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_init_move(
 	void
 	)
@@ -336,7 +338,7 @@ test_normal_pass__str_init_move(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_init_move_empty(
 	void
 	)
@@ -352,7 +354,7 @@ test_normal_pass__str_init_move_empty(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_set_copy_cstr(
 	void
 	)
@@ -369,7 +371,7 @@ test_normal_pass__str_set_copy_cstr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_set_move_cstr(
 	void
 	)
@@ -385,7 +387,7 @@ test_normal_pass__str_set_move_cstr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_set_copy(
 	void
 	)
@@ -404,7 +406,7 @@ test_normal_pass__str_set_copy(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_set_move(
 	void
 	)
@@ -422,7 +424,7 @@ test_normal_pass__str_set_move(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_cmp(
 	void
 	)
@@ -448,7 +450,7 @@ test_normal_pass__str_cmp(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_case_cmp(
 	void
 	)
@@ -474,7 +476,7 @@ test_normal_pass__str_case_cmp(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_cmp_cstr(
 	void
 	)
@@ -495,7 +497,7 @@ test_normal_pass__str_cmp_cstr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_case_cmp_cstr(
 	void
 	)
@@ -516,7 +518,7 @@ test_normal_pass__str_case_cmp_cstr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_free_null(
 	void
 	)
@@ -525,7 +527,7 @@ test_normal_pass__str_free_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_reset_null(
 	void
 	)
@@ -534,7 +536,7 @@ test_normal_fail__str_reset_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_init_copy_cstr_null(
 	void
 	)
@@ -543,7 +545,7 @@ test_normal_fail__str_init_copy_cstr_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_init_move_cstr_null(
 	void
 	)
@@ -552,7 +554,7 @@ test_normal_fail__str_init_move_cstr_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_init_copy_len_null_cstr(
 	void
 	)
@@ -562,7 +564,7 @@ test_normal_pass__str_init_copy_len_null_cstr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_init_copy_len_null_cstr_non_zero_len(
 	void
 	)
@@ -571,7 +573,7 @@ test_normal_fail__str_init_copy_len_null_cstr_non_zero_len(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_init_move_len_null_cstr(
 	void
 	)
@@ -581,7 +583,7 @@ test_normal_pass__str_init_move_len_null_cstr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_init_move_len_null_cstr_non_zero_len(
 	void
 	)
@@ -590,7 +592,7 @@ test_normal_fail__str_init_move_len_null_cstr_non_zero_len(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_init_copy_null(
 	void
 	)
@@ -599,7 +601,7 @@ test_normal_fail__str_init_copy_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_init_move_null_other(
 	void
 	)
@@ -608,7 +610,7 @@ test_normal_fail__str_init_move_null_other(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_clear_null(
 	void
 	)
@@ -617,7 +619,7 @@ test_normal_fail__str_clear_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_is_empty_null(
 	void
 	)
@@ -626,7 +628,7 @@ test_normal_fail__str_is_empty_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_set_copy_cstr_null_str(
 	void
 	)
@@ -635,7 +637,7 @@ test_normal_fail__str_set_copy_cstr_null_str(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_set_copy_cstr_null_cstr(
 	void
 	)
@@ -645,7 +647,7 @@ test_normal_fail__str_set_copy_cstr_null_cstr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_set_copy_cstr_null(
 	void
 	)
@@ -654,7 +656,7 @@ test_normal_fail__str_set_copy_cstr_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_set_move_cstr_null_str(
 	void
 	)
@@ -663,7 +665,7 @@ test_normal_fail__str_set_move_cstr_null_str(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_set_move_cstr_null_cstr(
 	void
 	)
@@ -673,7 +675,7 @@ test_normal_fail__str_set_move_cstr_null_cstr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_set_move_cstr_null(
 	void
 	)
@@ -682,7 +684,7 @@ test_normal_fail__str_set_move_cstr_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_set_copy_null_str(
 	void
 	)
@@ -692,7 +694,7 @@ test_normal_fail__str_set_copy_null_str(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_set_copy_null_other(
 	void
 	)
@@ -702,7 +704,7 @@ test_normal_fail__str_set_copy_null_other(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_set_copy_null(
 	void
 	)
@@ -711,7 +713,7 @@ test_normal_fail__str_set_copy_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_set_move_null_str(
 	void
 	)
@@ -721,7 +723,7 @@ test_normal_fail__str_set_move_null_str(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_set_move_null_other(
 	void
 	)
@@ -731,7 +733,7 @@ test_normal_fail__str_set_move_null_other(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_set_move_null(
 	void
 	)
@@ -740,7 +742,7 @@ test_normal_fail__str_set_move_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_resize_null(
 	void
 	)
@@ -749,7 +751,7 @@ test_normal_fail__str_resize_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_cmp_null_str1(
 	void
 	)
@@ -759,7 +761,7 @@ test_normal_fail__str_cmp_null_str1(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_cmp_null_str2(
 	void
 	)
@@ -769,7 +771,7 @@ test_normal_fail__str_cmp_null_str2(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_cmp_null(
 	void
 	)
@@ -778,7 +780,7 @@ test_normal_fail__str_cmp_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_case_cmp_null_str1(
 	void
 	)
@@ -788,7 +790,7 @@ test_normal_fail__str_case_cmp_null_str1(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_case_cmp_null_str2(
 	void
 	)
@@ -798,7 +800,7 @@ test_normal_fail__str_case_cmp_null_str2(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_case_cmp_null(
 	void
 	)
@@ -807,7 +809,7 @@ test_normal_fail__str_case_cmp_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_cmp_cstr_null_str(
 	void
 	)
@@ -816,7 +818,7 @@ test_normal_fail__str_cmp_cstr_null_str(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_cmp_cstr_null_cstr(
 	void
 	)
@@ -826,7 +828,7 @@ test_normal_fail__str_cmp_cstr_null_cstr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_cmp_cstr_null(
 	void
 	)
@@ -835,7 +837,7 @@ test_normal_fail__str_cmp_cstr_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_case_cmp_cstr_null_str(
 	void
 	)
@@ -844,7 +846,7 @@ test_normal_fail__str_case_cmp_cstr_null_str(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_case_cmp_cstr_null_cstr(
 	void
 	)
@@ -854,7 +856,7 @@ test_normal_fail__str_case_cmp_cstr_null_cstr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_case_cmp_cstr_null(
 	void
 	)
@@ -863,7 +865,7 @@ test_normal_fail__str_case_cmp_cstr_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_cmp_len_null_str(
 	void
 	)
@@ -872,7 +874,7 @@ test_normal_fail__str_cmp_len_null_str(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_cmp_len_null_cstr(
 	void
 	)
@@ -883,7 +885,7 @@ test_normal_pass__str_cmp_len_null_cstr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_cmp_len_null_cstr_non_zero_len(
 	void
 	)
@@ -893,7 +895,7 @@ test_normal_fail__str_cmp_len_null_cstr_non_zero_len(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_cmp_len_null(
 	void
 	)
@@ -902,7 +904,7 @@ test_normal_fail__str_cmp_len_null(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_case_cmp_len_null_str(
 	void
 	)
@@ -911,7 +913,7 @@ test_normal_fail__str_case_cmp_len_null_str(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__str_case_cmp_len_null_cstr(
 	void
 	)
@@ -922,7 +924,7 @@ test_normal_pass__str_case_cmp_len_null_cstr(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_case_cmp_len_null_cstr_non_zero_len(
 	void
 	)
@@ -932,7 +934,7 @@ test_normal_fail__str_case_cmp_len_null_cstr_non_zero_len(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_fail__str_case_cmp_len_null(
 	void
 	)

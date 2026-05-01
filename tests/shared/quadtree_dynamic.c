@@ -1,5 +1,5 @@
 /*
- *   Copyright 2025 Franciszek Balcerak
+ *   Copyright 2025-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,12 +15,15 @@
  */
 
 #include <tests/base.h>
+#include <shared/attr.h>
 #include <shared/debug.h>
+#include <shared/macro.h>
 #include <shared/extent.h>
-#include <shared/alloc_ext.h>
+#include <shared/alloc/base.h>
 #include <tests/quadtree_dynamic.h>
 
 #include <math.h>
+#include <stdint.h>
 #include <string.h>
 
 #define MAX_ENTITIES 16
@@ -49,7 +52,7 @@ typedef struct qt_test_opts
 qt_test_opts_t;
 
 
-static qt_test_t
+qt_test_t
 qt_test_init(
 	float x,
 	float y,
@@ -77,7 +80,7 @@ qt_test_init(
 }
 
 
-static void
+void
 qt_test_insert(
 	qt_test_t* test,
 	float x,
@@ -101,7 +104,7 @@ qt_test_insert(
 }
 
 
-static void
+void
 qt_test_collide_fn(
 	const quadtree_t* qt,
 	quadtree_entity_info_t a,
@@ -138,7 +141,7 @@ qt_test_collide_fn(
 }
 
 
-static void
+void
 qt_test_collide(
 	qt_test_t* test
 	)
@@ -147,7 +150,7 @@ qt_test_collide(
 }
 
 
-static quadtree_status_t
+quadtree_status_t
 qt_test_update_fn(
 	quadtree_t* qt,
 	quadtree_entity_info_t info,
@@ -166,7 +169,7 @@ qt_test_update_fn(
 }
 
 
-static void
+void
 qt_test_update(
 	qt_test_t* test
 	)
@@ -175,7 +178,7 @@ qt_test_update(
 }
 
 
-static void
+void
 qt_test_normalize(
 	qt_test_t* test
 	)
@@ -184,7 +187,7 @@ qt_test_normalize(
 }
 
 
-static void
+void
 qt_test_free(
 	qt_test_t* test
 	)
@@ -193,7 +196,7 @@ qt_test_free(
 }
 
 
-static quadtree_status_t
+quadtree_status_t
 qt_test_query_fn(
 	quadtree_t* qt,
 	quadtree_entity_info_t info,
@@ -209,7 +212,7 @@ qt_test_query_fn(
 }
 
 
-static void
+void
 qt_test_query(
 	qt_test_t* test,
 	float x,
@@ -224,7 +227,7 @@ qt_test_query(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_dynamic_init_free(
 	void
 	)
@@ -246,7 +249,7 @@ test_normal_pass__quadtree_dynamic_init_free(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_dynamic_reinsertion_step_on_boundary(
 	void
 	)
@@ -287,7 +290,7 @@ test_normal_pass__quadtree_dynamic_reinsertion_step_on_boundary(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_dynamic_reinsertion_step_off_boundary(
 	void
 	)
@@ -320,7 +323,7 @@ test_normal_pass__quadtree_dynamic_reinsertion_step_off_boundary(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_dynamic_reinsertion_step_on_boundary_outside(
 	void
 	)
@@ -362,7 +365,7 @@ test_normal_pass__quadtree_dynamic_reinsertion_step_on_boundary_outside(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_dynamic_reinsertion_step_off_boundary_outside(
 	void
 	)
@@ -396,7 +399,7 @@ test_normal_pass__quadtree_dynamic_reinsertion_step_off_boundary_outside(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_dynamic_removal_during_reinsertion(
 	void
 	)
@@ -431,7 +434,7 @@ test_normal_pass__quadtree_dynamic_removal_during_reinsertion(
 }
 
 
-static qt_dyn_test_entity_data_t*
+qt_dyn_test_entity_data_t*
 qt_test_find_entity(
 	qt_test_t* test,
 	uint32_t idx
@@ -445,12 +448,12 @@ qt_test_find_entity(
 			return data;
 		}
 	}
-	
+
 	return NULL;
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_dynamic_collision_bounce(
 	void
 	)
@@ -501,7 +504,7 @@ test_normal_pass__quadtree_dynamic_collision_bounce(
 }
 
 
-void assert_used
+void attr_test_fn
 test_normal_pass__quadtree_dynamic_rapid_cross_tree_movement(
 	void
 	)

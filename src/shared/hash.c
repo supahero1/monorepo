@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,9 +14,11 @@
  *  limitations under the License.
  */
 
+#include <shared/str.h>
 #include <shared/hash.h>
 #include <shared/debug.h>
-#include <shared/alloc_ext.h>
+#include <shared/macro.h>
+#include <shared/alloc/base.h>
 
 #include <string.h>
 
@@ -46,7 +48,7 @@ struct hash_table
 };
 
 
-private uint32_t
+uint32_t
 hash_table_hash(
 	const char* key,
 	uint32_t* len
@@ -66,7 +68,7 @@ hash_table_hash(
 }
 
 
-private void
+void
 hash_table_default_key_free_fn(
 	str_t key
 	)
@@ -75,7 +77,7 @@ hash_table_default_key_free_fn(
 }
 
 
-private void
+void
 hash_table_default_value_free_fn(
 	void* value
 	)
@@ -104,7 +106,7 @@ hash_table_init(
 	}
 
 	hash_table_t table = alloc_malloc(table, 1);
-	assert_not_null(table);
+	assert_ptr(table, 1);
 
 	table->bucket_count = bucket_count;
 	assert_neq(table->bucket_count, 0);
@@ -125,7 +127,7 @@ hash_table_init(
 }
 
 
-private void
+void
 hash_table_for_each_free_fn(
 	str_t key,
 	void* value,
@@ -140,7 +142,7 @@ hash_table_for_each_free_fn(
 }
 
 
-private void
+void
 hash_table_for_each_free(
 	hash_table_t table
 	)
@@ -182,7 +184,7 @@ hash_table_clear(
 
 	hash_table_for_each_free(table);
 
-	(void) memset(table->buckets, 0, sizeof(*table->buckets) * table->bucket_count);
+	memset(table->buckets, 0, sizeof(*table->buckets) * table->bucket_count);
 
 	alloc_free(table->entries, table->entries_size);
 
@@ -222,14 +224,15 @@ hash_table_for_each(
 }
 
 
-private void
+void
 hash_table_ensure_entry(
 	hash_table_t table
 	)
 {
 	if(table->entries_used >= table->entries_size)
 	{
-		uint32_t new_size = (table->entries_used << 1) | 1;
+		uint32_t new_size = (table->entries_used << 1) | 3;
+		assert_neq(new_size, table->entries_size);
 
 		table->entries = alloc_remalloc(table->entries, table->entries_size, new_size);
 		assert_not_null(table->entries);
@@ -239,7 +242,7 @@ hash_table_ensure_entry(
 }
 
 
-private uint32_t
+uint32_t
 hash_table_get_entry(
 	hash_table_t table
 	)
@@ -257,7 +260,7 @@ hash_table_get_entry(
 }
 
 
-private void
+void
 hash_table_ret_entry(
 	hash_table_t table,
 	uint32_t entry

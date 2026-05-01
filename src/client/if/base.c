@@ -4,20 +4,15 @@
 #include <client/if/base.h>
 
 #include <string.h>
-#include <inttypes.h>
 #include <byteswap.h>
-
+#include <inttypes.h>
 #include <utf8proc.h>
 
-#define SCROLLBAR_SIZE 8.0f
-#define SLIDER_SIZE 16.0f
-#define SCROLL_STRENGTH 64.0f
 
-
-private UIElement* ColorPickerContainer;
-private UIElement* ColorPickerElement;
-private UIElement* ColorPickerBackground;
-private IHandle ColorPickerHexText;
+UIElement* ColorPickerContainer;
+UIElement* ColorPickerElement;
+UIElement* ColorPickerBackground;
+IHandle ColorPickerHexText;
 
 typedef struct IColorPickerLine
 {
@@ -26,17 +21,17 @@ typedef struct IColorPickerLine
 }
 IColorPickerLine;
 
-private IColorPickerLine ColorPickerBrightness;
-private IColorPickerLine ColorPickerOpacity;
-private IColorPickerLine ColorPickerRed;
-private IColorPickerLine ColorPickerGreen;
-private IColorPickerLine ColorPickerBlue;
+IColorPickerLine ColorPickerBrightness;
+IColorPickerLine ColorPickerOpacity;
+IColorPickerLine ColorPickerRed;
+IColorPickerLine ColorPickerGreen;
+IColorPickerLine ColorPickerBlue;
 
-private UIElement* CurrentColorContainer;
+UIElement* CurrentColorContainer;
 
-private UIElement* CurrentDropdown;
+UIElement* CurrentDropdown;
 
-private const char NoNewlineCharFilter[256] =
+const char NoNewlineCharFilter[256] =
 {
 	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 , ' ',  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,
 	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,
@@ -56,7 +51,7 @@ private const char NoNewlineCharFilter[256] =
 	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,
 };
 
-private const char IntegerCharFilter[256] =
+const char IntegerCharFilter[256] =
 {
 	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,
 	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,
@@ -76,7 +71,7 @@ private const char IntegerCharFilter[256] =
 	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,
 };
 
-private const char HexColorCharFilter[256] =
+const char HexColorCharFilter[256] =
 {
 	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,
 	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,
@@ -96,7 +91,7 @@ private const char HexColorCharFilter[256] =
 	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,
 };
 
-private const char* TextCharFilters[] =
+const char* TextCharFilters[] =
 {
 	[I_TEXT_TYPE_MULTILINE_TEXT] = NULL,
 	[I_TEXT_TYPE_SINGLELINE_TEXT] = NoNewlineCharFilter,
@@ -201,7 +196,7 @@ typedef struct IPrivateContainerData
 IPrivateContainerData;
 
 
-private void
+void
 IContainerCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -260,7 +255,7 @@ IContainerCallback(
 }
 
 
-private void
+void
 IScrollableContainerCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -577,7 +572,7 @@ typedef struct IPrivateTextData
 IPrivateTextData;
 
 
-private const uint32_t*
+const uint32_t*
 SkipCodepoint(
 	const uint32_t* Str,
 	const uint32_t Char
@@ -599,7 +594,7 @@ SkipCodepoint(
 }
 
 
-private void
+void
 ITextWrite(
 	UIElement* Element,
 	char* Str,
@@ -649,7 +644,7 @@ typedef void
 	);
 
 
-private char*
+char*
 IntegerToText(
 	char* Str,
 	uint32_t* len,
@@ -676,7 +671,7 @@ IntegerToText(
 }
 
 
-private void
+void
 ITextOnIntegerSubmit(
 	UIElement* Element
 	)
@@ -706,7 +701,7 @@ ITextOnIntegerSubmit(
 }
 
 
-private char*
+char*
 HexColorToText(
 	char* Str,
 	uint32_t* len,
@@ -729,7 +724,7 @@ HexColorToText(
 }
 
 
-private void
+void
 ITextOnHexColorSubmit(
 	UIElement* Element
 	)
@@ -848,7 +843,7 @@ ITextOnHexColorSubmit(
 }
 
 
-private ValueToTextFunc ValueToText[] =
+ValueToTextFunc ValueToText[] =
 {
 	[I_TEXT_TYPE_MULTILINE_TEXT] = NULL,
 	[I_TEXT_TYPE_SINGLELINE_TEXT] = NULL,
@@ -857,7 +852,7 @@ private ValueToTextFunc ValueToText[] =
 };
 
 
-private TextSubmitFunc TextSubmit[] =
+TextSubmitFunc TextSubmit[] =
 {
 	[I_TEXT_TYPE_MULTILINE_TEXT] = NULL,
 	[I_TEXT_TYPE_SINGLELINE_TEXT] = NULL,
@@ -866,7 +861,7 @@ private TextSubmitFunc TextSubmit[] =
 };
 
 
-private void
+void
 ITextCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -941,7 +936,7 @@ ITextCallback(
 }
 
 
-private void
+void
 ITextPlaceholderCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -976,7 +971,7 @@ ITextPlaceholderCallback(
 }
 
 
-private void
+void
 ITextContainerCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1223,7 +1218,7 @@ typedef struct IPrivateCheckboxData
 IPrivateCheckboxData;
 
 
-private void
+void
 ICheckboxCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1309,7 +1304,7 @@ ICreateCheckbox(
 }
 
 
-private UIElement*
+UIElement*
 ITextGetTextElement(
 	IHandle Text
 	)
@@ -1449,7 +1444,7 @@ typedef struct IPrivateSliderData
 IPrivateSliderData;
 
 
-private void
+void
 ISliderCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1542,7 +1537,7 @@ ICreateSlider(
 
 
 
-private void
+void
 IColorPickerUpdate(
 	color_argb_t color
 	)
@@ -1581,7 +1576,7 @@ IColorPickerUpdate(
 }
 
 
-private void
+void
 IHexTextCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1599,7 +1594,7 @@ IHexTextCallback(
 }
 
 
-private void
+void
 IColorPickerCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1630,7 +1625,7 @@ IColorPickerCallback(
 }
 
 
-private void
+void
 IBrightnessSliderRecalculate(
 	void
 	)
@@ -1644,7 +1639,7 @@ IBrightnessSliderRecalculate(
 }
 
 
-private void
+void
 IBrightnessSliderCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1669,7 +1664,7 @@ IBrightnessSliderCallback(
 }
 
 
-private void
+void
 IBrightnessTextCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1687,7 +1682,7 @@ IBrightnessTextCallback(
 }
 
 
-private void
+void
 IOpacitySliderRecalculate(
 	void
 	)
@@ -1698,7 +1693,7 @@ IOpacitySliderRecalculate(
 }
 
 
-private void
+void
 IOpacitySliderCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1723,7 +1718,7 @@ IOpacitySliderCallback(
 }
 
 
-private void
+void
 IOpacityTextCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1741,7 +1736,7 @@ IOpacityTextCallback(
 }
 
 
-private void
+void
 IRedSliderRecalculate(
 	void
 	)
@@ -1752,7 +1747,7 @@ IRedSliderRecalculate(
 }
 
 
-private void
+void
 IRedSliderCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1777,7 +1772,7 @@ IRedSliderCallback(
 }
 
 
-private void
+void
 IRedTextCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1795,7 +1790,7 @@ IRedTextCallback(
 }
 
 
-private void
+void
 IGreenSliderRecalculate(
 	void
 	)
@@ -1806,7 +1801,7 @@ IGreenSliderRecalculate(
 }
 
 
-private void
+void
 IGreenSliderCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1831,7 +1826,7 @@ IGreenSliderCallback(
 }
 
 
-private void
+void
 IGreenTextCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1849,7 +1844,7 @@ IGreenTextCallback(
 }
 
 
-private void
+void
 IBlueSliderRecalculate(
 	void
 	)
@@ -1860,7 +1855,7 @@ IBlueSliderRecalculate(
 }
 
 
-private void
+void
 IBlueSliderCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1885,7 +1880,7 @@ IBlueSliderCallback(
 }
 
 
-private void
+void
 IBlueTextCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -1903,7 +1898,7 @@ IBlueTextCallback(
 }
 
 
-private UICallback ColorPickerSliderCallback[] =
+UICallback ColorPickerSliderCallback[] =
 {
 	[UI_SLIDER_TYPE_BRIGHTNESS] = IBrightnessSliderCallback,
 	[UI_SLIDER_TYPE_OPACITY] = IOpacitySliderCallback,
@@ -1913,7 +1908,7 @@ private UICallback ColorPickerSliderCallback[] =
 };
 
 
-private UICallback ColorPickerTextCallback[] =
+UICallback ColorPickerTextCallback[] =
 {
 	[UI_SLIDER_TYPE_BRIGHTNESS] = IBrightnessTextCallback,
 	[UI_SLIDER_TYPE_OPACITY] = IOpacityTextCallback,
@@ -1923,7 +1918,7 @@ private UICallback ColorPickerTextCallback[] =
 };
 
 
-private IColorPickerLine
+IColorPickerLine
 IColorPickerCreateLine(
 	const char* name,
 	const char* ShortName,
@@ -2072,7 +2067,7 @@ IColorPickerCreateLine(
 }
 
 
-private void
+void
 IColorPickerCreate(
 	void
 	)
@@ -2255,7 +2250,7 @@ IColorPickerCreate(
 }
 
 
-private void
+void
 IColorContainerCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -2375,7 +2370,7 @@ ICreateColorPicker(
 }
 
 
-private void
+void
 IDropdownOptionCallback(
 	UIElement* Element,
 	UIEvent Event
@@ -2430,7 +2425,7 @@ IDropdownOptionCallback(
 }
 
 
-private IHandle
+IHandle
 ICreateDropdownOption(
 	const IElement* Element,
 	const IDropdown* Dropdown,
@@ -2490,7 +2485,7 @@ ICreateDropdownOption(
 }
 
 
-private void
+void
 IDropdownCallback(
 	UIElement* Element,
 	UIEvent Event

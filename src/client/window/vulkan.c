@@ -1,30 +1,45 @@
 /*
- * Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 
+#include <shared/str.h>
 #include <shared/file.h>
+#include <shared/sync.h>
+#include <shared/time.h>
 #include <shared/debug.h>
+#include <shared/event.h>
+#include <shared/macro.h>
 #include <shared/atomic.h>
+#include <shared/extent.h>
+#include <shared/threads.h>
+#include <client/tex/base.h>
 #include <shared/settings.h>
-#include <shared/alloc_ext.h>
 #include <client/window/dds.h>
+#include <shared/alloc/base.h>
+#include <client/window/base.h>
 #include <client/window/volk.h>
 #include <client/window/vulkan.h>
 
+#include <volk.h>
+#include <vulkan/vk_platform.h>
+
 #include <stdio.h>
+#include <stddef.h>
+#include <stdint.h>
 #include <string.h>
+#include <stdatomic.h>
 
 #define VK_MAX_IMAGES 8
 #define VK_MAX_EXTENSIONS 64
@@ -194,38 +209,38 @@ struct vulkan
 	vk_image_t textures[TEX__COUNT];
 
 	thread_t thread;
-	_Atomic bool should_run;
+	bool _Atomic should_run;
 
 	sync_mtx_t draw_mtx;
 	sync_mtx_t resize_mtx;
 	sync_cond_t resize_cond;
-	_Atomic bool resized;
+	bool _Atomic resized;
 
 	float delta;
 	float fps;
 };
 
 
-private const char* vk_instance_extensions[] =
+const char* vk_instance_extensions[] =
 {
 #ifndef NDEBUG
 	VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
 #endif
 };
 
-private const char* vk_instance_layers[] =
+const char* vk_instance_layers[] =
 {
 #ifndef NDEBUG
 	"VK_LAYER_KHRONOS_validation",
 #endif
 };
 
-private const char* vk_device_extensions[] =
+const char* vk_device_extensions[] =
 {
 	VK_KHR_SWAPCHAIN_EXTENSION_NAME,
 };
 
-private const char* vk_device_layers[] =
+const char* vk_device_layers[] =
 {
 #ifndef NDEBUG
 	"VK_LAYER_KHRONOS_validation",
@@ -233,7 +248,7 @@ private const char* vk_device_layers[] =
 };
 
 
-private const vk_vertex_input_t vk_vertex_input[] =
+const vk_vertex_input_t vk_vertex_input[] =
 {
 	{ {{ -0.5f, -0.5f }}, {{ 0.0f, 0.0f }} },
 	{ {{  0.5f, -0.5f }}, {{ 1.0f, 0.0f }} },
@@ -244,7 +259,7 @@ private const vk_vertex_input_t vk_vertex_input[] =
 
 #ifndef NDEBUG
 
-private VKAPI_ATTR VkBool32 VKAPI_CALL
+VKAPI_ATTR VkBool32 VKAPI_CALL
 vk_debug_callback(
 	VkDebugUtilsMessageSeverityFlagBitsEXT severity,
 	VkDebugUtilsMessageTypeFlagsEXT type,
@@ -259,7 +274,7 @@ vk_debug_callback(
 #endif
 
 
-private void
+void
 vk_init_settings(
 	vulkan_t vk
 	)
@@ -279,7 +294,7 @@ vk_init_settings(
 }
 
 
-private void
+void
 vk_free_settings(
 	vulkan_t vk
 	)
@@ -290,7 +305,7 @@ vk_free_settings(
 }
 
 
-private const char**
+const char**
 vk_get_instance_extensions(
 	vulkan_t vk,
 	const char** extension
@@ -389,7 +404,7 @@ vk_get_instance_extensions(
 }
 
 
-private const char**
+const char**
 vk_get_instance_layers(
 	vulkan_t vk,
 	const char** layer
@@ -457,7 +472,7 @@ vk_get_instance_layers(
 }
 
 
-private void
+void
 vk_free_str_array(
 	const char** arr,
 	const char** arr_end
@@ -471,7 +486,7 @@ vk_free_str_array(
 }
 
 
-private void
+void
 vk_init_instance(
 	vulkan_t vk
 	)
@@ -543,7 +558,7 @@ vk_init_instance(
 }
 
 
-private void
+void
 vk_free_instance(
 	vulkan_t vk
 	)
@@ -560,7 +575,7 @@ vk_free_instance(
 }
 
 
-private void
+void
 vk_init_surface(
 	vulkan_t vk
 	)
@@ -571,7 +586,7 @@ vk_init_surface(
 }
 
 
-private void
+void
 vk_free_surface(
 	vulkan_t vk
 	)
@@ -594,7 +609,7 @@ typedef struct vk_device_score
 vk_device_score_t;
 
 
-private bool
+bool
 vk_get_device_features(
 	vulkan_t vk,
 	VkPhysicalDevice device,
@@ -620,7 +635,7 @@ vk_get_device_features(
 }
 
 
-private bool
+bool
 vk_get_device_queues(
 	vulkan_t vk,
 	VkPhysicalDevice device,
@@ -661,7 +676,7 @@ vk_get_device_queues(
 }
 
 
-private bool
+bool
 vk_get_device_extensions(
 	vulkan_t vk,
 	VkPhysicalDevice device,
@@ -740,7 +755,7 @@ vk_get_device_extensions(
 }
 
 
-private bool
+bool
 vk_get_device_layers(
 	vulkan_t vk,
 	VkPhysicalDevice device,
@@ -812,7 +827,7 @@ vk_get_device_layers(
 }
 
 
-private bool
+bool
 vk_get_device_swapchain(
 	vulkan_t vk,
 	VkPhysicalDevice device,
@@ -861,7 +876,7 @@ vk_get_device_swapchain(
 }
 
 
-private bool
+bool
 vk_get_device_properties(
 	vulkan_t vk,
 	VkPhysicalDevice device,
@@ -931,7 +946,7 @@ vk_get_device_properties(
 }
 
 
-private vk_device_score_t
+vk_device_score_t
 vk_get_device_score(
 	vulkan_t vk,
 	VkPhysicalDevice device
@@ -981,7 +996,7 @@ vk_get_device_score(
 }
 
 
-private void
+void
 vk_update_constants(
 	vulkan_t vk
 	)
@@ -1015,7 +1030,7 @@ vk_update_constants(
 }
 
 
-private void
+void
 vk_get_extent(
 	vulkan_t vk
 	)
@@ -1072,7 +1087,7 @@ vk_get_extent(
 }
 
 
-private void
+void
 vk_init_device(
 	vulkan_t vk
 	)
@@ -1220,7 +1235,7 @@ vk_init_device(
 }
 
 
-private void
+void
 vk_free_device(
 	vulkan_t vk
 	)
@@ -1231,7 +1246,7 @@ vk_free_device(
 }
 
 
-private uint32_t
+uint32_t
 vk_get_memory(
 	vulkan_t vk,
 	uint32_t bits,
@@ -1253,7 +1268,7 @@ vk_get_memory(
 }
 
 
-private void
+void
 vk_init_buffer(
 	vulkan_t vk,
 	VkDeviceSize size,
@@ -1301,7 +1316,7 @@ vk_init_buffer(
 }
 
 
-private void
+void
 vk_free_buffer(
 	vulkan_t vk,
 	vk_buffer_t* buffer
@@ -1318,7 +1333,7 @@ vk_free_buffer(
 }
 
 
-private void
+void
 vk_init_staging_buffer(
 	vulkan_t vk,
 	VkDeviceSize size,
@@ -1334,7 +1349,7 @@ vk_init_staging_buffer(
 }
 
 
-private void
+void
 vk_init_vertex_buffer(
 	vulkan_t vk,
 	VkDeviceSize size,
@@ -1350,7 +1365,7 @@ vk_init_vertex_buffer(
 }
 
 
-private void
+void
 vk_init_indirect_buffer(
 	vulkan_t vk,
 	VkDeviceSize size,
@@ -1366,7 +1381,7 @@ vk_init_indirect_buffer(
 }
 
 
-private void
+void
 vk_init_commands(
 	vulkan_t vk
 	)
@@ -1430,7 +1445,7 @@ vk_init_commands(
 }
 
 
-private void
+void
 vk_free_commands(
 	vulkan_t vk
 	)
@@ -1466,7 +1481,7 @@ vk_free_commands(
 }
 
 
-private void
+void
 vk_wait_command(
 	vulkan_t vk,
 	vk_command_t* command
@@ -1496,7 +1511,7 @@ vk_wait_command(
 }
 
 
-private vk_command_t*
+vk_command_t*
 vk_get_command(
 	vulkan_t vk
 	)
@@ -1534,7 +1549,7 @@ vk_get_command(
 }
 
 
-private void
+void
 vk_run_command(
 	vulkan_t vk,
 	vk_command_t* command
@@ -1566,7 +1581,7 @@ vk_run_command(
 }
 
 
-private void
+void
 vk_copy_to_buffer_explicit(
 	vulkan_t vk,
 	vk_buffer_t* buffer,
@@ -1619,7 +1634,7 @@ vk_copy_to_buffer_explicit(
 vk_copy_to_buffer_explicit((vk), (buffer), (data), sizeof(*(data)) * (size))
 
 
-private void
+void
 vk_copy_texture_to_image(
 	vulkan_t vk,
 	vk_image_t* image,
@@ -1687,7 +1702,7 @@ vk_copy_texture_to_image(
 }
 
 
-private void
+void
 vk_transition_image_layout(
 	vulkan_t vk,
 	vk_image_t* image,
@@ -1761,7 +1776,7 @@ vk_transition_image_layout(
 }
 
 
-private void
+void
 vk_copy_data_to_image(
 	vulkan_t vk,
 	vk_image_t* image,
@@ -1784,7 +1799,7 @@ vk_copy_data_to_image(
 }
 
 
-private void
+void
 vk_create_image(
 	vulkan_t vk,
 	vk_image_t* image
@@ -1915,7 +1930,7 @@ vk_create_image(
 }
 
 
-private void
+void
 vk_free_image(
 	vulkan_t vk,
 	vk_image_t* image
@@ -1930,7 +1945,7 @@ vk_free_image(
 }
 
 
-private void
+void
 vk_init_images(
 	vulkan_t vk
 	)
@@ -1955,7 +1970,7 @@ vk_init_images(
 }
 
 
-private void
+void
 vk_free_images(
 	vulkan_t vk
 	)
@@ -1967,7 +1982,7 @@ vk_free_images(
 }
 
 
-private VkShaderModule
+VkShaderModule
 vk_init_shader(
 	vulkan_t vk,
 	const char* path
@@ -1999,7 +2014,7 @@ vk_init_shader(
 }
 
 
-private void
+void
 vk_free_shader(
 	vulkan_t vk,
 	VkShaderModule shader
@@ -2012,7 +2027,7 @@ vk_free_shader(
 }
 
 
-private VkPipelineCache
+VkPipelineCache
 vk_init_pipeline_cache(
 	vulkan_t vk,
 	const char* path
@@ -2056,7 +2071,7 @@ vk_init_pipeline_cache(
 }
 
 
-private void
+void
 vk_free_pipeline_cache(
 	vulkan_t vk,
 	const char* path,
@@ -2089,7 +2104,7 @@ vk_free_pipeline_cache(
 }
 
 
-private void
+void
 vk_init_render_pass(
 	vulkan_t vk
 	)
@@ -2186,7 +2201,7 @@ vk_init_render_pass(
 }
 
 
-private void
+void
 vk_free_render_pass(
 	vulkan_t vk
 	)
@@ -2197,7 +2212,7 @@ vk_free_render_pass(
 }
 
 
-private void
+void
 vk_init_pipeline(
 	vulkan_t vk
 	)
@@ -2514,7 +2529,7 @@ vk_init_pipeline(
 }
 
 
-private void
+void
 vk_free_pipeline(
 	vulkan_t vk
 	)
@@ -2527,7 +2542,7 @@ vk_free_pipeline(
 }
 
 
-private void
+void
 vk_free_swapchain(
 	vulkan_t vk
 	)
@@ -2538,7 +2553,7 @@ vk_free_swapchain(
 }
 
 
-private void
+void
 vk_init_swapchain(
 	vulkan_t vk
 	)
@@ -2576,7 +2591,7 @@ vk_init_swapchain(
 }
 
 
-private void
+void
 vk_init_barriers(
 	vulkan_t vk
 	)
@@ -2640,7 +2655,7 @@ vk_init_barriers(
 }
 
 
-private void
+void
 vk_free_barriers(
 	vulkan_t vk
 	)
@@ -2673,7 +2688,7 @@ vk_free_barriers(
 }
 
 
-private void
+void
 vk_init_framebuffer(
 	vulkan_t vk,
 	vk_frame_t* frame,
@@ -2737,7 +2752,7 @@ vk_init_framebuffer(
 }
 
 
-private void
+void
 vk_free_framebuffer(
 	vulkan_t vk,
 	vk_frame_t* frame
@@ -2750,7 +2765,7 @@ vk_free_framebuffer(
 }
 
 
-private void
+void
 vk_init_framebuffers(
 	vulkan_t vk
 	)
@@ -2803,7 +2818,7 @@ vk_init_framebuffers(
 }
 
 
-private void
+void
 vk_free_framebuffers(
 	vulkan_t vk
 	)
@@ -2827,7 +2842,7 @@ vk_free_framebuffers(
 }
 
 
-private void
+void
 vk_init_textures(
 	vulkan_t vk
 	)
@@ -2954,7 +2969,7 @@ vk_init_textures(
 }
 
 
-private void
+void
 vk_free_textures(
 	vulkan_t vk
 	)
@@ -2976,7 +2991,7 @@ vk_free_textures(
 }
 
 
-private void
+void
 vk_init_vertex(
 	vulkan_t vk
 	)
@@ -2991,7 +3006,7 @@ vk_init_vertex(
 }
 
 
-private void
+void
 vk_free_vertex(
 	vulkan_t vk
 	)
@@ -3003,7 +3018,7 @@ vk_free_vertex(
 }
 
 
-private void
+void
 vk_record_commands(
 	vulkan_t vk,
 	VkCommandBuffer command_buffer,
@@ -3072,7 +3087,7 @@ vk_record_commands(
 }
 
 
-private void
+void
 vk_record_all_commands(
 	vulkan_t vk
 	)
@@ -3099,7 +3114,7 @@ vk_record_all_commands(
 }
 
 
-private void
+void
 vk_device_wait_idle(
 	vulkan_t vk
 	)
@@ -3111,7 +3126,7 @@ vk_device_wait_idle(
 }
 
 
-private void
+void
 vk_recreate_swapchain(
 	vulkan_t vk
 	)
@@ -3143,7 +3158,7 @@ typedef struct vk_present_data
 vk_present_data_t;
 
 
-private void
+void
 vk_present(
 	vk_present_data_t* data
 	)
@@ -3152,7 +3167,7 @@ vk_present(
 }
 
 
-private void
+void
 vk_draw(
 	vulkan_t vk
 	)
@@ -3270,11 +3285,7 @@ vk_draw(
 		.data = &present_data
 	};
 
-	bool status = window_run_on_main_thread(vk->window, data, true);
-	if(!status)
-	{
-		return;
-	}
+	window_run_on_main_thread(vk->window, data, true);
 
 	bool resized = atomic_load_acq(&vk->resized);
 	if(result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || resized)
@@ -3298,7 +3309,7 @@ vk_draw(
 }
 
 
-private void
+void
 vk_thread_fn(
 	vulkan_t vk
 	)
@@ -3311,10 +3322,12 @@ vk_thread_fn(
 		vk_draw(vk);
 		sync_mtx_unlock(&vk->draw_mtx);
 	}
+
+	window_unref(vk->window);
 }
 
 
-private void
+void
 vk_init_thread(
 	vulkan_t vk
 	)
@@ -3332,7 +3345,7 @@ vk_init_thread(
 }
 
 
-private void
+void
 vk_free_thread(
 	vulkan_t vk
 	)
@@ -3346,7 +3359,7 @@ vk_free_thread(
 }
 
 
-private void
+void
 vk_resize_fn(
 	vulkan_t vk,
 	window_resize_event_data_t* event_data
@@ -3363,7 +3376,7 @@ vk_resize_fn(
 }
 
 
-private void
+void
 vk_init_fn(
 	vulkan_t vk,
 	window_init_event_data_t* event_data
@@ -3397,7 +3410,7 @@ vk_init_fn(
 }
 
 
-private void
+void
 vk_free(
 	vulkan_t vk
 	)
@@ -3424,7 +3437,7 @@ vk_free(
 }
 
 
-private void
+void
 vk_free_fn(
 	vulkan_t vk,
 	window_free_event_data_t* event_data
@@ -3455,6 +3468,19 @@ vk_free_fn(
 }
 
 
+void
+vk_closing_fn(
+	vulkan_t vk,
+	window_closing_event_data_t* event_data
+	)
+{
+	assert_not_null(vk);
+	assert_not_null(event_data);
+
+	atomic_store_rel(&vk->should_run, false);
+}
+
+
 vulkan_t
 vulkan_init(
 	window_t window,
@@ -3464,13 +3490,15 @@ vulkan_init(
 	assert_not_null(window);
 
 	vulkan_t vk = alloc_calloc(vk, 1);
-	assert_not_null(vk);
+	assert_ptr(vk, 1);
 
 	event_target_init(&vk->event_table.init_target);
 	event_target_init(&vk->event_table.free_target);
 	event_target_init(&vk->event_table.draw_target);
 
 	vk->timers = timers;
+
+	window_ref(window);
 
 	vk->window = window;
 	window_event_table_t* table = window_get_event_table(window);
@@ -3495,6 +3523,13 @@ vulkan_init(
 		.data = vk
 	};
 	vk->resize_listener = event_target_add(&table->resize_target, resize_data);
+
+	event_listener_data_t closing_data =
+	{
+		.fn = (void*) vk_closing_fn,
+		.data = vk
+	};
+	event_target_once(&table->closing_target, closing_data);
 
 	sync_mtx_init(&vk->draw_mtx);
 	sync_mtx_init(&vk->resize_mtx);

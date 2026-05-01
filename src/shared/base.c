@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ const uint32_t ShapeMaxHP[] =
 
 
 #define SHAPE_HP_BITS(ShapeName)	\
-[ SHAPE_##ShapeName ] = MACRO_GET_BITS_CONST( ShapeName##_MAX_HP )
+[ SHAPE_##ShapeName ] = MACRO_GET_BITS( ShapeName##_MAX_HP )
 
 const uint32_t ShapeHPBits[] =
 {

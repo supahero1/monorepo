@@ -1,31 +1,26 @@
 /* skip */
 
 #include <shared/debug.h>
-#include <shared/threads.h>
 #include <client/ui/base.h>
+#include <shared/threads.h>
 #include <client/tex/font.h>
-
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include <SDL3/SDL_mouse.h>
 #include <SDL3/SDL_keycode.h>
 #include <SDL3/SDL_clipboard.h>
 
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <harfbuzz/hb.h>
 #include <harfbuzz/hb-ft.h>
 
-#define DRAW_DEPTH_JIFFIE (1.0f / (1U << 22U))
-#define DRAW_DEPTH_LEAP (1.0f / (1U << 20U))
-#define COLOR_PICKER_HANDLE_SIZE 0.0625f
 
-
-private UIElement Elements[GAME_CONST_MAX_UI_ELEMENTS] =
+UIElement Elements[GAME_CONST_MAX_UI_ELEMENTS] =
 	{ { .Callback = UIEmptyCallback, .type = UI_TYPE_CONTAINER } };
-private UIElement* FreeElement;
-private uint32_t ElementsCount = 1;
+UIElement* FreeElement;
+uint32_t ElementsCount = 1;
 
 UIElement* UIWindow = Elements;
 float MouseX;
@@ -33,45 +28,45 @@ float MouseY;
 float ScrollOffset;
 bool SameElement;
 
-private VkVertexInstanceInput DrawInput[GAME_CONST_MAX_TEXTURES];
-private uint32_t DrawIndex;
-private float DeltaTime;
-private float depth;
+VkVertexInstanceInput DrawInput[GAME_CONST_MAX_TEXTURES];
+uint32_t DrawIndex;
+float DeltaTime;
+float depth;
 
-private UIElement* ElementUnderMouse;
-private UIElement* ClickableUnderMouse;
-private UIElement* ScrollableUnderMouse;
+UIElement* ElementUnderMouse;
+UIElement* ClickableUnderMouse;
+UIElement* ScrollableUnderMouse;
 
-private UIElement* SelectedElement;
-private UIElement* SelectedTextElement;
+UIElement* SelectedElement;
+UIElement* SelectedTextElement;
 
-private UIElement* LastScrollable;
+UIElement* LastScrollable;
 
-private UITextOffset SelectionHead;
-private UITextOffset SelectionTail;
-private UITextOffset SelectionStart;
-private UITextOffset SelectionEnd;
-private UITextOffset LastSelection;
+UITextOffset SelectionHead;
+UITextOffset SelectionTail;
+UITextOffset SelectionStart;
+UITextOffset SelectionEnd;
+UITextOffset LastSelection;
 
-private float DeltaW;
-private float DeltaH;
+float DeltaW;
+float DeltaH;
 
-private uint64_t LastDrawAt;
-private uint64_t LastCursorSetAt;
+uint64_t LastDrawAt;
+uint64_t LastCursorSetAt;
 
-private bool KeyState[UI_KEY__COUNT] = {0};
-private bool buttonState[UI_BUTTON__COUNT] = {0};
+bool KeyState[UI_KEY__COUNT] = {0};
+bool buttonState[UI_BUTTON__COUNT] = {0};
 
-private FT_Library FreeTypeLibrary;
-private FT_Face FreeTypeFace;
-private hb_font_t* HarfBuzzFont;
-private hb_feature_t HarfBuzzFeatures[] =
+FT_Library FreeTypeLibrary;
+FT_Face FreeTypeFace;
+hb_font_t* HarfBuzzFont;
+hb_feature_t HarfBuzzFeatures[] =
 {
 	{ HB_TAG('l', 'i', 'g', 'a'), 0, 0, -1 }, /* Ligatures suck */
 };
 
 
-private uint32_t
+uint32_t
 DefaultFilter(
 	uint32_t Codepoint
 	)
@@ -277,7 +272,7 @@ UIFree(
 }
 
 
-private void
+void
 UITextFreeLines(
 	UIText* Text
 	)
@@ -291,7 +286,7 @@ UITextFreeLines(
 }
 
 
-private void
+void
 UITextFreeMod(
 	UITextMod* Mod
 	)
@@ -301,7 +296,7 @@ UITextFreeMod(
 }
 
 
-private void
+void
 UITextFreemods(
 	UIText* Text
 	)
@@ -345,7 +340,7 @@ typedef struct UITextParseState
 UITextParseState;
 
 
-private uint32_t
+uint32_t
 UITextParse(
 	UITextParseState* state,
 	const uint32_t* Codepoints,
@@ -519,7 +514,7 @@ puts("nice return");
 }
 
 
-private void
+void
 UITextConfigure(
 	UIElement* Element
 	)
@@ -691,7 +686,7 @@ UIInitialize(
 }
 
 
-private bool
+bool
 UIMouseOver(
 	UIElement* Element
 	)
@@ -764,7 +759,7 @@ UIMouseOver(
 }
 
 
-private void
+void
 UIDrawElement(
 	UIElement* Element,
 	float ClipX,
@@ -1166,7 +1161,7 @@ UIDrawElement(
 }
 
 
-private void
+void
 UIDrawChildren(
 	UIElement* Element,
 	float ClipX,
@@ -1203,7 +1198,7 @@ UIDrawChildren(
 }
 
 
-private void
+void
 UIDrawContainer(
 	UIElement* Element,
 	float ClipX,
@@ -1234,7 +1229,7 @@ UIDrawContainer(
 }
 
 
-private void
+void
 UIDrawText(
 	UIElement* Element,
 	float ClipX,
@@ -1360,7 +1355,7 @@ UIDrawText(
 }
 
 
-private void
+void
 UIDrawCheckbox(
 	UIElement* Element,
 	float ClipX,
@@ -1389,7 +1384,7 @@ UIDrawCheckbox(
 }
 
 
-private void
+void
 UIDrawSlider(
 	UIElement* Element,
 	float ClipX,
@@ -1704,7 +1699,7 @@ UIDrawSlider(
 }
 
 
-private void
+void
 UIDrawScrollbar(
 	UIElement* Element,
 	float ClipX,
@@ -1848,7 +1843,7 @@ UIDrawScrollbar(
 }
 
 
-private void
+void
 UIDrawColorPicker(
 	UIElement* Element,
 	float ClipX,
@@ -1892,7 +1887,7 @@ UIDrawColorPicker(
 }
 
 
-private void
+void
 UIDrawTexture(
 	UIElement* Element,
 	float ClipX,
@@ -1917,7 +1912,7 @@ UIDrawTexture(
 }
 
 
-private void
+void
 UIPreClipCalcContainer(
 	UIElement* Element,
 	UIElement* Scrollable
@@ -1948,7 +1943,7 @@ UIPreClipCalcContainer(
 }
 
 
-private void
+void
 UIPreClipCalcText(
 	UIElement* Element,
 	UIElement* Scrollable
@@ -1960,7 +1955,7 @@ UIPreClipCalcText(
 }
 
 
-private void
+void
 UIPreClipCalcCheckbox(
 	UIElement* Element,
 	UIElement* Scrollable
@@ -1972,7 +1967,7 @@ UIPreClipCalcCheckbox(
 }
 
 
-private void
+void
 UIPreClipCalcSlider(
 	UIElement* Element,
 	UIElement* Scrollable
@@ -1984,7 +1979,7 @@ UIPreClipCalcSlider(
 }
 
 
-private void
+void
 UIPreClipCalcScrollbar(
 	UIElement* Element,
 	UIElement* Scrollable
@@ -1998,7 +1993,7 @@ UIPreClipCalcScrollbar(
 }
 
 
-private void
+void
 UIPreClipCalcColorPicker(
 	UIElement* Element,
 	UIElement* Scrollable
@@ -2010,7 +2005,7 @@ UIPreClipCalcColorPicker(
 }
 
 
-private void
+void
 UIPreClipCalcTexture(
 	UIElement* Element,
 	UIElement* Scrollable
@@ -2022,7 +2017,7 @@ UIPreClipCalcTexture(
 }
 
 
-private void
+void
 UIPostClipCalcContainer(
 	UIElement* Element,
 	float ClipX,
@@ -2039,7 +2034,7 @@ UIPostClipCalcContainer(
 }
 
 
-private void
+void
 UIPostClipCalcText(
 	UIElement* Element,
 	float ClipX,
@@ -2105,7 +2100,7 @@ UIPostClipCalcText(
 }
 
 
-private void
+void
 UIPostClipCalcCheckbox(
 	UIElement* Element,
 	float ClipX,
@@ -2122,7 +2117,7 @@ UIPostClipCalcCheckbox(
 }
 
 
-private void
+void
 UIPostClipCalcSlider(
 	UIElement* Element,
 	float ClipX,
@@ -2139,7 +2134,7 @@ UIPostClipCalcSlider(
 }
 
 
-private void
+void
 UIPostClipCalcScrollbar(
 	UIElement* Element,
 	float ClipX,
@@ -2156,7 +2151,7 @@ UIPostClipCalcScrollbar(
 }
 
 
-private void
+void
 UIPostClipCalcColorPicker(
 	UIElement* Element,
 	float ClipX,
@@ -2173,7 +2168,7 @@ UIPostClipCalcColorPicker(
 }
 
 
-private void
+void
 UIPostClipCalcTexture(
 	UIElement* Element,
 	float ClipX,
@@ -2190,7 +2185,7 @@ UIPostClipCalcTexture(
 }
 
 
-private void
+void
 UIDraw(
 	void
 	)
@@ -2223,7 +2218,7 @@ UIDraw(
 
 
 
-private UITextOffset
+UITextOffset
 UITextCalculateOffset(
 	UIElement* Element
 	)
@@ -2280,7 +2275,7 @@ UITextCalculateOffset(
 }
 
 
-private void
+void
 UITextRecalculateOffset(
 	UIElement* Element,
 	UITextOffset* Selection
@@ -2327,7 +2322,7 @@ UITextRecalculateOffset(
 }
 
 
-private void
+void
 UITextAddMod(
 	uint32_t Start,
 	uint32_t End,
@@ -2382,7 +2377,7 @@ UITextAddMod(
 }
 
 
-private void
+void
 UITextCopy(
 	void
 	)
@@ -2401,7 +2396,7 @@ UITextCopy(
 }
 
 
-private void
+void
 UITextSelectAll(
 	void
 	)
@@ -2431,7 +2426,7 @@ UITextSelectAll(
 }
 
 
-private void
+void
 UITextDelete(
 	uint32_t Offset
 	)
@@ -2509,7 +2504,7 @@ UITextDelete(
 }
 
 
-private void
+void
 UITextExecMod(
 	uint32_t Start,
 	uint32_t End,
@@ -2567,7 +2562,7 @@ UITextExecMod(
 }
 
 
-private void
+void
 UITextExecPrevMod(
 	void
 	)
@@ -2590,7 +2585,7 @@ UITextExecPrevMod(
 }
 
 
-private void
+void
 UITextExecNextMod(
 	void
 	)
@@ -2613,7 +2608,7 @@ UITextExecNextMod(
 }
 
 
-private void
+void
 UITextPasteExplicit(
 	const char* OriginalStr,
 	uint32_t len
@@ -2699,7 +2694,7 @@ UITextPasteExplicit(
 }
 
 
-private void
+void
 UITextPaste(
 	void
 	)
@@ -2723,7 +2718,7 @@ UITextPaste(
 }
 
 
-private void
+void
 UITextMoveSelectionHorizontallyWholeWord(
 	uint32_t Direction
 	)
@@ -2771,7 +2766,7 @@ UITextMoveSelectionHorizontallyWholeWord(
 }
 
 
-private void
+void
 UITextMoveSelectionHorizontally(
 	uint32_t Direction
 	)
@@ -2799,7 +2794,7 @@ UITextMoveSelectionHorizontally(
 }
 
 
-private void
+void
 UITextMoveHorizontally(
 	uint32_t Direction,
 	int Select,
@@ -2860,7 +2855,7 @@ UITextMoveHorizontally(
 }
 
 
-private void
+void
 UITextMoveSelectionVertically(
 	uint32_t Direction
 	)
@@ -2943,7 +2938,7 @@ UITextMoveSelectionVertically(
 }
 
 
-private void
+void
 UITextMoveVertically(
 	uint32_t Direction,
 	int Select
@@ -2995,7 +2990,7 @@ UITextMoveVertically(
 }
 
 
-private void
+void
 UITextSubmit(
 	void
 	)
@@ -3078,7 +3073,7 @@ UIColorPickerUpdate(
 }
 
 
-private void
+void
 UIColorPickerUpdatePos(
 	UIColorPicker* ColorPicker
 	)
@@ -3091,7 +3086,7 @@ UIColorPickerUpdatePos(
 
 
 
-private void
+void
 UITextOnMouseDown(
 	UIElement* Element
 	)
@@ -3116,7 +3111,7 @@ UITextOnMouseDown(
 }
 
 
-private void
+void
 UITextOnMouseMove(
 	UIElement* Element
 	)
@@ -3186,7 +3181,7 @@ UITextCallback(
 
 
 
-private void
+void
 UICheckboxOnMouseUp(
 	UIElement* Element
 	)
@@ -3230,7 +3225,7 @@ UICheckboxCallback(
 
 
 
-private void
+void
 UISliderOnMouseDown(
 	UIElement* Element
 	)
@@ -3264,7 +3259,7 @@ UISliderOnMouseDown(
 }
 
 
-private void
+void
 UISliderOnMouseMove(
 	UIElement* Element
 	)
@@ -3304,7 +3299,7 @@ UISliderCallback(
 
 
 
-private void
+void
 UIScrollbarOnMouseDown(
 	UIElement* Element
 	)
@@ -3372,7 +3367,7 @@ UIScrollbarOnMouseDown(
 }
 
 
-private void
+void
 UIScrollbarOnMouseUp(
 	UIElement* Element
 	)
@@ -3384,7 +3379,7 @@ UIScrollbarOnMouseUp(
 }
 
 
-private void
+void
 UIScrollbarOnMouseMove(
 	UIElement* Element
 	)
@@ -3457,7 +3452,7 @@ UIScrollbarCallback(
 
 
 
-private void
+void
 UIColorPickerOnMouseDown(
 	UIElement* Element
 	)
@@ -3497,7 +3492,7 @@ UIColorPickerOnMouseDown(
 }
 
 
-private void
+void
 UIColorPickerOnMouseMove(
 	UIElement* Element
 	)
@@ -3568,7 +3563,7 @@ WindowOnBlur(
 }
 
 
-private bool
+bool
 UIKeyDown(
 	int key,
 	int mods,
@@ -3763,7 +3758,7 @@ UIKeyDown(
 }
 
 
-private UIKey
+UIKey
 UIMapKey(
 	int key
 	)
@@ -4045,7 +4040,7 @@ WindowOnKeyDown(
 }
 
 
-private void
+void
 UIKeyUp(
 	int key,
 	int mods
@@ -4091,7 +4086,7 @@ WindowOnText(
 }
 
 
-private UIbutton
+UIbutton
 UIMapbutton(
 	int button
 	)
@@ -4110,7 +4105,7 @@ UIMapbutton(
 }
 
 
-private bool
+bool
 UIMouseDown(
 	int button
 	)
@@ -4159,7 +4154,7 @@ WindowOnMouseDown(
 }
 
 
-private void
+void
 UIMouseUp(
 	int button
 	)
@@ -4198,7 +4193,7 @@ WindowOnMouseUp(
 }
 
 
-private bool
+bool
 UIMouseMove(
 	float x,
 	float y
@@ -4229,7 +4224,7 @@ WindowOnMouseMove(
 }
 
 
-private bool
+bool
 UIMouseScroll(
 	float offset_y
 	)

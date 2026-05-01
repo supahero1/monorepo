@@ -1,7 +1,7 @@
 /* skip */
 
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@
 
 #include <shared/debug.h>
 #include <client/window.h>
-#include <shared/threads.h>
 #include <client/ui/base.h>
-#include <shared/alloc_ext.h>
+#include <shared/threads.h>
+#include <shared/alloc/base.h>
 
 #include <SDL3/SDL_mouse.h>
 #include <SDL3/SDL_keycode.h>
@@ -31,7 +31,7 @@ float depth;
 float DeltaTime;
 uint64_t LastDrawAt;
 
-private UIElement* RootElement;
+UIElement* RootElement;
 
 pair_t UIMouse;
 UIElement* UIElementUnderMouse;
@@ -42,7 +42,7 @@ UIElement* UISelectedSelectableElement;
 bool UISameElement;
 
 
-private void
+void
 UIRootElementOnWindowResize(
 	UIElement* Element,
 	window_resize_event_data_t* data
@@ -152,7 +152,7 @@ UIAllocElement(
 }
 
 
-private void
+void
 UIFreeElementCallback(
 	UIElement* Element,
 	void* data
@@ -355,7 +355,7 @@ UIDrawElement(
 }
 
 
-private void
+void
 UIDrawCallback(
 	void* _,
 	void* __
@@ -422,7 +422,7 @@ UIDrawCallback(
 }
 
 
-private void
+void
 UIMouseDownCallback(
 	void* _,
 	window_mouse_down_event_data_t* data
@@ -452,7 +452,7 @@ UIMouseDownCallback(
 }
 
 
-private void
+void
 UIMouseUpCallback(
 	void* _,
 	window_mouse_up_event_data_t* data
@@ -521,7 +521,7 @@ UIUpdateWidth( // TODO apply modifiers
 }
 
 
-private float
+float
 UIEndWidthToWidth(
 	UIElement* Element,
 	float OldEndWidth
@@ -544,7 +544,7 @@ UIUpdateHeight(
 }
 
 
-private float
+float
 UIEndHeightToHeight(
 	UIElement* Element,
 	float OldEndHeight

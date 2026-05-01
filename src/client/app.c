@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,22 +18,26 @@
 #include <shared/file.h>
 #include <shared/time.h>
 #include <shared/debug.h>
+#include <shared/event.h>
+#include <shared/macro.h>
+#include <shared/extent.h>
 #include <shared/options.h>
 #include <shared/settings.h>
-#include <shared/alloc_ext.h>
+#include <client/tex/tex_4.h>
+#include <shared/alloc/base.h>
+#include <client/window/base.h>
 #include <client/window/vulkan.h>
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <libgen.h>
 #include <limits.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 
 struct app
 {
 	window_event_table_t* window_event_table;
-	event_listener_t* window_close_once_listener;
+	event_listener_t* window_close_request_once_listener;
 	event_listener_t* window_move_listener;
 	event_listener_t* window_resize_listener;
 	event_listener_t* window_fullscreen_listener;
@@ -55,21 +59,21 @@ struct app
 };
 
 
-private void
-app_window_close_once_fn(
+void
+app_window_close_request_once_fn(
 	app_t app,
-	window_close_event_data_t* event_data
+	window_close_request_event_data_t* event_data
 	)
 {
 	assert_not_null(app);
 	assert_not_null(event_data);
 
-	app->window_close_once_listener = NULL;
+	app->window_close_request_once_listener = NULL;
 	window_close(event_data->window);
 }
 
 
-private void
+void
 app_window_free_once_fn(
 	app_t app,
 	window_free_event_data_t* event_data
@@ -83,11 +87,11 @@ app_window_free_once_fn(
 	event_target_del(&table->fullscreen_target, app->window_fullscreen_listener);
 	event_target_del(&table->resize_target, app->window_resize_listener);
 	event_target_del(&table->move_target, app->window_move_listener);
-	event_target_del_once(&table->close_target, app->window_close_once_listener);
+	event_target_del_once(&table->close_request_target, app->window_close_request_once_listener);
 }
 
 
-private void
+void
 app_window_on_move_fn(
 	app_t app,
 	window_move_event_data_t* event_data
@@ -101,7 +105,7 @@ app_window_on_move_fn(
 }
 
 
-private void
+void
 app_window_on_resize_fn(
 	app_t app,
 	window_resize_event_data_t* event_data
@@ -115,7 +119,7 @@ app_window_on_resize_fn(
 }
 
 
-private void
+void
 app_window_on_fullscreen_fn(
 	app_t app,
 	window_focus_event_data_t* event_data
@@ -128,7 +132,7 @@ app_window_on_fullscreen_fn(
 }
 
 
-private void
+void
 app_vulkan_on_free_fn(
 	app_t app,
 	vulkan_free_event_data_t* event_data
@@ -143,7 +147,7 @@ app_vulkan_on_free_fn(
 }
 
 
-private void
+void
 app_vulkan_on_draw_fn(
 	app_t app,
 	vulkan_draw_event_data_t* event_data
@@ -250,12 +254,13 @@ app_init(
 	app->window_event_table = window_get_event_table(app->window);
 	window_event_table_t* table = app->window_event_table;
 
-	event_listener_data_t close_once_data =
+	event_listener_data_t close_request_once_data =
 	{
-		.fn = (void*) app_window_close_once_fn,
+		.fn = (void*) app_window_close_request_once_fn,
 		.data = app
 	};
-	app->window_close_once_listener = event_target_once(&table->close_target, close_once_data);
+	app->window_close_request_once_listener =
+		event_target_once(&table->close_request_target, close_request_once_data);
 
 	event_listener_data_t free_once_data =
 	{

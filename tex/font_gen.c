@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,18 +16,17 @@
 
 #include <shared/file.h>
 #include <shared/debug.h>
-#include <shared/alloc_ext.h>
+#include <shared/alloc/base.h>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <freetype/ftstroke.h>
-
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb/stb_image_write.h>
 
 #define FONT_AVG_SIZE 400
 #define FONT_STROKE_THICKNESS 31
-#define TEXT_FILE_SIZE (UINT32_C(1) << 24)
+#define TEXT_FILE_SIZE ((uint32_t) 1 << 24)
 
 
 typedef struct font_glyph_data
@@ -37,22 +36,6 @@ typedef struct font_glyph_data
 	uint32_t codepoint;
 }
 font_glyph_data_t;
-
-
-private uint32_t
-font_get_next_power_of_2(
-	alloc_t value
-	)
-{
-	assert_neq(value, 0);
-
-	if(value <= 2)
-	{
-		return value;
-	}
-
-	return UINT32_C(1) << (32 - __builtin_clz(value - 1));
-}
 
 
 int
@@ -78,18 +61,18 @@ main(
 	uint32_t max_idx = 0;
 	uint32_t max_codepoint = 0;
 
-	uint32_t table_size = UINT32_C(1) << 24;
+	uint32_t table_size = (uint32_t) 1 << 24;
 
 	font_glyph_data_t* glyph_data = alloc_malloc(glyph_data, table_size);
-	assert_not_null(glyph_data);
+	assert_ptr(glyph_data, table_size);
 
 	font_glyph_data_t* cur_glyph_data = glyph_data + 1;
 
 	uint32_t* glyph_map = alloc_calloc(glyph_map, table_size);
-	assert_not_null(glyph_map);
+	assert_ptr(glyph_map, table_size);
 
 	uint32_t* codepoint_map = alloc_calloc(codepoint_map, table_size);
-	assert_not_null(codepoint_map);
+	assert_ptr(codepoint_map, table_size);
 
 	codepoint_map['\t'] = ' ';
 	codepoint_map['\n'] = '\n';
@@ -152,7 +135,7 @@ main(
 		uint32_t bg_left = bitmap_glyph->left;
 		uint32_t bg_pitch = bitmap_glyph->bitmap.pitch << 3;
 
-		uint32_t bg_size = font_get_next_power_of_2(MACRO_MAX(bg_width, bg_height));
+		uint32_t bg_size = MACRO_NEXT_OR_EQUAL_POWER_OF_2(MACRO_MAX(bg_width, bg_height));
 		if(bg_size <= 4)
 		{
 			bg_size = 4;
@@ -166,7 +149,7 @@ main(
 
 		uint32_t img_size = bg_size * bg_size * 4;
 		uint8_t* bg_img = alloc_calloc(bg_img, img_size);
-		assert_not_null(bg_img);
+		assert_ptr(bg_img, img_size);
 
 		for(uint32_t y = 0; y < bg_height; ++y)
 		{
@@ -189,6 +172,7 @@ main(
 		{
 			uint32_t max_y = bg_height;
 			uint32_t max_x = bg_width;
+			uint32_t pixels = max_x * max_y;
 
 			for(uint32_t y = 0; y < max_y; ++y)
 			{
@@ -208,11 +192,13 @@ main(
 					}
 					img_pos;
 
-					img_pos stack[max_x * max_y];
+					img_pos* stack = alloc_malloc(stack, pixels);
+					assert_ptr(stack, pixels);
+
 					img_pos* head = stack;
 
-					uint8_t visited[max_x * max_y];
-					(void) memset(visited, 0, max_x * max_y);
+					uint8_t* visited = alloc_calloc(visited, pixels);
+					assert_ptr(visited, pixels);
 
 					*(head++) = (img_pos){ y, x };
 					visited[y * max_x + x] = 1;
@@ -292,6 +278,9 @@ main(
 					}
 					while(head != stack);
 
+					alloc_free(visited, pixels);
+					alloc_free(stack, pixels);
+
 					if(enclosed)
 					{
 						*pixel = 255;
@@ -368,6 +357,7 @@ main(
 		alloc_free(bg_img, img_size);
 
 
+		FT_Done_Glyph(glyph);
 		goto_skip:
 		codepoint = FT_Get_Next_Char(face, codepoint, &glyph_idx);
 	}

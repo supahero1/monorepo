@@ -1,4 +1,4 @@
-#   Copyright 2024-2025 Franciszek Balcerak
+#   Copyright 2024-2026 Franciszek Balcerak
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@ all:
 tex/font/ tex/var/ tex/img/ tex/dds_raw/ tex/dds_bc1/ tex/dds/:
 	mkdir -p $@
 
-bin/shaders/ $(SRC_TEX_DIRS) $(SRC_FONT_DIRS) DiepDesktop/shaders/:
+bin/shaders/ $(SRC_TEX_DIRS) $(SRC_FONT_DIRS) release/shaders/:
 	mkdir -p $@
 
 .PHONY: clean
@@ -190,14 +190,14 @@ dds_wipe: dds_clean
 .PHONY: tex_reset
 tex_reset:
 	$(MAKE) wipe
-	RELEASE=2 scons tex/font_gen tex/var_gen tex/tex_gen tex/sort -j $(shell nproc)
-	RELEASE=2 $(MAKE) font_build var_build tex_build tex_gen
+	RELEASE=0 scons tex/font_gen tex/var_gen tex/tex_gen tex/sort -j $(shell nproc)
+	RELEASE=0 $(MAKE) font_build var_build tex_build tex_gen
 	$(MAKE) dds_build
 
 
-bin/shaders/%.spv: shaders/%.glsl | bin/shaders/ DiepDesktop/shaders/
+bin/shaders/%.spv: shaders/%.glsl | bin/shaders/ release/shaders/
 	glslc -O -fshader-stage=$* $< -o $@
-	$(CP) $@ DiepDesktop/shaders/
+	$(CP) $@ release/shaders/
 
 .PHONY: shaders
 shaders: bin/shaders/vert.spv bin/shaders/frag.spv
@@ -216,40 +216,40 @@ client: shaders
 
 	scons client -j $(shell nproc)
 
-	if [[ ! -f DiepDesktop/Ubuntu.ttf ]]; then \
-		$(CP) tex/Ubuntu.ttf DiepDesktop/; \
+	if [[ ! -f release/Ubuntu.ttf ]]; then \
+		$(CP) tex/Ubuntu.ttf release/; \
 	fi
 
-	if [[ ! -d DiepDesktop/shaders/ ]]; then \
-		$(CP) -r bin/shaders/ DiepDesktop/; \
+	if [[ ! -d release/shaders/ ]]; then \
+		$(CP) -r bin/shaders/ release/; \
 	fi
 
-	$(CP) bin/client DiepDesktop/
+	$(CP) bin/client release/
 
-	mkdir -p DiepDesktop/textures/
-	$(CP) tex/dds/* DiepDesktop/textures/
+	mkdir -p release/textures/
+	$(CP) tex/dds/* release/textures/
 
 ifeq ($(OS),Windows_NT)
-	if [[ ! -f DiepDesktop/SDL3.dll ]]; then \
-		$(CP) "C:\\msys64\\mingw64\\bin\\SDL3.dll" DiepDesktop/; \
+	if [[ ! -f release/SDL3.dll ]]; then \
+		$(CP) "C:\\msys64\\mingw64\\bin\\SDL3.dll" release/; \
 	fi
-	if [[ ! -f DiepDesktop/libwinpthread-1.dll ]]; then \
-		$(CP) "C:\\msys64\\mingw64\\bin\\libwinpthread-1.dll" DiepDesktop/; \
+	if [[ ! -f release/libwinpthread-1.dll ]]; then \
+		$(CP) "C:\\msys64\\mingw64\\bin\\libwinpthread-1.dll" release/; \
 	fi
 else
-	if [[ ! -f DiepDesktop/libvulkan.so ]]; then \
+	if [[ ! -f release/libvulkan.so ]]; then \
 		$(CP) -L \
-			$$(ldconfig -p | grep 'libvulkan.so ' | awk '{print $$NF}') \
-			DiepDesktop/; \
+			$$(ldconfig -p | grep 'libvulkan.so ' | head -n 1 | awk '{print $$NF}') \
+			release/; \
 	fi
-	if [[ ! -f DiepDesktop/libSDL3.so ]]; then \
+	if [[ ! -f release/libSDL3.so ]]; then \
 		$(CP) -L \
-			$$(ldconfig -p | grep 'libSDL3.so ' | awk '{print $$NF}') \
-			DiepDesktop/; \
+			$$(ldconfig -p | grep 'libSDL3.so ' | head -n 1 | awk '{print $$NF}') \
+			release/; \
 	fi
 endif
 
-	cd DiepDesktop; $(VALGRIND_CALL) ./client
+	cd release; $(VALGRIND_CALL) ./client
 
 
 .PHONY: server

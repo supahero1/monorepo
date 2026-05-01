@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,10 +16,12 @@
 
 #include <shared/file.h>
 #include <shared/debug.h>
-#include <shared/alloc_ext.h>
+#include <shared/macro.h>
 #include <client/window/dds.h>
+#include <shared/alloc/base.h>
 
 #include <zstd.h>
+#include <stdint.h>
 
 
 extern dds_tex_t*
@@ -38,6 +40,7 @@ dds_load(
 	hard_assert_not_null(content);
 
 	uint64_t actual_decompressed_size = ZSTD_decompress(content, decompressed_size, file.data, file.len);
+	hard_assert_false(ZSTD_isError(actual_decompressed_size));
 	hard_assert_ge(actual_decompressed_size, sizeof(dds_tex_t));
 	hard_assert_le(actual_decompressed_size, decompressed_size);
 

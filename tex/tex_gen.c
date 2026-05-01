@@ -1,5 +1,5 @@
 /*
- *   Copyright 2024-2025 Franciszek Balcerak
+ *   Copyright 2024-2026 Franciszek Balcerak
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,18 +16,21 @@
 
 #include <shared/file.h>
 #include <shared/debug.h>
-#include <shared/alloc_ext.h>
+#include <shared/macro.h>
+#include <shared/alloc/base.h>
 
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include <dirent.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/stat.h>
 
-#define TEXT_FILE_SIZE (UINT32_C(1) << 24)
+#define TEXT_FILE_SIZE ((uint32_t) 1 << 24)
+#define FILE_NAME_SIZE 32
 
 
-private int
+int
 sort_compare(
 	const void* a,
 	const void* b
@@ -98,7 +101,7 @@ main(
 		tex_str += sprintf(tex_str, "#pragma once\n\n");
 
 		char** filenames = alloc_malloc(filenames, TEXT_FILE_SIZE);
-		assert_not_null(filenames);
+		assert_ptr(filenames, TEXT_FILE_SIZE);
 
 		char** filename = filenames;
 
@@ -118,8 +121,8 @@ main(
 				continue;
 			}
 
-			*filename = alloc_malloc(*filename, 32);
-			assert_not_null(*filename);
+			*filename = alloc_malloc(*filename, FILE_NAME_SIZE);
+			assert_ptr(*filename, FILE_NAME_SIZE);
 
 			char* tex_name = *(filename++);
 			char* cur = tex_entry->d_name;
@@ -175,7 +178,7 @@ main(
 
 		for(int i = 0; i < files; ++i)
 		{
-			alloc_free(filenames[i], 32);
+			alloc_free(filenames[i], FILE_NAME_SIZE);
 		}
 
 		alloc_free(filenames, TEXT_FILE_SIZE);
