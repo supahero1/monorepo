@@ -218,10 +218,10 @@ def add_program(object, use_libtest=False):
 def add_test(object):
 	program = add_program(object, True)
 	output = str(program[0]) + ".out"
-	test = env.Command(output, program, "$SOURCE --file > $TARGET 2>&1")
+	test = env.Command(output, program, "KDE_DEBUG=1 $SOURCE --file > $TARGET 2>&1")
 	valgrind_output = output + ".val"
 	valgrind_test = env.Command(valgrind_output, program,
-		"DEBUGINFOD_URLS=https://debuginfod.archlinux.org valgrind --leak-check=full " +
+		"KDE_DEBUG=1 DEBUGINFOD_URLS=https://debuginfod.archlinux.org valgrind --leak-check=full " +
 		"--show-leak-kinds=all --suppressions=val_sup.txt -- $SOURCE --file > $TARGET 2>&1")
 	return [test, valgrind_test]
 
