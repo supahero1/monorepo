@@ -63,7 +63,7 @@ test_normal_fail__quadtree_insert_null_qt(
 	void
 	)
 {
-	quadtree_insert(NULL, TEST_PTR);
+	quadtree_insert(NULL, (rect_extent_t){0}, TEST_PTR);
 }
 
 
@@ -74,7 +74,7 @@ test_normal_fail__quadtree_insert_null_data(
 {
 	quadtree_t qt = {0};
 	quadtree_init(&qt);
-	quadtree_insert(&qt, NULL);
+	quadtree_insert(&qt, (rect_extent_t){0}, NULL);
 }
 
 
@@ -83,7 +83,7 @@ test_normal_fail__quadtree_remove_null(
 	void
 	)
 {
-	quadtree_remove(NULL, 1);
+	quadtree_remove(NULL, TEST_PTR);
 }
 
 
@@ -93,8 +93,14 @@ test_normal_fail__quadtree_remove_invalid_entity_idx_1(
 	)
 {
 	quadtree_t qt = {0};
+	qt.half_extent = (half_extent_t){ .x = 0.0f, .y = 0.0f, .w = 64.0f, .h = 64.0f };
+	qt.rect_extent = half_to_rect_extent(qt.half_extent);
 	quadtree_init(&qt);
-	quadtree_remove(NULL, 0);
+
+	quadtree_insert(&qt, qt.rect_extent, &(qt_test_entity_data_t){ .idx = 0 });
+	quadtree_normalize(&qt);
+
+	quadtree_remove(&qt, qt.data);
 }
 
 
@@ -104,8 +110,14 @@ test_normal_fail__quadtree_remove_invalid_entity_idx_2(
 	)
 {
 	quadtree_t qt = {0};
+	qt.half_extent = (half_extent_t){ .x = 0.0f, .y = 0.0f, .w = 64.0f, .h = 64.0f };
+	qt.rect_extent = half_to_rect_extent(qt.half_extent);
 	quadtree_init(&qt);
-	quadtree_remove(NULL, 1);
+
+	quadtree_insert(&qt, qt.rect_extent, &(qt_test_entity_data_t){ .idx = 0 });
+	quadtree_normalize(&qt);
+
+	quadtree_remove(&qt, qt.data + qt.entities_used);
 }
 
 
@@ -361,10 +373,9 @@ qt_test_insert(
 	)
 {
 	half_extent_t half_extent = { .x = x, .y = y, .w = w, .h = h };
-	quadtree_insert(&test->qt, &(
+	quadtree_insert(&test->qt, half_to_rect_extent(half_extent), &(
 		(qt_test_entity_data_t)
 		{
-			.rect_extent = half_to_rect_extent(half_extent),
 			.idx = test->next_idx++
 		}
 		));
@@ -374,16 +385,18 @@ qt_test_insert(
 quadtree_status_t
 qt_test_remove_update_fn(
 	quadtree_t* qt,
-	quadtree_entity_info_t info,
+	rect_extent_t* extent,
+	qt_test_entity_data_t* data,
 	void* user_data
 	)
 {
+	(void) extent;
 	(void) user_data;
 
 	qt_test_t* test = MACRO_CONTAINER_OF(qt, qt_test_t, qt);
-	if(info.data->idx == test->remove_idx)
+	if(data->idx == test->remove_idx)
 	{
-		quadtree_remove(qt, info.idx);
+		quadtree_remove(qt, data);
 	}
 
 	return QUADTREE_STATUS_NOT_CHANGED;
@@ -404,14 +417,16 @@ qt_test_remove(
 quadtree_status_t
 qt_test_update_fn(
 	quadtree_t* qt,
-	quadtree_entity_info_t info,
+	rect_extent_t* extent,
+	qt_test_entity_data_t* data,
 	void* user_data
 	)
 {
+	(void) extent;
 	(void) user_data;
 
 	qt_test_t* test = MACRO_CONTAINER_OF(qt, qt_test_t, qt);
-	++test->updated[info.data->idx];
+	++test->updated[data->idx];
 
 	return QUADTREE_STATUS_NOT_CHANGED;
 }
@@ -455,14 +470,16 @@ qt_test_update(
 quadtree_status_t
 qt_test_query_fn(
 	quadtree_t* qt,
-	quadtree_entity_info_t info,
+	rect_extent_t* extent,
+	qt_test_entity_data_t* data,
 	void* user_data
 	)
 {
+	(void) extent;
 	(void) user_data;
 
 	qt_test_t* test = MACRO_CONTAINER_OF(qt, qt_test_t, qt);
-	++test->queried[info.data->idx];
+	++test->queried[data->idx];
 
 	return QUADTREE_STATUS_NOT_CHANGED;
 }
@@ -598,17 +615,21 @@ qt_test_query_nodes(
 void
 qt_test_collide_fn(
 	const quadtree_t* qt,
-	quadtree_entity_info_t a,
-	quadtree_entity_info_t b,
+	rect_extent_t* extent_a,
+	qt_test_entity_data_t* data_a,
+	rect_extent_t* extent_b,
+	qt_test_entity_data_t* data_b,
 	void* user_data
 	)
 {
+	(void) extent_a;
+	(void) extent_b;
 	(void) user_data;
 
 	qt_test_t* test = MACRO_CONTAINER_OF(qt, qt_test_t, qt);
 
-	++test->collided[a.data->idx][b.data->idx];
-	++test->collided[b.data->idx][a.data->idx];
+	++test->collided[data_a->idx][data_b->idx];
+	++test->collided[data_b->idx][data_a->idx];
 }
 
 

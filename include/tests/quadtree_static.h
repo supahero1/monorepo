@@ -23,7 +23,6 @@
 
 typedef struct qt_test_entity_data
 {
-	rect_extent_t rect_extent;
 	uint32_t idx;
 }
 qt_test_entity_data_t;
