@@ -475,11 +475,21 @@ alloc_test_alignment_pattern(
 
 
 alloc_t
+alloc_test_huge_raw_size(
+	alloc_t size
+	)
+{
+	return alloc_huge_front_size() + size + alloc_huge_red_zone_size();
+}
+
+
+alloc_t
 alloc_test_huge_hash(
 	alloc_t size
 	)
 {
-	return ((uint64_t) 0x9e3779b97f4a7c15 * size) >> (64 - alloc_consts.huge.slots_shift);
+	alloc_t raw_size = alloc_test_huge_raw_size(size);
+	return ((uint64_t) 0x9e3779b97f4a7c15 * raw_size) >> (64 - alloc_consts.huge.slots_shift);
 }
 
 
@@ -503,10 +513,11 @@ alloc_test_huge_bucket_count(
 	alloc_t size
 	)
 {
+	alloc_t raw_size = alloc_test_huge_raw_size(size);
 	alloc_t count = 0;
 	for(alloc_huge_node_t* n = local_data->huge.ht[alloc_test_huge_hash(size)]; n; n = n->next)
 	{
-		if(n->size == size)
+		if(n->size == raw_size)
 		{
 			++count;
 		}
