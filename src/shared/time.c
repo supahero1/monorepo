@@ -452,11 +452,17 @@ time_timers_cancel_##name##_u (																	\
 		return false;																			\
 	}																							\
 																								\
-	timers-> names [timer->idx] = timers-> names [-- timers-> names##_used ];					\
+	uint32_t timer_idx = timer->idx;															\
+	uint32_t last_idx = -- timers-> names##_used ;												\
 																								\
-	if(! time_timers_##names##_up (timers, timer->idx))											\
+	if(timer_idx != last_idx)																	\
 	{																							\
-		time_timers_##names##_down (timers, timer->idx);										\
+		time_timers_swap_##names (timers, timer_idx, last_idx);									\
+																								\
+		if(! time_timers_##names##_up (timers, timer_idx))										\
+		{																						\
+			time_timers_##names##_down (timers, timer_idx);										\
+		}																						\
 	}																							\
 																								\
 	time_timers_set_latest(timers);																\
@@ -835,9 +841,9 @@ time_timers_fn(
 			time_timers_intervals_down(timers, 1);
 			sync_sem_post(&timers->work_sem);
 
-			if(interval->timer == &current_timer)
+			if(!timers->current_timer)
 			{
-				interval->timer = NULL;
+				timers->intervals[current_timer.idx].timer = NULL;
 				timers->current_timer = &current_timer;
 			}
 		}
