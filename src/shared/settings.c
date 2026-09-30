@@ -57,6 +57,8 @@ struct settings
 
 	time_timers_t timers;
 	time_timer_t save_timer;
+	uint32_t saves_scheduled;
+	sync_sem_t save_sem;
 
 	settings_event_table_t event_table;
 };
@@ -100,6 +102,8 @@ settings_init(
 
 	settings->timers = timers;
 	time_timer_init(&settings->save_timer);
+	settings->saves_scheduled = 0;
+	sync_sem_init(&settings->save_sem, 0);
 
 	event_target_init(&settings->event_table.save_target);
 	event_target_init(&settings->event_table.load_target);
@@ -115,18 +119,27 @@ settings_free(
 {
 	assert_not_null(settings);
 
-	if(
-		settings->use_timers &&
-		time_timers_cancel_timeout(settings->timers, &settings->save_timer)
-		)
+	if(settings->use_timers)
 	{
-		settings_save(settings);
+		bool cancelled = time_timers_cancel_timeout(settings->timers, &settings->save_timer);
+		uint32_t saves_started = settings->saves_scheduled - cancelled;
+
+		if(cancelled)
+		{
+			settings_save(settings);
+		}
+
+		while(saves_started--)
+		{
+			sync_sem_wait(&settings->save_sem);
+		}
 	}
 
 	event_target_free(&settings->event_table.load_target);
 	event_target_free(&settings->event_table.save_target);
 
 	time_timer_free(&settings->save_timer);
+	sync_sem_free(&settings->save_sem);
 
 	hash_table_free(settings->table);
 
@@ -296,13 +309,23 @@ settings_save(
 
 
 void
+settings_save_thread_fn(
+	settings_t settings
+	)
+{
+	settings_save(settings);
+	sync_sem_post(&settings->save_sem);
+}
+
+
+void
 settings_save_fn(
 	settings_t settings
 	)
 {
 	thread_data_t data =
 	{
-		.fn = (void*) settings_save,
+		.fn = (void*) settings_save_thread_fn,
 		.data = settings
 	};
 	thread_init(NULL, data);
@@ -725,6 +748,8 @@ settings_modify(
 					.time = time
 				};
 				time_timers_add_timeout_u(settings->timers, timeout);
+
+				++settings->saves_scheduled;
 			}
 		time_timers_unlock(settings->timers);
 	}
