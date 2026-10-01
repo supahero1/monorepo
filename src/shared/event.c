@@ -23,6 +23,11 @@
 
 #include <stddef.h>
 
+#ifndef NDEBUG
+	thread_local event_target_t* event_firing_target;
+	thread_local event_listener_t* event_firing_listener;
+#endif
+
 
 void
 event_target_init(
@@ -180,6 +185,7 @@ event_target_del_common(
 	}
 
 	assert_true(found);
+	assert_true(event_firing_target != target || event_firing_listener == listener);
 #endif
 
 	if(listener->prev)
@@ -232,7 +238,21 @@ event_target_fire(
 	while(listener)
 	{
 		event_listener_t* next = listener->next;
+
+#ifndef NDEBUG
+		event_target_t* prev_target = event_firing_target;
+		event_listener_t* prev_listener = event_firing_listener;
+		event_firing_target = target;
+		event_firing_listener = listener;
+#endif
+
 		listener->data.fn(listener->data.data, event_data);
+
+#ifndef NDEBUG
+		event_firing_target = prev_target;
+		event_firing_listener = prev_listener;
+#endif
+
 		listener = next;
 	}
 }

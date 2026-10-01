@@ -329,6 +329,33 @@ test_normal_fail__event_listener_remove_itself_twice(
 }
 
 
+void attr_test_fn
+test_normal_fail__event_listener_remove_other(
+	void
+	)
+{
+	event_target_t target;
+	event_target_init(&target);
+
+	event_listener_data_t other_data =
+	{
+		.fn = (void*) 0x1
+	};
+	event_listener_t* other = event_target_add(&target, other_data);
+
+	event_listener_data_t data =
+	{
+		.fn = (void*) event_listener_remove_itself_fn,
+		.data = &target
+	};
+	event_target_add(&target, data);
+
+	event_target_fire(&target, other);
+
+	event_target_free(&target);
+}
+
+
 void
 event_target_wait_thread_fn(
 	event_wait_state_t* state

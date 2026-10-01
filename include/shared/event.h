@@ -75,6 +75,9 @@ event_target_once(
 	);
 
 
+/* A listener may remove itself from within its callback,
+ * but must not remove any other listener of the same target.
+ */
 extern void
 event_target_del(
 	event_target_t* target,
