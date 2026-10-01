@@ -662,6 +662,53 @@ test_pass__threads_cancel_zero(
 }
 
 
+void
+threads_sleep_fn(
+	void* data
+	)
+{
+	(void) data;
+
+	while(1)
+	{
+		thread_sleep(time_sec_to_ns(1));
+	}
+}
+
+
+void attr_test_fn
+test_pass__threads_cancel_partial(
+	void
+	)
+{
+	threads_t threads;
+	threads_init(&threads);
+
+	thread_data_t data =
+	{
+		.fn = threads_sleep_fn,
+		.data = NULL
+	};
+
+	threads_add(&threads, data, 4);
+	assert_eq(threads.used, 4);
+
+	threads_cancel_sync(&threads, 2);
+	assert_eq(threads.used, 2);
+
+	threads_add(&threads, data, 3);
+	assert_eq(threads.used, 5);
+
+	threads_cancel_async(&threads, 1);
+	assert_eq(threads.used, 4);
+
+	threads_cancel_all_sync(&threads);
+	assert_eq(threads.used, 0);
+
+	threads_free(&threads);
+}
+
+
 
 
 

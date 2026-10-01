@@ -405,6 +405,7 @@ threads_cancel_sync(
 	}
 
 	threads_resize(threads, -count);
+	threads->used -= count;
 
 	if(found_self)
 	{
@@ -445,6 +446,7 @@ threads_cancel_async(
 	}
 
 	threads_resize(threads, -count);
+	threads->used -= count;
 
 	if(found_self)
 	{
