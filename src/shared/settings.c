@@ -125,14 +125,14 @@ settings_free(
 		bool cancelled = time_timers_cancel_timeout(settings->timers, &settings->save_timer);
 		uint32_t saves_started = settings->saves_scheduled - cancelled;
 
-		if(cancelled)
-		{
-			settings_save(settings);
-		}
-
 		while(saves_started--)
 		{
 			sync_sem_wait(&settings->save_sem);
+		}
+
+		if(atomic_load_acq(&settings->dirty))
+		{
+			settings_save(settings);
 		}
 	}
 
