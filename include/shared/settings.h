@@ -76,6 +76,7 @@ setting_constraint_t;
 
 typedef struct settings* settings_t;
 
+/* For string settings, both values are only valid for the duration of the event. */
 typedef struct setting_change_event_data
 {
 	settings_t settings;
@@ -254,6 +255,7 @@ setting_get_boolean(
 	);
 
 
+/* Returns a copy, free it with str_free(). */
 extern str_t
 setting_get_str(
 	setting_t* setting

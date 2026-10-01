@@ -388,8 +388,8 @@ settings_load(
 	bit_buffer_t buffer;
 	bit_buffer_set(&buffer, decompressed, actual_decompressed_size);
 
-	uint32_t magic = bit_buffer_get_bits(&buffer, 60);
-	if(magic != 0x015FF510)
+	uint32_t magic = bit_buffer_get_bits_safe(&buffer, 60, &status);
+	if(!status || magic != 0x015FF510)
 	{
 		goto goto_failure_compressed;
 	}
@@ -414,7 +414,7 @@ settings_load(
 
 		setting_t* setting = hash_table_get(settings->table, name->str);
 		str_free(name);
-		if(!setting)
+		if(!setting || setting->type != type)
 		{
 			goto goto_failure_compressed;
 		}
@@ -472,6 +472,7 @@ settings_load(
 			}
 
 			settings_modify_str(settings, setting, str);
+			str_free(str);
 
 			break;
 		}
@@ -669,6 +670,7 @@ settings_add_str(
 {
 	assert_not_null(settings);
 	assert_not_null(name);
+	assert_not_null(value);
 	assert_false(settings->sealed);
 
 	assert_le(value->len, max_len);
@@ -681,7 +683,7 @@ settings_add_str(
 	{
 		.type = SETTING_TYPE_STR,
 		.name = name,
-		.value.str = value,
+		.value.str = str_init_copy(value),
 		.constraint.str.max_len = max_len,
 		.change_target = change_target
 	};
@@ -885,25 +887,23 @@ settings_modify_str(
 {
 	assert_not_null(settings);
 	assert_not_null(setting);
-
-	if(value->len > setting->constraint.str.max_len)
-	{
-		str_resize(value, setting->constraint.str.max_len);
-	}
+	assert_not_null(value);
 
 	setting_value_t new_value =
 	{
-		.str = value
+		.str = str_init_copy_len(value->str, MACRO_MIN(value->len, setting->constraint.str.max_len))
 	};
 
 	sync_rwlock_rdlock(&settings->rwlock);
 		sync_mtx_lock(&setting->mtx);
+			setting_value_t old_value = setting->value;
+
 			if(setting->change_target)
 			{
 				setting_change_event_data_t change_data =
 				{
 					.settings = settings,
-					.old_value = setting->value,
+					.old_value = old_value,
 					.new_value = new_value
 				};
 				event_target_fire(setting->change_target, &change_data);
@@ -912,6 +912,8 @@ settings_modify_str(
 			setting->value = new_value;
 		sync_mtx_unlock(&setting->mtx);
 	sync_rwlock_unlock(&settings->rwlock);
+
+	str_free(old_value.str);
 
 	settings_modify(settings);
 }
@@ -963,7 +965,8 @@ setting_get_i64(
 	if(global_options)
 	{
 		int64_t options_value;
-		if(options_get_i64(global_options, setting->name, setting->constraint.i64.min, setting->constraint.i64.max, &options_value))
+		if(options_get_i64(global_options, setting->name,
+			setting->constraint.i64.min, setting->constraint.i64.max, &options_value))
 		{
 			return options_value;
 		}
@@ -987,7 +990,8 @@ setting_get_f32(
 	if(global_options)
 	{
 		float options_value;
-		if(options_get_f32(global_options, setting->name, setting->constraint.f32.min, setting->constraint.f32.max, &options_value))
+		if(options_get_f32(global_options, setting->name,
+			setting->constraint.f32.min, setting->constraint.f32.max, &options_value))
 		{
 			return options_value;
 		}
@@ -1035,14 +1039,17 @@ setting_get_str(
 	if(global_options)
 	{
 		str_t options_value;
-		if(options_get_str(global_options, setting->name, &options_value) && (!options_value || options_value->len <= setting->constraint.str.max_len))
+		if(
+			options_get_str(global_options, setting->name, &options_value) &&
+			(!options_value || options_value->len <= setting->constraint.str.max_len)
+			)
 		{
-			return options_value;
+			return options_value ? str_init_copy(options_value) : NULL;
 		}
 	}
 
 	sync_mtx_lock(&setting->mtx);
-		str_t value = setting->value.str;
+		str_t value = str_init_copy(setting->value.str);
 	sync_mtx_unlock(&setting->mtx);
 
 	return value;

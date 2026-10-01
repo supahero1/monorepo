@@ -720,8 +720,11 @@ test_pass__settings_with_options_override(
 
 	str_t default_str = str_init_copy_cstr("default");
 	setting_t* str_s = settings_add_str(settings, "test_str", default_str, 100, NULL);
+	str_free(default_str);
+
 	str_t str_val = setting_get_str(str_s);
 	assert_true(str_cmp_cstr(str_val, "cmdline"));
+	str_free(str_val);
 
 	color_argb_t default_color = { .r = 0, .g = 0, .b = 0, .a = 255 };
 	setting_t* color_s = settings_add_color(settings, "test_color", default_color, NULL);
@@ -736,4 +739,110 @@ test_pass__settings_with_options_override(
 
 	global_options = NULL;
 	options_free(options);
+}
+
+
+void
+settings_onload_status_fn(
+	bool* success,
+	settings_load_event_data_t* data
+	)
+{
+	*success = data->success;
+}
+
+
+void attr_test_fn
+test_pass__settings_str_save_load(
+	void
+	)
+{
+	settings_t settings = settings_init(TEST_FILENAME, NULL);
+
+	str_t value = str_init_copy_cstr("first");
+	setting_t* str_s = settings_add_str(settings, "name", value, 8, NULL);
+	str_free(value);
+
+	settings_seal(settings);
+
+	value = str_init_copy_cstr("second value");
+	settings_modify_str(settings, str_s, value);
+	str_free(value);
+
+	str_t current = setting_get_str(str_s);
+	assert_true(str_cmp_cstr(current, "second v"));
+	str_free(current);
+
+	settings_save(settings);
+	settings_free(settings);
+
+	settings = settings_init(TEST_FILENAME, NULL);
+
+	value = str_init_copy_cstr("default");
+	str_s = settings_add_str(settings, "name", value, 8, NULL);
+	str_free(value);
+
+	settings_seal(settings);
+
+	bool success = false;
+	event_listener_data_t load_listener_data =
+	{
+		.fn = (void*) settings_onload_status_fn,
+		.data = &success
+	};
+	event_target_t* load_target = &settings_get_event_table(settings)->load_target;
+	event_listener_t* load_listener = event_target_add(load_target, load_listener_data);
+
+	settings_load(settings);
+	event_target_del(load_target, load_listener);
+	assert_true(success);
+
+	current = setting_get_str(str_s);
+	assert_true(str_cmp_cstr(current, "second v"));
+	str_free(current);
+
+	settings_free(settings);
+}
+
+
+void attr_test_fn
+test_pass__settings_load_type_mismatch(
+	void
+	)
+{
+	settings_t settings = settings_init(TEST_FILENAME, NULL);
+
+	setting_t* i64_s = settings_add_i64(settings, "name", 1, 0, 100, NULL);
+	settings_seal(settings);
+
+	settings_modify_i64(settings, i64_s, 2);
+	settings_save(settings);
+	settings_free(settings);
+
+	settings = settings_init(TEST_FILENAME, NULL);
+
+	str_t value = str_init_copy_cstr("default");
+	setting_t* str_s = settings_add_str(settings, "name", value, 100, NULL);
+	str_free(value);
+
+	settings_seal(settings);
+
+	bool success = true;
+	event_listener_data_t load_listener_data =
+	{
+		.fn = (void*) settings_onload_status_fn,
+		.data = &success
+	};
+	event_target_t* load_target = &settings_get_event_table(settings)->load_target;
+	event_listener_t* load_listener = event_target_add(load_target, load_listener_data);
+
+	settings_load(settings);
+	event_target_del(load_target, load_listener);
+	assert_false(success);
+
+	str_t current = setting_get_str(str_s);
+	assert_true(str_cmp_cstr(current, "default"));
+	str_free(current);
+
+	settings_free(settings);
 }
