@@ -312,12 +312,27 @@ sync_sem_timed_wait(
 {
 	assert_not_null(sem);
 
+#ifdef _WIN32
+	struct timespec monotonic_now;
+	struct timespec realtime_now;
+	clock_gettime(CLOCK_MONOTONIC, &monotonic_now);
+	clock_gettime(CLOCK_REALTIME, &realtime_now);
+
+	uint64_t monotonic_ns = monotonic_now.tv_sec * 1000000000 + monotonic_now.tv_nsec;
+	uint64_t realtime_ns = realtime_now.tv_sec * 1000000000 + realtime_now.tv_nsec;
+	ns = realtime_ns + (ns > monotonic_ns ? ns - monotonic_ns : 0);
+#endif
+
 	struct timespec time;
 	time.tv_sec = ns / 1000000000;
 	time.tv_nsec = ns % 1000000000;
 
 	int status;
+#ifdef _WIN32
 	while((status = sem_timedwait(sem, &time)))
+#else
+	while((status = sem_clockwait(sem, CLOCK_MONOTONIC, &time)))
+#endif
 	{
 		if(errno == EINTR)
 		{
@@ -329,7 +344,7 @@ sync_sem_timed_wait(
 			break;
 		}
 
-		fprintf(stderr, "sem_timedwait: %s\n", strerror(errno));
+		fprintf(stderr, "sem_clockwait: %s\n", strerror(errno));
 		hard_assert_unreachable();
 	}
 }

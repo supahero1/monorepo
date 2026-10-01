@@ -140,7 +140,7 @@ time_get(
 	)
 {
 	struct timespec time;
-	int status = clock_gettime(CLOCK_REALTIME, &time);
+	int status = clock_gettime(CLOCK_MONOTONIC, &time);
 	hard_assert_eq(status, 0);
 
 	return time.tv_sec * 1000000000 + time.tv_nsec;
