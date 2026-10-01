@@ -207,7 +207,7 @@ bit_buffer_set_bits(
 	assert_not_null(bit_buffer);
 	assert_le(bits, 64);
 
-	num &= UINT64_MAX >> (64 - bits);
+	num &= bits ? UINT64_MAX >> (64 - bits) : 0;
 
 	uint8_t* at = bit_buffer->at;
 
@@ -245,7 +245,7 @@ bit_buffer_get_bits(
 	assert_not_null(bit_buffer);
 	assert_le(bits, 64);
 
-	uint64_t mask = UINT64_MAX >> (64 - bits);
+	uint64_t mask = bits ? UINT64_MAX >> (64 - bits) : 0;
 	uint64_t num = 0;
 
 	uint8_t* at = bit_buffer->at;
