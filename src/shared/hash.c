@@ -292,7 +292,7 @@ hash_table_has(
 		struct str entry_key_data = { (void*) entry->key, entry->len };
 		str_t entry_key = &entry_key_data;
 
-		if(str_case_cmp(search_key, entry_key))
+		if(str_cmp(search_key, entry_key))
 		{
 			return true;
 		}
@@ -328,7 +328,7 @@ hash_table_add(
 		struct str entry_key_data = { (void*) entry->key, entry->len };
 		str_t entry_key = &entry_key_data;
 
-		if(str_case_cmp(search_key, entry_key))
+		if(str_cmp(search_key, entry_key))
 		{
 			table->key_free_fn(search_key);
 			table->value_free_fn(value);
@@ -378,7 +378,7 @@ hash_table_set(
 		struct str entry_key_data = { (void*) entry->key, entry->len };
 		str_t entry_key = &entry_key_data;
 
-		if(str_case_cmp(search_key, entry_key))
+		if(str_cmp(search_key, entry_key))
 		{
 			table->key_free_fn(entry_key);
 			table->value_free_fn(entry->value);
@@ -429,7 +429,7 @@ hash_table_modify(
 		struct str entry_key_data = { (void*) entry->key, entry->len };
 		str_t entry_key = &entry_key_data;
 
-		if(str_case_cmp(search_key, entry_key))
+		if(str_cmp(search_key, entry_key))
 		{
 			table->key_free_fn(entry_key);
 			table->value_free_fn(entry->value);
@@ -468,7 +468,7 @@ hash_table_get(
 		struct str entry_key_data = { (void*) entry->key, entry->len };
 		str_t entry_key = &entry_key_data;
 
-		if(str_case_cmp(search_key, entry_key))
+		if(str_cmp(search_key, entry_key))
 		{
 			return entry->value;
 		}
@@ -501,7 +501,7 @@ hash_table_del(
 		struct str entry_key_data = { (void*) entry->key, entry->len };
 		str_t entry_key = &entry_key_data;
 
-		if(str_case_cmp(search_key, entry_key))
+		if(str_cmp(search_key, entry_key))
 		{
 			table->key_free_fn(entry_key);
 			table->value_free_fn(entry->value);

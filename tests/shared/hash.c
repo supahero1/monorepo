@@ -164,6 +164,24 @@ test_pass__hash_table_functions(
 }
 
 
+void attr_test_fn
+test_pass__hash_table_case_sensitive(
+	void
+	)
+{
+	hash_table_t table = hash_table_init(1, NULL, NULL);
+
+	assert_true(hash_table_add(table, "foo", (void*) 1));
+	assert_true(hash_table_add(table, "FOO", (void*) 2));
+
+	assert_eq(hash_table_get(table, "foo"), (void*) 1);
+	assert_eq(hash_table_get(table, "FOO"), (void*) 2);
+	assert_false(hash_table_has(table, "Foo"));
+
+	hash_table_free(table);
+}
+
+
 void
 hash_table_key_dtor(
 	str_t key
