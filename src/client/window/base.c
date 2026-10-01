@@ -302,7 +302,7 @@ window_set(
 	assert_not_null(window);
 	assert_not_null(name);
 
-	bool status = SDL_SetPointerProperty(window->props, name, window);
+	bool status = SDL_SetPointerProperty(window->props, name, data);
 	hard_assert_true(status, window_sdl_log_error());
 }
 
@@ -514,6 +514,21 @@ window_get_event_table(
 	assert_not_null(window);
 
 	return &window->event_table;
+}
+
+
+const char*
+window_get_base_path(
+	void
+	)
+{
+	const char* path = SDL_GetBasePath();
+	if(!path)
+	{
+		window_sdl_log_error();
+	}
+
+	return path;
 }
 
 
@@ -1126,13 +1141,13 @@ window_manager_process_user_event(
 
 		status = SDL_SetBooleanProperty(sdl_props,
 			SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN, data->history->fullscreen);
+		hard_assert_true(status, window_sdl_log_error());
 
 		status = SDL_SetStringProperty(sdl_props,
 			SDL_PROP_WINDOW_CREATE_TITLE_STRING, data->title->str);
 		hard_assert_true(status, window_sdl_log_error());
 
-		status = SDL_SetBooleanProperty(sdl_props,
-			SDL_HINT_FORCE_RAISEWINDOW, true);
+		status = SDL_SetHint(SDL_HINT_FORCE_RAISEWINDOW, "1");
 		hard_assert_true(status, window_sdl_log_error());
 
 
@@ -1346,6 +1361,7 @@ window_manager_process_user_event(
 		};
 		event_target_fire(&window->event_table.set_clipboard_target, &event_data);
 
+		str_free(data->str);
 		alloc_free(data, 1);
 
 		break;

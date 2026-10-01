@@ -28,9 +28,6 @@
 #include <client/window/base.h>
 #include <client/window/vulkan.h>
 
-#include <libgen.h>
-#include <limits.h>
-#include <stdlib.h>
 #include <unistd.h>
 
 
@@ -122,13 +119,13 @@ app_window_on_resize_fn(
 void
 app_window_on_fullscreen_fn(
 	app_t app,
-	window_focus_event_data_t* event_data
+	window_fullscreen_event_data_t* event_data
 	)
 {
 	assert_not_null(app);
 	assert_not_null(event_data);
 
-	settings_modify_boolean(app->settings, app->window_fullscreen, true);
+	settings_modify_boolean(app->settings, app->window_fullscreen, event_data->fullscreen);
 }
 
 
@@ -199,9 +196,8 @@ app_init(
 	assert_not_null(argv);
 	assert_not_null(argv[0]);
 
-	char exe_path[PATH_MAX];
-	realpath(argv[0], exe_path);
-	char* dir = dirname(exe_path);
+	const char* dir = window_get_base_path();
+	hard_assert_not_null(dir);
 
 	int status = chdir(dir);
 	hard_assert_eq(status, 0);

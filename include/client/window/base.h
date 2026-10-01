@@ -529,6 +529,12 @@ window_get_event_table(
 	);
 
 
+extern const char*
+window_get_base_path(
+	void
+	);
+
+
 extern const char* const*
 window_get_vulkan_extensions(
 	uint32_t* count
