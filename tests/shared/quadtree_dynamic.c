@@ -534,3 +534,51 @@ test_pass__quadtree_dynamic_rapid_cross_tree_movement(
 
 	qt_test_free(&test);
 }
+
+
+void attr_test_fn
+test_pass__quadtree_dynamic_regrow_after_shrink(
+	void
+	)
+{
+	qt_test_t test = qt_test_init(
+		0.0f, 0.0f, 100.0f, 100.0f,
+		(qt_test_opts_t)
+		{
+			.split_threshold = 4,
+			.max_depth = 8,
+			.dfs_length = 32,
+			.min_size = 1.0f,
+			.merge_threshold_set = false
+		}
+	);
+
+	for(uint32_t i = 0; i < 1024; ++i)
+	{
+		qt_test_insert(&test, (i % 32) * 6.0f - 95.0f, (i / 32) * 6.0f - 95.0f, 0.1f, 0.1f, 0.0f, 0.0f);
+	}
+
+	qt_test_normalize(&test);
+
+	uint32_t entities_used = test.qt.entities_used;
+	for(uint32_t i = 1; i < entities_used; ++i)
+	{
+		quadtree_remove(&test.qt, test.qt.data + i);
+	}
+
+	for(uint32_t i = 0; i < 16 && test.qt.nodes_used > 1; ++i)
+	{
+		qt_test_normalize(&test);
+	}
+
+	for(uint32_t i = 0; i < 1024; ++i)
+	{
+		qt_test_insert(&test, (i % 32) * 6.0f - 95.0f, (i / 32) * 6.0f - 95.0f, 0.1f, 0.1f, 0.0f, 0.0f);
+	}
+
+	qt_test_normalize(&test);
+
+	quadtree_check(&test.qt);
+
+	qt_test_free(&test);
+}
