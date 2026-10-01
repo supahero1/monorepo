@@ -155,7 +155,32 @@ file_read_cap(
 	file->data = alloc_malloc(file->data, file->len);
 	hard_assert_ptr(file->data, file->len);
 
-	if(file->len && read(fd, file->data, file->len) != file->len)
+	uint8_t* data = file->data;
+	uint64_t left = file->len;
+
+	while(left)
+	{
+		ssize_t bytes = read(fd, data, left);
+		if(bytes < 0)
+		{
+			if(errno == EINTR)
+			{
+				continue;
+			}
+
+			break;
+		}
+
+		if(bytes == 0)
+		{
+			break;
+		}
+
+		data += bytes;
+		left -= bytes;
+	}
+
+	if(left)
 	{
 		file_free(*file);
 	}
