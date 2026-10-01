@@ -946,7 +946,7 @@ vk_update_constants(
 }
 
 
-void
+bool
 vk_get_extent(
 	vulkan_t vk
 	)
@@ -971,8 +971,18 @@ vk_get_extent(
 		}
 
 		sync_mtx_lock(&vk->resize_mtx);
-			sync_cond_wait(&vk->resize_cond, &vk->resize_mtx);
+			while(!atomic_load_acq(&vk->resized) && atomic_load_acq(&vk->should_run))
+			{
+				sync_cond_wait(&vk->resize_cond, &vk->resize_mtx);
+			}
+
+			atomic_store_rel(&vk->resized, false);
 		sync_mtx_unlock(&vk->resize_mtx);
+
+		if(!atomic_load_acq(&vk->should_run))
+		{
+			return false;
+		}
 	}
 
 	if(width == UINT32_MAX || height == UINT32_MAX)
@@ -1000,6 +1010,8 @@ vk_get_extent(
 	};
 
 	vk_update_constants(vk);
+
+	return true;
 }
 
 
@@ -3049,10 +3061,14 @@ vk_recreate_swapchain(
 {
 	assert_not_null(vk);
 
+	if(!vk_get_extent(vk))
+	{
+		return;
+	}
+
 	vk_device_wait_idle(vk);
 
 	vk_free_images(vk);
-	vk_get_extent(vk);
 	vk_init_images(vk);
 
 	vk_free_barriers(vk);
@@ -3250,8 +3266,6 @@ vk_init_thread(
 {
 	assert_not_null(vk);
 
-	atomic_init(&vk->should_run, true);
-
 	thread_data_t thread_data =
 	{
 		.fn = (void*) vk_thread_fn,
@@ -3394,6 +3408,10 @@ vk_closing_fn(
 	assert_not_null(event_data);
 
 	atomic_store_rel(&vk->should_run, false);
+
+	sync_mtx_lock(&vk->resize_mtx);
+		sync_cond_wake(&vk->resize_cond);
+	sync_mtx_unlock(&vk->resize_mtx);
 }
 
 
@@ -3451,6 +3469,7 @@ vulkan_init(
 	sync_mtx_init(&vk->resize_mtx);
 	sync_cond_init(&vk->resize_cond);
 	atomic_store_rel(&vk->resized, false);
+	atomic_store_rel(&vk->should_run, true);
 
 	return vk;
 }
