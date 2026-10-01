@@ -85,10 +85,14 @@ def add_file(path):
 		with open(path, "r") as f:
 			first_line = f.readline()
 			f.seek(0)
-			prefixes = ("#include <shared/", "#include <client/", "#include <server/", "#include <tests/")
+			prefixes = ("#include <shared/", "#include <client/", "#include <server/", "#include <tests/", "#include \"")
 			include_lines = [line for line in f if line.lstrip().startswith(prefixes)]
 			headers = []
 			for line in include_lines:
+				if line.lstrip().startswith("#include \""):
+					inc_path_part = line[line.find("\"")+1 : line.rfind("\"")]
+					headers.append(os.path.join(os.path.dirname(path), inc_path_part))
+					continue
 				inc_path_part = line[line.find("<")+1 : line.find(">")]
 				if inc_path_part.startswith("tests/") and inc_path_part.endswith(".c"):
 					headers.append(inc_path_part)
