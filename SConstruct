@@ -70,6 +70,7 @@ Default("help")
 
 
 deps = {}
+skipped = set()
 
 def prop_headers(dest, headers):
 	for header in headers:
@@ -80,7 +81,7 @@ def prop_headers(dest, headers):
 
 def add_file(path):
 	if path in deps:
-		return True
+		return path not in skipped
 	try:
 		with open(path, "r") as f:
 			first_line = f.readline()
@@ -117,6 +118,7 @@ def add_file(path):
 		deps[path] = []
 		return True
 	if first_line.startswith("/* skip */"):
+		skipped.add(path)
 		return False
 	return True
 
