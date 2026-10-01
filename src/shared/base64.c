@@ -206,11 +206,23 @@ base64_is_valid(
 		return false;
 	}
 
-	const uint8_t* data_end = data + len;
+	uint64_t padding = 0;
+
+	if(len && data[len - 1] == '=')
+	{
+		++padding;
+
+		if(data[len - 2] == '=')
+		{
+			++padding;
+		}
+	}
+
+	const uint8_t* data_end = data + len - padding;
 
 	while(data != data_end)
 	{
-		if(base64_decode_table[*data] == (uint8_t) -1)
+		if(*data == '=' || base64_decode_table[*data] == (uint8_t) -1)
 		{
 			return false;
 		}

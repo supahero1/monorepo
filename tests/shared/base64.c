@@ -429,3 +429,26 @@ test_fail__base64_decode_bad_len_mod_3(
 {
 	base64_decode((uint8_t[]){ 'A', 'A', 'A', 'A', 'A' }, 5, NULL);
 }
+
+
+void attr_test_fn
+test_fail__base64_decode_only_padding(
+	void
+	)
+{
+	base64_decode((uint8_t[]){ '=', '=', '=', '=' }, 4, NULL);
+}
+
+
+void attr_test_fn
+test_pass__base64_is_valid_padding(
+	void
+	)
+{
+	assert_true(base64_is_valid((uint8_t[]){ 'A', 'A', 'A', '=' }, 4));
+	assert_true(base64_is_valid((uint8_t[]){ 'A', 'A', '=', '=' }, 4));
+	assert_false(base64_is_valid((uint8_t[]){ 'A', '=', '=', '=' }, 4));
+	assert_false(base64_is_valid((uint8_t[]){ '=', '=', '=', '=' }, 4));
+	assert_false(base64_is_valid((uint8_t[]){ 'A', 'A', '=', 'A' }, 4));
+	assert_false(base64_is_valid((uint8_t[]){ 'A', 'A', 'A', '=', 'A', 'A', 'A', 'A' }, 8));
+}
