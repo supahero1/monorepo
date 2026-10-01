@@ -259,7 +259,7 @@ bootstrap_free_all_live(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_alloc_zero(
+test_pass__bootstrap_alloc_zero(
 	void
 	)
 {
@@ -269,7 +269,7 @@ test_normal_pass__bootstrap_alloc_zero(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_alloc_aligns(
+test_pass__bootstrap_alloc_aligns(
 	void
 	)
 {
@@ -284,7 +284,7 @@ test_normal_pass__bootstrap_alloc_aligns(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_alloc_zeroed(
+test_pass__bootstrap_alloc_zeroed(
 	void
 	)
 {
@@ -296,7 +296,7 @@ test_normal_pass__bootstrap_alloc_zeroed(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_alloc_nonoverlap(
+test_pass__bootstrap_alloc_nonoverlap(
 	void
 	)
 {
@@ -316,7 +316,7 @@ test_normal_pass__bootstrap_alloc_nonoverlap(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_alloc_oom_null(
+test_pass__bootstrap_alloc_oom_null(
 	void
 	)
 {
@@ -351,7 +351,7 @@ test_normal_pass__bootstrap_alloc_oom_null(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_realloc_null(
+test_pass__bootstrap_realloc_null(
 	void
 	)
 {
@@ -361,7 +361,7 @@ test_normal_pass__bootstrap_realloc_null(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_realloc_to_zero(
+test_pass__bootstrap_realloc_to_zero(
 	void
 	)
 {
@@ -372,7 +372,7 @@ test_normal_pass__bootstrap_realloc_to_zero(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_realloc_grow(
+test_pass__bootstrap_realloc_grow(
 	void
 	)
 {
@@ -396,7 +396,7 @@ test_normal_pass__bootstrap_realloc_grow(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_realloc_shrink(
+test_pass__bootstrap_realloc_shrink(
 	void
 	)
 {
@@ -419,7 +419,7 @@ test_normal_pass__bootstrap_realloc_shrink(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_realloc_align(
+test_pass__bootstrap_realloc_align(
 	void
 	)
 {
@@ -430,7 +430,7 @@ test_normal_pass__bootstrap_realloc_align(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_free_null(
+test_pass__bootstrap_free_null(
 	void
 	)
 {
@@ -439,7 +439,7 @@ test_normal_pass__bootstrap_free_null(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_free_reverse(
+test_pass__bootstrap_free_reverse(
 	void
 	)
 {
@@ -459,7 +459,7 @@ test_normal_pass__bootstrap_free_reverse(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_free_middle(
+test_pass__bootstrap_free_middle(
 	void
 	)
 {
@@ -479,7 +479,7 @@ test_normal_pass__bootstrap_free_middle(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_cleanup_live(
+test_pass__bootstrap_cleanup_live(
 	void
 	)
 {
@@ -494,7 +494,7 @@ test_normal_pass__bootstrap_cleanup_live(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_realloc_same(
+test_pass__bootstrap_realloc_same(
 	void
 	)
 {
@@ -517,7 +517,7 @@ test_normal_pass__bootstrap_realloc_same(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_realloc_inp(
+test_pass__bootstrap_realloc_inp(
 	void
 	)
 {
@@ -549,7 +549,7 @@ test_normal_pass__bootstrap_realloc_inp(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_realloc_move(
+test_pass__bootstrap_realloc_move(
 	void
 	)
 {
@@ -575,7 +575,7 @@ test_normal_pass__bootstrap_realloc_move(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_realloc_tail(
+test_pass__bootstrap_realloc_tail(
 	void
 	)
 {
@@ -602,7 +602,7 @@ test_normal_pass__bootstrap_realloc_tail(
 
 
 void attr_test_fn
-test_normal_pass__bootstrap_reuse_mid(
+test_pass__bootstrap_reuse_mid(
 	void
 	)
 {
@@ -622,7 +622,7 @@ test_normal_pass__bootstrap_reuse_mid(
 
 
 void attr_test_fn
-test_normal_fail__bootstrap_free_null_sz(
+test_fail__bootstrap_free_null_sz(
 	void
 	)
 {
@@ -631,7 +631,7 @@ test_normal_fail__bootstrap_free_null_sz(
 
 
 void attr_test_fn
-test_normal_fail__bootstrap_free_bad_ptr(
+test_fail__bootstrap_free_bad_ptr(
 	void
 	)
 {
@@ -640,7 +640,7 @@ test_normal_fail__bootstrap_free_bad_ptr(
 
 
 void attr_test_fn
-test_normal_fail__bootstrap_free_bad_size(
+test_fail__bootstrap_free_bad_size(
 	void
 	)
 {
@@ -650,7 +650,7 @@ test_normal_fail__bootstrap_free_bad_size(
 
 
 void attr_test_fn
-test_normal_fail__bootstrap_free_twice(
+test_fail__bootstrap_free_twice(
 	void
 	)
 {
@@ -661,7 +661,7 @@ test_normal_fail__bootstrap_free_twice(
 
 
 void attr_test_fn
-test_normal_fail__bootstrap_realloc_badold(
+test_fail__bootstrap_realloc_badold(
 	void
 	)
 {
@@ -671,7 +671,7 @@ test_normal_fail__bootstrap_realloc_badold(
 
 
 void attr_test_fn
-test_normal_fail__bootstrap_realloc_nullold(
+test_fail__bootstrap_realloc_nullold(
 	void
 	)
 {

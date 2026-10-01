@@ -230,7 +230,7 @@ qt_test_query(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_dynamic_init_free(
+test_pass__quadtree_dynamic_init_free(
 	void
 	)
 {
@@ -251,7 +251,7 @@ test_normal_pass__quadtree_dynamic_init_free(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_dynamic_reinsertion_step_on_boundary(
+test_pass__quadtree_dynamic_reinsertion_step_on_boundary(
 	void
 	)
 {
@@ -291,7 +291,7 @@ test_normal_pass__quadtree_dynamic_reinsertion_step_on_boundary(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_dynamic_reinsertion_step_off_boundary(
+test_pass__quadtree_dynamic_reinsertion_step_off_boundary(
 	void
 	)
 {
@@ -323,7 +323,7 @@ test_normal_pass__quadtree_dynamic_reinsertion_step_off_boundary(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_dynamic_reinsertion_step_on_boundary_outside(
+test_pass__quadtree_dynamic_reinsertion_step_on_boundary_outside(
 	void
 	)
 {
@@ -364,7 +364,7 @@ test_normal_pass__quadtree_dynamic_reinsertion_step_on_boundary_outside(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_dynamic_reinsertion_step_off_boundary_outside(
+test_pass__quadtree_dynamic_reinsertion_step_off_boundary_outside(
 	void
 	)
 {
@@ -397,7 +397,7 @@ test_normal_pass__quadtree_dynamic_reinsertion_step_off_boundary_outside(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_dynamic_removal_during_reinsertion(
+test_pass__quadtree_dynamic_removal_during_reinsertion(
 	void
 	)
 {
@@ -449,7 +449,7 @@ qt_test_find_entity(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_dynamic_collision_bounce(
+test_pass__quadtree_dynamic_collision_bounce(
 	void
 	)
 {
@@ -499,7 +499,7 @@ test_normal_pass__quadtree_dynamic_collision_bounce(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_dynamic_rapid_cross_tree_movement(
+test_pass__quadtree_dynamic_rapid_cross_tree_movement(
 	void
 	)
 {

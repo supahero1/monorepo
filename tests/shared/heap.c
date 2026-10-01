@@ -102,7 +102,7 @@ heap_test_replace(
 
 
 void attr_test_fn
-test_normal_pass__heap_init_free(
+test_pass__heap_init_free(
 	void
 	)
 {
@@ -112,7 +112,7 @@ test_normal_pass__heap_init_free(
 
 
 void attr_test_fn
-test_normal_fail__heap_init_null(
+test_fail__heap_init_null(
 	void
 	)
 {
@@ -121,7 +121,7 @@ test_normal_fail__heap_init_null(
 
 
 void attr_test_fn
-test_normal_fail__heap_init_null_cmp_fn(
+test_fail__heap_init_null_cmp_fn(
 	void
 	)
 {
@@ -133,7 +133,7 @@ test_normal_fail__heap_init_null_cmp_fn(
 
 
 void attr_test_fn
-test_normal_fail__heap_init_zero_el_size(
+test_fail__heap_init_zero_el_size(
 	void
 	)
 {
@@ -145,7 +145,7 @@ test_normal_fail__heap_init_zero_el_size(
 
 
 void attr_test_fn
-test_normal_fail__heap_free_null(
+test_fail__heap_free_null(
 	void
 	)
 {
@@ -154,7 +154,7 @@ test_normal_fail__heap_free_null(
 
 
 void attr_test_fn
-test_normal_fail__heap_push_null_heap(
+test_fail__heap_push_null_heap(
 	void
 	)
 {
@@ -163,7 +163,7 @@ test_normal_fail__heap_push_null_heap(
 
 
 void attr_test_fn
-test_normal_fail__heap_push_null_el(
+test_fail__heap_push_null_el(
 	void
 	)
 {
@@ -173,7 +173,7 @@ test_normal_fail__heap_push_null_el(
 
 
 void attr_test_fn
-test_normal_fail__heap_pop_null(
+test_fail__heap_pop_null(
 	void
 	)
 {
@@ -182,7 +182,7 @@ test_normal_fail__heap_pop_null(
 
 
 void attr_test_fn
-test_normal_fail__heap_peek_null(
+test_fail__heap_peek_null(
 	void
 	)
 {
@@ -191,7 +191,7 @@ test_normal_fail__heap_peek_null(
 
 
 void attr_test_fn
-test_normal_fail__heap_replace_null_heap(
+test_fail__heap_replace_null_heap(
 	void
 	)
 {
@@ -200,7 +200,7 @@ test_normal_fail__heap_replace_null_heap(
 
 
 void attr_test_fn
-test_normal_fail__heap_replace_null_el(
+test_fail__heap_replace_null_el(
 	void
 	)
 {
@@ -210,7 +210,7 @@ test_normal_fail__heap_replace_null_el(
 
 
 void attr_test_fn
-test_normal_pass__heap_push_one(
+test_pass__heap_push_one(
 	void
 	)
 {
@@ -224,7 +224,7 @@ test_normal_pass__heap_push_one(
 
 
 void attr_test_fn
-test_normal_pass__heap_pop_empty(
+test_pass__heap_pop_empty(
 	void
 	)
 {
@@ -238,7 +238,7 @@ test_normal_pass__heap_pop_empty(
 
 
 void attr_test_fn
-test_normal_pass__heap_peek_empty(
+test_pass__heap_peek_empty(
 	void
 	)
 {
@@ -252,7 +252,7 @@ test_normal_pass__heap_peek_empty(
 
 
 void attr_test_fn
-test_normal_pass__heap_push_pop_one(
+test_pass__heap_push_pop_one(
 	void
 	)
 {
@@ -268,7 +268,7 @@ test_normal_pass__heap_push_pop_one(
 
 
 void attr_test_fn
-test_normal_pass__heap_push_peek_one(
+test_pass__heap_push_peek_one(
 	void
 	)
 {
@@ -284,7 +284,7 @@ test_normal_pass__heap_push_peek_one(
 
 
 void attr_test_fn
-test_normal_pass__heap_min_order(
+test_pass__heap_min_order(
 	void
 	)
 {
@@ -308,7 +308,7 @@ test_normal_pass__heap_min_order(
 
 
 void attr_test_fn
-test_normal_pass__heap_reverse_order_insert(
+test_pass__heap_reverse_order_insert(
 	void
 	)
 {
@@ -335,7 +335,7 @@ test_normal_pass__heap_reverse_order_insert(
 
 
 void attr_test_fn
-test_normal_pass__heap_already_sorted_insert(
+test_pass__heap_already_sorted_insert(
 	void
 	)
 {
@@ -356,7 +356,7 @@ test_normal_pass__heap_already_sorted_insert(
 
 
 void attr_test_fn
-test_normal_pass__heap_duplicates(
+test_pass__heap_duplicates(
 	void
 	)
 {
@@ -379,7 +379,7 @@ test_normal_pass__heap_duplicates(
 
 
 void attr_test_fn
-test_normal_pass__heap_replace_empty(
+test_pass__heap_replace_empty(
 	void
 	)
 {
@@ -393,7 +393,7 @@ test_normal_pass__heap_replace_empty(
 
 
 void attr_test_fn
-test_normal_pass__heap_replace_single(
+test_pass__heap_replace_single(
 	void
 	)
 {
@@ -410,7 +410,7 @@ test_normal_pass__heap_replace_single(
 
 
 void attr_test_fn
-test_normal_pass__heap_replace_maintains_order(
+test_pass__heap_replace_maintains_order(
 	void
 	)
 {
@@ -431,7 +431,7 @@ test_normal_pass__heap_replace_maintains_order(
 
 
 void attr_test_fn
-test_normal_pass__heap_interleaved_push_pop(
+test_pass__heap_interleaved_push_pop(
 	void
 	)
 {
@@ -455,7 +455,7 @@ test_normal_pass__heap_interleaved_push_pop(
 
 
 void attr_test_fn
-test_normal_pass__heap_large_count(
+test_pass__heap_large_count(
 	void
 	)
 {
@@ -478,7 +478,7 @@ test_normal_pass__heap_large_count(
 
 
 void attr_test_fn
-test_normal_pass__heap_peek_doesnt_remove(
+test_pass__heap_peek_doesnt_remove(
 	void
 	)
 {
@@ -497,7 +497,7 @@ test_normal_pass__heap_peek_doesnt_remove(
 
 
 void attr_test_fn
-test_normal_pass__heap_negative_values(
+test_pass__heap_negative_values(
 	void
 	)
 {
@@ -520,7 +520,7 @@ test_normal_pass__heap_negative_values(
 
 
 void attr_test_fn
-test_normal_pass__heap_single_element_many_ops(
+test_pass__heap_single_element_many_ops(
 	void
 	)
 {

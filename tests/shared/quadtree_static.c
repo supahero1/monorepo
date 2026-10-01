@@ -30,7 +30,7 @@
 
 
 void attr_test_fn
-test_normal_pass__quadtree_init_free(
+test_pass__quadtree_init_free(
 	void
 	)
 {
@@ -41,7 +41,7 @@ test_normal_pass__quadtree_init_free(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_init_null(
+test_fail__quadtree_init_null(
 	void
 	)
 {
@@ -50,7 +50,7 @@ test_normal_fail__quadtree_init_null(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_free_null(
+test_fail__quadtree_free_null(
 	void
 	)
 {
@@ -59,7 +59,7 @@ test_normal_fail__quadtree_free_null(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_insert_null_qt(
+test_fail__quadtree_insert_null_qt(
 	void
 	)
 {
@@ -68,7 +68,7 @@ test_normal_fail__quadtree_insert_null_qt(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_insert_null_data(
+test_fail__quadtree_insert_null_data(
 	void
 	)
 {
@@ -79,7 +79,7 @@ test_normal_fail__quadtree_insert_null_data(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_remove_null(
+test_fail__quadtree_remove_null(
 	void
 	)
 {
@@ -88,7 +88,7 @@ test_normal_fail__quadtree_remove_null(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_remove_invalid_entity_idx_1(
+test_fail__quadtree_remove_invalid_entity_idx_1(
 	void
 	)
 {
@@ -105,7 +105,7 @@ test_normal_fail__quadtree_remove_invalid_entity_idx_1(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_remove_invalid_entity_idx_2(
+test_fail__quadtree_remove_invalid_entity_idx_2(
 	void
 	)
 {
@@ -122,7 +122,7 @@ test_normal_fail__quadtree_remove_invalid_entity_idx_2(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_normalize_null(
+test_fail__quadtree_normalize_null(
 	void
 	)
 {
@@ -131,7 +131,7 @@ test_normal_fail__quadtree_normalize_null(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_update_null_qt(
+test_fail__quadtree_update_null_qt(
 	void
 	)
 {
@@ -140,7 +140,7 @@ test_normal_fail__quadtree_update_null_qt(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_update_null_update_fn(
+test_fail__quadtree_update_null_update_fn(
 	void
 	)
 {
@@ -151,7 +151,7 @@ test_normal_fail__quadtree_update_null_update_fn(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_query_rect_null_qt(
+test_fail__quadtree_query_rect_null_qt(
 	void
 	)
 {
@@ -160,7 +160,7 @@ test_normal_fail__quadtree_query_rect_null_qt(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_query_rect_null_query_fn(
+test_fail__quadtree_query_rect_null_query_fn(
 	void
 	)
 {
@@ -171,7 +171,7 @@ test_normal_fail__quadtree_query_rect_null_query_fn(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_query_circle_null_qt(
+test_fail__quadtree_query_circle_null_qt(
 	void
 	)
 {
@@ -180,7 +180,7 @@ test_normal_fail__quadtree_query_circle_null_qt(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_query_circle_null_query_fn(
+test_fail__quadtree_query_circle_null_query_fn(
 	void
 	)
 {
@@ -191,7 +191,7 @@ test_normal_fail__quadtree_query_circle_null_query_fn(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_query_nodes_rect_null_qt(
+test_fail__quadtree_query_nodes_rect_null_qt(
 	void
 	)
 {
@@ -200,7 +200,7 @@ test_normal_fail__quadtree_query_nodes_rect_null_qt(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_query_nodes_rect_null_node_query_fn(
+test_fail__quadtree_query_nodes_rect_null_node_query_fn(
 	void
 	)
 {
@@ -211,7 +211,7 @@ test_normal_fail__quadtree_query_nodes_rect_null_node_query_fn(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_query_nodes_circle_null_qt(
+test_fail__quadtree_query_nodes_circle_null_qt(
 	void
 	)
 {
@@ -220,7 +220,7 @@ test_normal_fail__quadtree_query_nodes_circle_null_qt(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_query_nodes_circle_null_node_query_fn(
+test_fail__quadtree_query_nodes_circle_null_node_query_fn(
 	void
 	)
 {
@@ -231,7 +231,7 @@ test_normal_fail__quadtree_query_nodes_circle_null_node_query_fn(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_collide_null_qt(
+test_fail__quadtree_collide_null_qt(
 	void
 	)
 {
@@ -240,7 +240,7 @@ test_normal_fail__quadtree_collide_null_qt(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_collide_null_collide_fn(
+test_fail__quadtree_collide_null_collide_fn(
 	void
 	)
 {
@@ -251,7 +251,7 @@ test_normal_fail__quadtree_collide_null_collide_fn(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_nearest_rect_null_qt(
+test_fail__quadtree_nearest_rect_null_qt(
 	void
 	)
 {
@@ -260,7 +260,7 @@ test_normal_fail__quadtree_nearest_rect_null_qt(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_nearest_rect_null_query_fn(
+test_fail__quadtree_nearest_rect_null_query_fn(
 	void
 	)
 {
@@ -271,7 +271,7 @@ test_normal_fail__quadtree_nearest_rect_null_query_fn(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_nearest_circle_null_qt(
+test_fail__quadtree_nearest_circle_null_qt(
 	void
 	)
 {
@@ -280,7 +280,7 @@ test_normal_fail__quadtree_nearest_circle_null_qt(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_nearest_circle_null_query_fn(
+test_fail__quadtree_nearest_circle_null_query_fn(
 	void
 	)
 {
@@ -291,7 +291,7 @@ test_normal_fail__quadtree_nearest_circle_null_query_fn(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_raycast_null_qt(
+test_fail__quadtree_raycast_null_qt(
 	void
 	)
 {
@@ -300,7 +300,7 @@ test_normal_fail__quadtree_raycast_null_qt(
 
 
 void attr_test_fn
-test_normal_fail__quadtree_raycast_null_query_fn(
+test_fail__quadtree_raycast_null_query_fn(
 	void
 	)
 {
@@ -691,7 +691,7 @@ qt_test_free(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_update_one(
+test_pass__quadtree_update_one(
 	void
 	)
 {
@@ -708,7 +708,7 @@ test_normal_pass__quadtree_update_one(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_collide_one(
+test_pass__quadtree_collide_one(
 	void
 	)
 {
@@ -725,7 +725,7 @@ test_normal_pass__quadtree_collide_one(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_query_one(
+test_pass__quadtree_query_one(
 	void
 	)
 {
@@ -742,7 +742,7 @@ test_normal_pass__quadtree_query_one(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_free_non_empty(
+test_pass__quadtree_free_non_empty(
 	void
 	)
 {
@@ -758,7 +758,7 @@ test_normal_pass__quadtree_free_non_empty(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_normalize_nothing(
+test_pass__quadtree_normalize_nothing(
 	void
 	)
 {
@@ -774,7 +774,7 @@ test_normal_pass__quadtree_normalize_nothing(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_border_collide(
+test_pass__quadtree_border_collide(
 	void
 	)
 {
@@ -796,7 +796,7 @@ test_normal_pass__quadtree_border_collide(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_collide_none(
+test_pass__quadtree_collide_none(
 	void
 	)
 {
@@ -816,7 +816,7 @@ test_normal_pass__quadtree_collide_none(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_query_none(
+test_pass__quadtree_query_none(
 	void
 	)
 {
@@ -834,7 +834,7 @@ test_normal_pass__quadtree_query_none(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_remove_one(
+test_pass__quadtree_remove_one(
 	void
 	)
 {
@@ -857,7 +857,7 @@ test_normal_pass__quadtree_remove_one(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_split_then_merge(
+test_pass__quadtree_split_then_merge(
 	void
 	)
 {
@@ -890,7 +890,7 @@ test_normal_pass__quadtree_split_then_merge(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_lazy_merge_one_at_a_time(
+test_pass__quadtree_lazy_merge_one_at_a_time(
 	void
 	)
 {
@@ -922,7 +922,7 @@ test_normal_pass__quadtree_lazy_merge_one_at_a_time(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_lazy_merge_successful(
+test_pass__quadtree_lazy_merge_successful(
 	void
 	)
 {
@@ -949,7 +949,7 @@ test_normal_pass__quadtree_lazy_merge_successful(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_compaction_on_remove(
+test_pass__quadtree_compaction_on_remove(
 	void
 	)
 {
@@ -977,7 +977,7 @@ test_normal_pass__quadtree_compaction_on_remove(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_remove_all_stable_ids(
+test_pass__quadtree_remove_all_stable_ids(
 	void
 	)
 {
@@ -1001,7 +1001,7 @@ test_normal_pass__quadtree_remove_all_stable_ids(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_query_no_overlap(
+test_pass__quadtree_query_no_overlap(
 	void
 	)
 {
@@ -1021,7 +1021,7 @@ test_normal_pass__quadtree_query_no_overlap(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_query_partial_overlap(
+test_pass__quadtree_query_partial_overlap(
 	void
 	)
 {
@@ -1042,7 +1042,7 @@ test_normal_pass__quadtree_query_partial_overlap(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_query_center_point_split_entities(
+test_pass__quadtree_query_center_point_split_entities(
 	void
 	)
 {
@@ -1063,7 +1063,7 @@ test_normal_pass__quadtree_query_center_point_split_entities(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_deep_recursion_collide_once(
+test_pass__quadtree_deep_recursion_collide_once(
 	void
 	)
 {
@@ -1083,7 +1083,7 @@ test_normal_pass__quadtree_deep_recursion_collide_once(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_deep_recursion_update_once(
+test_pass__quadtree_deep_recursion_update_once(
 	void
 	)
 {
@@ -1103,7 +1103,7 @@ test_normal_pass__quadtree_deep_recursion_update_once(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_position_flags_outside_entity(
+test_pass__quadtree_position_flags_outside_entity(
 	void
 	)
 {
@@ -1129,7 +1129,7 @@ test_normal_pass__quadtree_position_flags_outside_entity(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_query_tick(
+test_pass__quadtree_query_tick(
 	void
 	)
 {
@@ -1161,7 +1161,7 @@ test_normal_pass__quadtree_query_tick(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_query_nodes_not_split(
+test_pass__quadtree_query_nodes_not_split(
 	void
 	)
 {
@@ -1182,7 +1182,7 @@ test_normal_pass__quadtree_query_nodes_not_split(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_query_nodes_split_once(
+test_pass__quadtree_query_nodes_split_once(
 	void
 	)
 {
@@ -1204,7 +1204,7 @@ test_normal_pass__quadtree_query_nodes_split_once(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_cascading_merge_on_normalize(
+test_pass__quadtree_cascading_merge_on_normalize(
 	void
 	)
 {
@@ -1253,7 +1253,7 @@ test_normal_pass__quadtree_cascading_merge_on_normalize(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_no_cascading_merge_on_no_normalize(
+test_pass__quadtree_no_cascading_merge_on_no_normalize(
 	void
 	)
 {
@@ -1292,7 +1292,7 @@ test_normal_pass__quadtree_no_cascading_merge_on_no_normalize(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_query_circle_one(
+test_pass__quadtree_query_circle_one(
 	void
 	)
 {
@@ -1309,7 +1309,7 @@ test_normal_pass__quadtree_query_circle_one(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_query_circle_none(
+test_pass__quadtree_query_circle_none(
 	void
 	)
 {
@@ -1326,7 +1326,7 @@ test_normal_pass__quadtree_query_circle_none(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_query_circle_partial(
+test_pass__quadtree_query_circle_partial(
 	void
 	)
 {
@@ -1345,7 +1345,7 @@ test_normal_pass__quadtree_query_circle_partial(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_query_circle_on_boundary(
+test_pass__quadtree_query_circle_on_boundary(
 	void
 	)
 {
@@ -1363,7 +1363,7 @@ test_normal_pass__quadtree_query_circle_on_boundary(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_nearest_rect_one(
+test_pass__quadtree_nearest_rect_one(
 	void
 	)
 {
@@ -1383,7 +1383,7 @@ test_normal_pass__quadtree_nearest_rect_one(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_nearest_rect_order(
+test_pass__quadtree_nearest_rect_order(
 	void
 	)
 {
@@ -1407,7 +1407,7 @@ test_normal_pass__quadtree_nearest_rect_order(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_nearest_rect_max_results(
+test_pass__quadtree_nearest_rect_max_results(
 	void
 	)
 {
@@ -1431,7 +1431,7 @@ test_normal_pass__quadtree_nearest_rect_max_results(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_nearest_rect_zero_results(
+test_pass__quadtree_nearest_rect_zero_results(
 	void
 	)
 {
@@ -1451,7 +1451,7 @@ test_normal_pass__quadtree_nearest_rect_zero_results(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_nearest_circle_one(
+test_pass__quadtree_nearest_circle_one(
 	void
 	)
 {
@@ -1471,7 +1471,7 @@ test_normal_pass__quadtree_nearest_circle_one(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_nearest_circle_order(
+test_pass__quadtree_nearest_circle_order(
 	void
 	)
 {
@@ -1495,7 +1495,7 @@ test_normal_pass__quadtree_nearest_circle_order(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_nearest_circle_max_results(
+test_pass__quadtree_nearest_circle_max_results(
 	void
 	)
 {
@@ -1519,7 +1519,7 @@ test_normal_pass__quadtree_nearest_circle_max_results(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_nearest_circle_max_distance(
+test_pass__quadtree_nearest_circle_max_distance(
 	void
 	)
 {
@@ -1541,7 +1541,7 @@ test_normal_pass__quadtree_nearest_circle_max_distance(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_raycast_hit_one(
+test_pass__quadtree_raycast_hit_one(
 	void
 	)
 {
@@ -1561,7 +1561,7 @@ test_normal_pass__quadtree_raycast_hit_one(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_raycast_miss(
+test_pass__quadtree_raycast_miss(
 	void
 	)
 {
@@ -1581,7 +1581,7 @@ test_normal_pass__quadtree_raycast_miss(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_raycast_length(
+test_pass__quadtree_raycast_length(
 	void
 	)
 {
@@ -1605,7 +1605,7 @@ test_normal_pass__quadtree_raycast_length(
 
 
 void attr_test_fn
-test_normal_pass__quadtree_raycast_multiple(
+test_pass__quadtree_raycast_multiple(
 	void
 	)
 {

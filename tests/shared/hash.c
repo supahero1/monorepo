@@ -24,7 +24,7 @@
 
 
 void attr_test_fn
-test_normal_pass__hash_table_init_free(
+test_pass__hash_table_init_free(
 	void
 	)
 {
@@ -34,7 +34,7 @@ test_normal_pass__hash_table_init_free(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_init_zero_buckets(
+test_fail__hash_table_init_zero_buckets(
 	void
 	)
 {
@@ -43,7 +43,7 @@ test_normal_fail__hash_table_init_zero_buckets(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_free_null(
+test_fail__hash_table_free_null(
 	void
 	)
 {
@@ -79,7 +79,7 @@ hash_table_for_each_fn(
 
 
 void attr_test_fn
-test_normal_pass__hash_table_functions(
+test_pass__hash_table_functions(
 	void
 	)
 {
@@ -189,7 +189,7 @@ hash_table_value_dtor(
 
 
 void attr_test_fn
-test_normal_pass__hash_table_key_value_dtors(
+test_pass__hash_table_key_value_dtors(
 	void
 	)
 {
@@ -223,7 +223,7 @@ test_normal_pass__hash_table_key_value_dtors(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_has_null_table(
+test_fail__hash_table_has_null_table(
 	void
 	)
 {
@@ -232,7 +232,7 @@ test_normal_fail__hash_table_has_null_table(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_has_null_key(
+test_fail__hash_table_has_null_key(
 	void
 	)
 {
@@ -242,7 +242,7 @@ test_normal_fail__hash_table_has_null_key(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_has_null(
+test_fail__hash_table_has_null(
 	void
 	)
 {
@@ -251,7 +251,7 @@ test_normal_fail__hash_table_has_null(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_add_null_table(
+test_fail__hash_table_add_null_table(
 	void
 	)
 {
@@ -260,7 +260,7 @@ test_normal_fail__hash_table_add_null_table(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_add_null_key(
+test_fail__hash_table_add_null_key(
 	void
 	)
 {
@@ -270,7 +270,7 @@ test_normal_fail__hash_table_add_null_key(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_add_null(
+test_fail__hash_table_add_null(
 	void
 	)
 {
@@ -279,7 +279,7 @@ test_normal_fail__hash_table_add_null(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_get_null_table(
+test_fail__hash_table_get_null_table(
 	void
 	)
 {
@@ -288,7 +288,7 @@ test_normal_fail__hash_table_get_null_table(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_get_null_key(
+test_fail__hash_table_get_null_key(
 	void
 	)
 {
@@ -298,7 +298,7 @@ test_normal_fail__hash_table_get_null_key(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_get_null(
+test_fail__hash_table_get_null(
 	void
 	)
 {
@@ -307,7 +307,7 @@ test_normal_fail__hash_table_get_null(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_del_null_table(
+test_fail__hash_table_del_null_table(
 	void
 	)
 {
@@ -316,7 +316,7 @@ test_normal_fail__hash_table_del_null_table(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_del_null_key(
+test_fail__hash_table_del_null_key(
 	void
 	)
 {
@@ -326,7 +326,7 @@ test_normal_fail__hash_table_del_null_key(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_del_null(
+test_fail__hash_table_del_null(
 	void
 	)
 {
@@ -335,7 +335,7 @@ test_normal_fail__hash_table_del_null(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_for_each_null_table(
+test_fail__hash_table_for_each_null_table(
 	void
 	)
 {
@@ -344,7 +344,7 @@ test_normal_fail__hash_table_for_each_null_table(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_for_each_null_fn(
+test_fail__hash_table_for_each_null_fn(
 	void
 	)
 {
@@ -354,7 +354,7 @@ test_normal_fail__hash_table_for_each_null_fn(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_for_each_null(
+test_fail__hash_table_for_each_null(
 	void
 	)
 {
@@ -363,7 +363,7 @@ test_normal_fail__hash_table_for_each_null(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_clear_null_table(
+test_fail__hash_table_clear_null_table(
 	void
 	)
 {
@@ -372,7 +372,7 @@ test_normal_fail__hash_table_clear_null_table(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_set_null_table(
+test_fail__hash_table_set_null_table(
 	void
 	)
 {
@@ -381,7 +381,7 @@ test_normal_fail__hash_table_set_null_table(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_set_null_key(
+test_fail__hash_table_set_null_key(
 	void
 	)
 {
@@ -391,7 +391,7 @@ test_normal_fail__hash_table_set_null_key(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_set_null(
+test_fail__hash_table_set_null(
 	void
 	)
 {
@@ -400,7 +400,7 @@ test_normal_fail__hash_table_set_null(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_modify_null_table(
+test_fail__hash_table_modify_null_table(
 	void
 	)
 {
@@ -409,7 +409,7 @@ test_normal_fail__hash_table_modify_null_table(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_modify_null_key(
+test_fail__hash_table_modify_null_key(
 	void
 	)
 {
@@ -419,7 +419,7 @@ test_normal_fail__hash_table_modify_null_key(
 
 
 void attr_test_fn
-test_normal_fail__hash_table_modify_null(
+test_fail__hash_table_modify_null(
 	void
 	)
 {

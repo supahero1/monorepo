@@ -236,13 +236,12 @@ main(
 			{
 				test_name = argv[++i];
 
-				char prio[16];
 				char method[16];
 				char name[256];
-				int len = sscanf(test_name, "test_%15[^_]_%15[^_]__%255[^(]", prio, method, name);
-				if(len == 3)
+				int len = sscanf(test_name, "test_%15[^_]__%255[^(]", method, name);
+				if(len == 2)
 				{
-					test_name += 5 + strlen(prio) + 1 + strlen(method) + 2;
+					test_name += 5 + strlen(method) + 2;
 				}
 			}
 			else
@@ -303,22 +302,10 @@ main(
 				if(gelf_getsym(data, i, &symbol) == NULL) continue;
 
 				const char* sym_name = elf_strptr(elf, shdr.sh_link, symbol.st_name);
-				char prio[16];
 				char method[16];
 				char name[256];
-				int len = sscanf(sym_name, "test_%15[^_]_%15[^_]__%255[^(]", prio, method, name);
-				if(len != 3) continue;
-
-				if(
-					strcmp(prio, "normal") &&
-					strcmp(prio, "priority")
-					)
-				{
-					test_say("Invalid test priority '%s'", prio);
-					continue;
-				}
-
-				bool priority = !strcmp(prio, "priority");
+				int len = sscanf(sym_name, "test_%15[^_]__%255[^(]", method, name);
+				if(len != 2) continue;
 
 				if(
 					strcmp(method, "fail") &&
@@ -363,8 +350,6 @@ main(
 
 				if(pid == 0)
 				{
-					nice(priority ? 5 : 20);
-
 					alloc_reset();
 					test_set_timeout(60);
 

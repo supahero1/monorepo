@@ -26,7 +26,7 @@
 
 
 void attr_test_fn
-test_normal_pass__options_init_free(
+test_pass__options_init_free(
 	void
 	)
 {
@@ -36,7 +36,7 @@ test_normal_pass__options_init_free(
 
 
 void attr_test_fn
-test_normal_pass__options_parse(
+test_pass__options_parse(
 	void
 	)
 {
@@ -98,7 +98,7 @@ test_normal_pass__options_parse(
 
 
 void attr_test_fn
-test_normal_pass__options_get_typed(
+test_pass__options_get_typed(
 	void
 	)
 {
@@ -230,7 +230,7 @@ test_normal_pass__options_get_typed(
 
 
 void attr_test_fn
-test_normal_fail__options_free_null(
+test_fail__options_free_null(
 	void
 	)
 {
@@ -239,7 +239,7 @@ test_normal_fail__options_free_null(
 
 
 void attr_test_fn
-test_normal_fail__options_exists_null_options(
+test_fail__options_exists_null_options(
 	void
 	)
 {
@@ -248,7 +248,7 @@ test_normal_fail__options_exists_null_options(
 
 
 void attr_test_fn
-test_normal_fail__options_exists_null_key(
+test_fail__options_exists_null_key(
 	void
 	)
 {
@@ -258,7 +258,7 @@ test_normal_fail__options_exists_null_key(
 
 
 void attr_test_fn
-test_normal_fail__options_exists_null(
+test_fail__options_exists_null(
 	void
 	)
 {
@@ -267,7 +267,7 @@ test_normal_fail__options_exists_null(
 
 
 void attr_test_fn
-test_normal_fail__options_get_i64_null_options(
+test_fail__options_get_i64_null_options(
 	void
 	)
 {
@@ -277,7 +277,7 @@ test_normal_fail__options_get_i64_null_options(
 
 
 void attr_test_fn
-test_normal_fail__options_get_i64_null_key(
+test_fail__options_get_i64_null_key(
 	void
 	)
 {
@@ -288,7 +288,7 @@ test_normal_fail__options_get_i64_null_key(
 
 
 void attr_test_fn
-test_normal_fail__options_get_i64_null_out_value(
+test_fail__options_get_i64_null_out_value(
 	void
 	)
 {
@@ -298,7 +298,7 @@ test_normal_fail__options_get_i64_null_out_value(
 
 
 void attr_test_fn
-test_normal_fail__options_get_i64_null(
+test_fail__options_get_i64_null(
 	void
 	)
 {
@@ -307,7 +307,7 @@ test_normal_fail__options_get_i64_null(
 
 
 void attr_test_fn
-test_normal_fail__options_get_f32_null_options(
+test_fail__options_get_f32_null_options(
 	void
 	)
 {
@@ -317,7 +317,7 @@ test_normal_fail__options_get_f32_null_options(
 
 
 void attr_test_fn
-test_normal_fail__options_get_f32_null_key(
+test_fail__options_get_f32_null_key(
 	void
 	)
 {
@@ -328,7 +328,7 @@ test_normal_fail__options_get_f32_null_key(
 
 
 void attr_test_fn
-test_normal_fail__options_get_f32_null_out_value(
+test_fail__options_get_f32_null_out_value(
 	void
 	)
 {
@@ -338,7 +338,7 @@ test_normal_fail__options_get_f32_null_out_value(
 
 
 void attr_test_fn
-test_normal_fail__options_get_f32_null(
+test_fail__options_get_f32_null(
 	void
 	)
 {
@@ -347,7 +347,7 @@ test_normal_fail__options_get_f32_null(
 
 
 void attr_test_fn
-test_normal_fail__options_get_boolean_null_options(
+test_fail__options_get_boolean_null_options(
 	void
 	)
 {
@@ -357,7 +357,7 @@ test_normal_fail__options_get_boolean_null_options(
 
 
 void attr_test_fn
-test_normal_fail__options_get_boolean_null_key(
+test_fail__options_get_boolean_null_key(
 	void
 	)
 {
@@ -368,7 +368,7 @@ test_normal_fail__options_get_boolean_null_key(
 
 
 void attr_test_fn
-test_normal_fail__options_get_boolean_null_out_value(
+test_fail__options_get_boolean_null_out_value(
 	void
 	)
 {
@@ -378,7 +378,7 @@ test_normal_fail__options_get_boolean_null_out_value(
 
 
 void attr_test_fn
-test_normal_fail__options_get_boolean_null(
+test_fail__options_get_boolean_null(
 	void
 	)
 {
@@ -387,7 +387,7 @@ test_normal_fail__options_get_boolean_null(
 
 
 void attr_test_fn
-test_normal_fail__options_get_str_null_options(
+test_fail__options_get_str_null_options(
 	void
 	)
 {
@@ -397,7 +397,7 @@ test_normal_fail__options_get_str_null_options(
 
 
 void attr_test_fn
-test_normal_fail__options_get_str_null_key(
+test_fail__options_get_str_null_key(
 	void
 	)
 {
@@ -408,7 +408,7 @@ test_normal_fail__options_get_str_null_key(
 
 
 void attr_test_fn
-test_normal_fail__options_get_str_null_out_value(
+test_fail__options_get_str_null_out_value(
 	void
 	)
 {
@@ -418,7 +418,7 @@ test_normal_fail__options_get_str_null_out_value(
 
 
 void attr_test_fn
-test_normal_fail__options_get_str_null(
+test_fail__options_get_str_null(
 	void
 	)
 {
@@ -427,7 +427,7 @@ test_normal_fail__options_get_str_null(
 
 
 void attr_test_fn
-test_normal_fail__options_get_color_null_options(
+test_fail__options_get_color_null_options(
 	void
 	)
 {
@@ -437,7 +437,7 @@ test_normal_fail__options_get_color_null_options(
 
 
 void attr_test_fn
-test_normal_fail__options_get_color_null_key(
+test_fail__options_get_color_null_key(
 	void
 	)
 {
@@ -448,7 +448,7 @@ test_normal_fail__options_get_color_null_key(
 
 
 void attr_test_fn
-test_normal_fail__options_get_color_null_out_value(
+test_fail__options_get_color_null_out_value(
 	void
 	)
 {
@@ -458,7 +458,7 @@ test_normal_fail__options_get_color_null_out_value(
 
 
 void attr_test_fn
-test_normal_fail__options_get_color_null(
+test_fail__options_get_color_null(
 	void
 	)
 {

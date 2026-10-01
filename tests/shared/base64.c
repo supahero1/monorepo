@@ -66,7 +66,7 @@ run_decode_test(
 
 
 void attr_test_fn
-test_normal_pass__base64_encode_empty(
+test_pass__base64_encode_empty(
 	void
 	)
 {
@@ -76,7 +76,7 @@ test_normal_pass__base64_encode_empty(
 
 
 void attr_test_fn
-test_normal_pass__base64_encode_mod_0(
+test_pass__base64_encode_mod_0(
 	void
 	)
 {
@@ -86,7 +86,7 @@ test_normal_pass__base64_encode_mod_0(
 
 
 void attr_test_fn
-test_normal_pass__base64_encode_mod_1(
+test_pass__base64_encode_mod_1(
 	void
 	)
 {
@@ -96,7 +96,7 @@ test_normal_pass__base64_encode_mod_1(
 
 
 void attr_test_fn
-test_normal_pass__base64_encode_all_mod_1(
+test_pass__base64_encode_all_mod_1(
 	void
 	)
 {
@@ -115,7 +115,7 @@ test_normal_pass__base64_encode_all_mod_1(
 
 
 void attr_test_fn
-test_normal_pass__base64_encode_mod_2(
+test_pass__base64_encode_mod_2(
 	void
 	)
 {
@@ -125,7 +125,7 @@ test_normal_pass__base64_encode_mod_2(
 
 
 void attr_test_fn
-test_normal_pass__base64_encode_all_mod_2(
+test_pass__base64_encode_all_mod_2(
 	void
 	)
 {
@@ -140,7 +140,7 @@ test_normal_pass__base64_encode_all_mod_2(
 
 
 void attr_test_fn
-test_normal_pass__base64_encode_f(
+test_pass__base64_encode_f(
 	void
 	)
 {
@@ -150,7 +150,7 @@ test_normal_pass__base64_encode_f(
 
 
 void attr_test_fn
-test_normal_pass__base64_encode_fo(
+test_pass__base64_encode_fo(
 	void
 	)
 {
@@ -160,7 +160,7 @@ test_normal_pass__base64_encode_fo(
 
 
 void attr_test_fn
-test_normal_pass__base64_encode_foo(
+test_pass__base64_encode_foo(
 	void
 	)
 {
@@ -170,7 +170,7 @@ test_normal_pass__base64_encode_foo(
 
 
 void attr_test_fn
-test_normal_pass__base64_encode_foob(
+test_pass__base64_encode_foob(
 	void
 	)
 {
@@ -180,7 +180,7 @@ test_normal_pass__base64_encode_foob(
 
 
 void attr_test_fn
-test_normal_pass__base64_encode_fooba(
+test_pass__base64_encode_fooba(
 	void
 	)
 {
@@ -190,7 +190,7 @@ test_normal_pass__base64_encode_fooba(
 
 
 void attr_test_fn
-test_normal_pass__base64_encode_foobar(
+test_pass__base64_encode_foobar(
 	void
 	)
 {
@@ -200,7 +200,7 @@ test_normal_pass__base64_encode_foobar(
 
 
 void attr_test_fn
-test_normal_pass__base64_encode_no_out_len(
+test_pass__base64_encode_no_out_len(
 	void
 	)
 {
@@ -212,7 +212,7 @@ test_normal_pass__base64_encode_no_out_len(
 
 
 void attr_test_fn
-test_normal_pass__base64_encode_null_zero_len(
+test_pass__base64_encode_null_zero_len(
 	void
 	)
 {
@@ -222,7 +222,7 @@ test_normal_pass__base64_encode_null_zero_len(
 
 
 void attr_test_fn
-test_normal_fail__base64_encode_null_nonzero_len(
+test_fail__base64_encode_null_nonzero_len(
 	void
 	)
 {
@@ -231,7 +231,7 @@ test_normal_fail__base64_encode_null_nonzero_len(
 
 
 void attr_test_fn
-test_normal_pass__base64_decode_empty(
+test_pass__base64_decode_empty(
 	void
 	)
 {
@@ -241,7 +241,7 @@ test_normal_pass__base64_decode_empty(
 
 
 void attr_test_fn
-test_normal_pass__base64_decode_mod_0(
+test_pass__base64_decode_mod_0(
 	void
 	)
 {
@@ -251,7 +251,7 @@ test_normal_pass__base64_decode_mod_0(
 
 
 void attr_test_fn
-test_normal_pass__base64_decode_mod_1(
+test_pass__base64_decode_mod_1(
 	void
 	)
 {
@@ -261,7 +261,7 @@ test_normal_pass__base64_decode_mod_1(
 
 
 void attr_test_fn
-test_normal_pass__base64_decode_some_mod_1(
+test_pass__base64_decode_some_mod_1(
 	void
 	)
 {
@@ -280,7 +280,7 @@ test_normal_pass__base64_decode_some_mod_1(
 
 
 void attr_test_fn
-test_normal_pass__base64_decode_mod_2(
+test_pass__base64_decode_mod_2(
 	void
 	)
 {
@@ -290,7 +290,7 @@ test_normal_pass__base64_decode_mod_2(
 
 
 void attr_test_fn
-test_normal_pass__base64_decode_all_mod_2(
+test_pass__base64_decode_all_mod_2(
 	void
 	)
 {
@@ -305,7 +305,7 @@ test_normal_pass__base64_decode_all_mod_2(
 
 
 void attr_test_fn
-test_normal_pass__base64_decode_f(
+test_pass__base64_decode_f(
 	void
 	)
 {
@@ -315,7 +315,7 @@ test_normal_pass__base64_decode_f(
 
 
 void attr_test_fn
-test_normal_pass__base64_decode_fo(
+test_pass__base64_decode_fo(
 	void
 	)
 {
@@ -325,7 +325,7 @@ test_normal_pass__base64_decode_fo(
 
 
 void attr_test_fn
-test_normal_pass__base64_decode_foo(
+test_pass__base64_decode_foo(
 	void
 	)
 {
@@ -335,7 +335,7 @@ test_normal_pass__base64_decode_foo(
 
 
 void attr_test_fn
-test_normal_pass__base64_decode_foob(
+test_pass__base64_decode_foob(
 	void
 	)
 {
@@ -345,7 +345,7 @@ test_normal_pass__base64_decode_foob(
 
 
 void attr_test_fn
-test_normal_pass__base64_decode_fooba(
+test_pass__base64_decode_fooba(
 	void
 	)
 {
@@ -355,7 +355,7 @@ test_normal_pass__base64_decode_fooba(
 
 
 void attr_test_fn
-test_normal_pass__base64_decode_foobar(
+test_pass__base64_decode_foobar(
 	void
 	)
 {
@@ -365,7 +365,7 @@ test_normal_pass__base64_decode_foobar(
 
 
 void attr_test_fn
-test_normal_pass__base64_decode_no_out_len(
+test_pass__base64_decode_no_out_len(
 	void
 	)
 {
@@ -377,7 +377,7 @@ test_normal_pass__base64_decode_no_out_len(
 
 
 void attr_test_fn
-test_normal_pass__base64_decode_null_zero_len(
+test_pass__base64_decode_null_zero_len(
 	void
 	)
 {
@@ -387,7 +387,7 @@ test_normal_pass__base64_decode_null_zero_len(
 
 
 void attr_test_fn
-test_normal_fail__base64_decode_null_nonzero_len(
+test_fail__base64_decode_null_nonzero_len(
 	void
 	)
 {
@@ -396,7 +396,7 @@ test_normal_fail__base64_decode_null_nonzero_len(
 
 
 void attr_test_fn
-test_normal_fail__base64_decode_bad_input(
+test_fail__base64_decode_bad_input(
 	void
 	)
 {
@@ -405,7 +405,7 @@ test_normal_fail__base64_decode_bad_input(
 
 
 void attr_test_fn
-test_normal_fail__base64_decode_bad_len_mod_1(
+test_fail__base64_decode_bad_len_mod_1(
 	void
 	)
 {
@@ -414,7 +414,7 @@ test_normal_fail__base64_decode_bad_len_mod_1(
 
 
 void attr_test_fn
-test_normal_fail__base64_decode_bad_len_mod_2(
+test_fail__base64_decode_bad_len_mod_2(
 	void
 	)
 {
@@ -423,7 +423,7 @@ test_normal_fail__base64_decode_bad_len_mod_2(
 
 
 void attr_test_fn
-test_normal_fail__base64_decode_bad_len_mod_3(
+test_fail__base64_decode_bad_len_mod_3(
 	void
 	)
 {

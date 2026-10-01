@@ -52,7 +52,7 @@ thread_once_thread_fn(
 
 
 void attr_test_fn
-test_normal_pass__thread_once(
+test_pass__thread_once(
 	void
 	)
 {
@@ -83,7 +83,7 @@ test_normal_pass__thread_once(
 
 
 void attr_test_fn
-test_normal_pass__thread_once_reuse(
+test_pass__thread_once_reuse(
 	void
 	)
 {
@@ -144,7 +144,7 @@ thread_key_thread_fn(
 
 
 void attr_test_fn
-test_normal_pass__thread_key_local(
+test_pass__thread_key_local(
 	void
 	)
 {
@@ -164,7 +164,7 @@ test_normal_pass__thread_key_local(
 
 
 void attr_test_fn
-test_normal_pass__thread_key_xthread_isolation(
+test_pass__thread_key_xthread_isolation(
 	void
 	)
 {
@@ -221,7 +221,7 @@ test_normal_pass__thread_key_xthread_isolation(
 
 
 void attr_test_fn
-test_normal_fail__thread_key_free_freed(
+test_fail__thread_key_free_freed(
 	void
 	)
 {
@@ -232,7 +232,7 @@ test_normal_fail__thread_key_free_freed(
 
 
 void attr_test_fn
-test_normal_fail__thread_key_set_freed(
+test_fail__thread_key_set_freed(
 	void
 	)
 {
@@ -243,7 +243,7 @@ test_normal_fail__thread_key_set_freed(
 
 
 void attr_test_fn
-test_normal_fail__thread_init_null_fn(
+test_fail__thread_init_null_fn(
 	void
 	)
 {
@@ -262,7 +262,7 @@ dummy_thread_fn(
 
 
 void attr_test_fn
-test_normal_pass__thread_init_free(
+test_pass__thread_init_free(
 	void
 	)
 {
@@ -278,7 +278,7 @@ test_normal_pass__thread_init_free(
 
 
 void attr_test_fn
-test_normal_fail__thread_free_null(
+test_fail__thread_free_null(
 	void
 	)
 {
@@ -300,7 +300,7 @@ thread_cancel_off_fn(
 
 
 void attr_test_fn
-test_normal_timeout__thread_cancel_off(
+test_timeout__thread_cancel_off(
 	void
 	)
 {
@@ -333,7 +333,7 @@ thread_cancel_on_fn(
 
 
 void attr_test_fn
-test_normal_pass__thread_cancel_on(
+test_pass__thread_cancel_on(
 	void
 	)
 {
@@ -352,7 +352,7 @@ test_normal_pass__thread_cancel_on(
 
 
 void attr_test_fn
-test_normal_timeout__thread_cancel_off_self(
+test_timeout__thread_cancel_off_self(
 	void
 	)
 {
@@ -366,7 +366,7 @@ test_normal_timeout__thread_cancel_off_self(
 
 
 void attr_test_fn
-test_normal_pass__thread_cancel_on_self(
+test_pass__thread_cancel_on_self(
 	void
 	)
 {
@@ -377,7 +377,7 @@ test_normal_pass__thread_cancel_on_self(
 
 
 void attr_test_fn
-test_normal_fail__thread_detach_freed(
+test_fail__thread_detach_freed(
 	void
 	)
 {
@@ -394,7 +394,7 @@ test_normal_fail__thread_detach_freed(
 
 
 void attr_test_fn
-test_normal_fail__thread_join_freed(
+test_fail__thread_join_freed(
 	void
 	)
 {
@@ -411,7 +411,7 @@ test_normal_fail__thread_join_freed(
 
 
 void attr_test_fn
-test_normal_fail__thread_cancel_freed(
+test_fail__thread_cancel_freed(
 	void
 	)
 {
@@ -437,7 +437,7 @@ sync_thread_fn(
 
 
 void attr_test_fn
-test_normal_pass__thread_auto_detach(
+test_pass__thread_auto_detach(
 	void
 	)
 {
@@ -479,7 +479,7 @@ thread_pool_work_fn(
 
 
 void attr_test_fn
-test_normal_pass__thread_pool_and_threads(
+test_pass__thread_pool_and_threads(
 	void
 	)
 {
@@ -541,7 +541,7 @@ thread_pool_work_manually_fn(
 
 
 void attr_test_fn
-test_normal_pass__thread_pool_try_work(
+test_pass__thread_pool_try_work(
 	void
 	)
 {
@@ -579,7 +579,7 @@ test_normal_pass__thread_pool_try_work(
 
 
 void attr_test_fn
-test_normal_fail__threads_init_null(
+test_fail__threads_init_null(
 	void
 	)
 {
@@ -588,7 +588,7 @@ test_normal_fail__threads_init_null(
 
 
 void attr_test_fn
-test_normal_fail__threads_free_null(
+test_fail__threads_free_null(
 	void
 	)
 {
@@ -597,7 +597,7 @@ test_normal_fail__threads_free_null(
 
 
 void attr_test_fn
-test_normal_fail__threads_add_null(
+test_fail__threads_add_null(
 	void
 	)
 {
@@ -606,7 +606,7 @@ test_normal_fail__threads_add_null(
 
 
 void attr_test_fn
-test_normal_fail__threads_cancel_sync_null(
+test_fail__threads_cancel_sync_null(
 	void
 	)
 {
@@ -615,7 +615,7 @@ test_normal_fail__threads_cancel_sync_null(
 
 
 void attr_test_fn
-test_normal_fail__threads_cancel_sync_too_many(
+test_fail__threads_cancel_sync_too_many(
 	void
 	)
 {
@@ -627,7 +627,7 @@ test_normal_fail__threads_cancel_sync_too_many(
 
 
 void attr_test_fn
-test_normal_fail__threads_cancel_async_null(
+test_fail__threads_cancel_async_null(
 	void
 	)
 {
@@ -636,7 +636,7 @@ test_normal_fail__threads_cancel_async_null(
 
 
 void attr_test_fn
-test_normal_fail__threads_cancel_async_too_many(
+test_fail__threads_cancel_async_too_many(
 	void
 	)
 {
@@ -648,7 +648,7 @@ test_normal_fail__threads_cancel_async_too_many(
 
 
 void attr_test_fn
-test_normal_pass__threads_cancel_zero(
+test_pass__threads_cancel_zero(
 	void
 	)
 {
@@ -666,7 +666,7 @@ test_normal_pass__threads_cancel_zero(
 
 
 void attr_test_fn
-test_normal_fail__thread_pool_init_null(
+test_fail__thread_pool_init_null(
 	void
 	)
 {
@@ -675,7 +675,7 @@ test_normal_fail__thread_pool_init_null(
 
 
 void attr_test_fn
-test_normal_fail__thread_pool_free_null(
+test_fail__thread_pool_free_null(
 	void
 	)
 {
@@ -684,7 +684,7 @@ test_normal_fail__thread_pool_free_null(
 
 
 void attr_test_fn
-test_normal_fail__thread_pool_lock_null(
+test_fail__thread_pool_lock_null(
 	void
 	)
 {
@@ -693,7 +693,7 @@ test_normal_fail__thread_pool_lock_null(
 
 
 void attr_test_fn
-test_normal_fail__thread_pool_unlock_null(
+test_fail__thread_pool_unlock_null(
 	void
 	)
 {
@@ -702,7 +702,7 @@ test_normal_fail__thread_pool_unlock_null(
 
 
 void attr_test_fn
-test_normal_fail__thread_pool_add_null(
+test_fail__thread_pool_add_null(
 	void
 	)
 {
@@ -711,7 +711,7 @@ test_normal_fail__thread_pool_add_null(
 
 
 void attr_test_fn
-test_normal_fail__thread_pool_add_u_null(
+test_fail__thread_pool_add_u_null(
 	void
 	)
 {
@@ -720,7 +720,7 @@ test_normal_fail__thread_pool_add_u_null(
 
 
 void attr_test_fn
-test_normal_fail__thread_pool_add_null_fn(
+test_fail__thread_pool_add_null_fn(
 	void
 	)
 {
@@ -732,7 +732,7 @@ test_normal_fail__thread_pool_add_null_fn(
 
 
 void attr_test_fn
-test_normal_fail__thread_pool_add_u_null_fn(
+test_fail__thread_pool_add_u_null_fn(
 	void
 	)
 {
@@ -744,7 +744,7 @@ test_normal_fail__thread_pool_add_u_null_fn(
 
 
 void attr_test_fn
-test_normal_fail__thread_pool_try_work_null(
+test_fail__thread_pool_try_work_null(
 	void
 	)
 {
@@ -753,7 +753,7 @@ test_normal_fail__thread_pool_try_work_null(
 
 
 void attr_test_fn
-test_normal_fail__thread_pool_try_work_u_null(
+test_fail__thread_pool_try_work_u_null(
 	void
 	)
 {
@@ -762,7 +762,7 @@ test_normal_fail__thread_pool_try_work_u_null(
 
 
 void attr_test_fn
-test_normal_fail__thread_pool_work_null(
+test_fail__thread_pool_work_null(
 	void
 	)
 {
@@ -771,7 +771,7 @@ test_normal_fail__thread_pool_work_null(
 
 
 void attr_test_fn
-test_normal_fail__thread_pool_work_u_null(
+test_fail__thread_pool_work_u_null(
 	void
 	)
 {

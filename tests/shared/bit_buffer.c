@@ -25,7 +25,7 @@
 
 
 void attr_test_fn
-test_normal_pass__bit_buffer_empty_functions(
+test_pass__bit_buffer_empty_functions(
 	void
 	)
 {
@@ -85,7 +85,7 @@ test_normal_pass__bit_buffer_empty_functions(
 
 
 void attr_test_fn
-test_normal_pass__bit_buffer_set_get_bits(
+test_pass__bit_buffer_set_get_bits(
 	void
 	)
 {
@@ -210,7 +210,7 @@ test_normal_pass__bit_buffer_set_get_bits(
 
 
 void attr_test_fn
-test_normal_pass__bit_buffer_set_get_float(
+test_pass__bit_buffer_set_get_float(
 	void
 	)
 {
@@ -288,7 +288,7 @@ test_normal_pass__bit_buffer_set_get_float(
 
 
 void attr_test_fn
-test_normal_pass__bit_buffer_set_get_bytes(
+test_pass__bit_buffer_set_get_bytes(
 	void
 	)
 {
@@ -351,7 +351,7 @@ test_normal_pass__bit_buffer_set_get_bytes(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_set_null_buffer(
+test_fail__bit_buffer_set_null_buffer(
 	void
 	)
 {
@@ -360,7 +360,7 @@ test_normal_fail__bit_buffer_set_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_set_null_ptr(
+test_fail__bit_buffer_set_null_ptr(
 	void
 	)
 {
@@ -370,7 +370,7 @@ test_normal_fail__bit_buffer_set_null_ptr(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_reset_null(
+test_fail__bit_buffer_reset_null(
 	void
 	)
 {
@@ -379,7 +379,7 @@ test_normal_fail__bit_buffer_reset_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_available_bits_null(
+test_fail__bit_buffer_available_bits_null(
 	void
 	)
 {
@@ -388,7 +388,7 @@ test_normal_fail__bit_buffer_available_bits_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_available_bytes_null(
+test_fail__bit_buffer_available_bytes_null(
 	void
 	)
 {
@@ -397,7 +397,7 @@ test_normal_fail__bit_buffer_available_bytes_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_consumed_bits_null(
+test_fail__bit_buffer_consumed_bits_null(
 	void
 	)
 {
@@ -406,7 +406,7 @@ test_normal_fail__bit_buffer_consumed_bits_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_consumed_bytes_null(
+test_fail__bit_buffer_consumed_bytes_null(
 	void
 	)
 {
@@ -415,7 +415,7 @@ test_normal_fail__bit_buffer_consumed_bytes_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_skip_bits_null(
+test_fail__bit_buffer_skip_bits_null(
 	void
 	)
 {
@@ -424,7 +424,7 @@ test_normal_fail__bit_buffer_skip_bits_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_skip_bits_safe_null_buffer(
+test_fail__bit_buffer_skip_bits_safe_null_buffer(
 	void
 	)
 {
@@ -434,7 +434,7 @@ test_normal_fail__bit_buffer_skip_bits_safe_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_skip_bits_safe_null_status(
+test_fail__bit_buffer_skip_bits_safe_null_status(
 	void
 	)
 {
@@ -444,7 +444,7 @@ test_normal_fail__bit_buffer_skip_bits_safe_null_status(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_skip_bits_safe_null(
+test_fail__bit_buffer_skip_bits_safe_null(
 	void
 	)
 {
@@ -453,7 +453,7 @@ test_normal_fail__bit_buffer_skip_bits_safe_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_skip_bytes_null(
+test_fail__bit_buffer_skip_bytes_null(
 	void
 	)
 {
@@ -462,7 +462,7 @@ test_normal_fail__bit_buffer_skip_bytes_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_skip_bytes_safe_null_buffer(
+test_fail__bit_buffer_skip_bytes_safe_null_buffer(
 	void
 	)
 {
@@ -472,7 +472,7 @@ test_normal_fail__bit_buffer_skip_bytes_safe_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_skip_bytes_safe_null_status(
+test_fail__bit_buffer_skip_bytes_safe_null_status(
 	void
 	)
 {
@@ -482,7 +482,7 @@ test_normal_fail__bit_buffer_skip_bytes_safe_null_status(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_skip_bytes_safe_null(
+test_fail__bit_buffer_skip_bytes_safe_null(
 	void
 	)
 {
@@ -491,7 +491,7 @@ test_normal_fail__bit_buffer_skip_bytes_safe_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_save_null(
+test_fail__bit_buffer_save_null(
 	void
 	)
 {
@@ -500,7 +500,7 @@ test_normal_fail__bit_buffer_save_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_restore_null_buffer(
+test_fail__bit_buffer_restore_null_buffer(
 	void
 	)
 {
@@ -510,7 +510,7 @@ test_normal_fail__bit_buffer_restore_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_restore_null_ctx(
+test_fail__bit_buffer_restore_null_ctx(
 	void
 	)
 {
@@ -520,7 +520,7 @@ test_normal_fail__bit_buffer_restore_null_ctx(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_restore_null(
+test_fail__bit_buffer_restore_null(
 	void
 	)
 {
@@ -529,7 +529,7 @@ test_normal_fail__bit_buffer_restore_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_set_bits_null(
+test_fail__bit_buffer_set_bits_null(
 	void
 	)
 {
@@ -538,7 +538,7 @@ test_normal_fail__bit_buffer_set_bits_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_bits_null(
+test_fail__bit_buffer_get_bits_null(
 	void
 	)
 {
@@ -547,7 +547,7 @@ test_normal_fail__bit_buffer_get_bits_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_bits_safe_null_buffer(
+test_fail__bit_buffer_get_bits_safe_null_buffer(
 	void
 	)
 {
@@ -557,7 +557,7 @@ test_normal_fail__bit_buffer_get_bits_safe_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_bits_safe_null_status(
+test_fail__bit_buffer_get_bits_safe_null_status(
 	void
 	)
 {
@@ -567,7 +567,7 @@ test_normal_fail__bit_buffer_get_bits_safe_null_status(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_bits_safe_null(
+test_fail__bit_buffer_get_bits_safe_null(
 	void
 	)
 {
@@ -576,7 +576,7 @@ test_normal_fail__bit_buffer_get_bits_safe_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_set_signed_bits_null(
+test_fail__bit_buffer_set_signed_bits_null(
 	void
 	)
 {
@@ -585,7 +585,7 @@ test_normal_fail__bit_buffer_set_signed_bits_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_signed_bits_null(
+test_fail__bit_buffer_get_signed_bits_null(
 	void
 	)
 {
@@ -594,7 +594,7 @@ test_normal_fail__bit_buffer_get_signed_bits_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_signed_bits_safe_null_buffer(
+test_fail__bit_buffer_get_signed_bits_safe_null_buffer(
 	void
 	)
 {
@@ -604,7 +604,7 @@ test_normal_fail__bit_buffer_get_signed_bits_safe_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_signed_bits_safe_null_status(
+test_fail__bit_buffer_get_signed_bits_safe_null_status(
 	void
 	)
 {
@@ -614,7 +614,7 @@ test_normal_fail__bit_buffer_get_signed_bits_safe_null_status(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_signed_bits_safe_null(
+test_fail__bit_buffer_get_signed_bits_safe_null(
 	void
 	)
 {
@@ -623,7 +623,7 @@ test_normal_fail__bit_buffer_get_signed_bits_safe_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_set_bits_var_null(
+test_fail__bit_buffer_set_bits_var_null(
 	void
 	)
 {
@@ -632,7 +632,7 @@ test_normal_fail__bit_buffer_set_bits_var_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_bits_var_null(
+test_fail__bit_buffer_get_bits_var_null(
 	void
 	)
 {
@@ -641,7 +641,7 @@ test_normal_fail__bit_buffer_get_bits_var_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_bits_var_safe_null_buffer(
+test_fail__bit_buffer_get_bits_var_safe_null_buffer(
 	void
 	)
 {
@@ -651,7 +651,7 @@ test_normal_fail__bit_buffer_get_bits_var_safe_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_bits_var_safe_null_status(
+test_fail__bit_buffer_get_bits_var_safe_null_status(
 	void
 	)
 {
@@ -661,7 +661,7 @@ test_normal_fail__bit_buffer_get_bits_var_safe_null_status(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_bits_var_safe_null(
+test_fail__bit_buffer_get_bits_var_safe_null(
 	void
 	)
 {
@@ -670,7 +670,7 @@ test_normal_fail__bit_buffer_get_bits_var_safe_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_set_signed_bits_var_null(
+test_fail__bit_buffer_set_signed_bits_var_null(
 	void
 	)
 {
@@ -679,7 +679,7 @@ test_normal_fail__bit_buffer_set_signed_bits_var_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_signed_bits_var_null(
+test_fail__bit_buffer_get_signed_bits_var_null(
 	void
 	)
 {
@@ -688,7 +688,7 @@ test_normal_fail__bit_buffer_get_signed_bits_var_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_signed_bits_var_safe_null_buffer(
+test_fail__bit_buffer_get_signed_bits_var_safe_null_buffer(
 	void
 	)
 {
@@ -698,7 +698,7 @@ test_normal_fail__bit_buffer_get_signed_bits_var_safe_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_signed_bits_var_safe_null_status(
+test_fail__bit_buffer_get_signed_bits_var_safe_null_status(
 	void
 	)
 {
@@ -708,7 +708,7 @@ test_normal_fail__bit_buffer_get_signed_bits_var_safe_null_status(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_signed_bits_var_safe_null(
+test_fail__bit_buffer_get_signed_bits_var_safe_null(
 	void
 	)
 {
@@ -717,7 +717,7 @@ test_normal_fail__bit_buffer_get_signed_bits_var_safe_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_set_fixed_point_null(
+test_fail__bit_buffer_set_fixed_point_null(
 	void
 	)
 {
@@ -726,7 +726,7 @@ test_normal_fail__bit_buffer_set_fixed_point_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_fixed_point_null(
+test_fail__bit_buffer_get_fixed_point_null(
 	void
 	)
 {
@@ -735,7 +735,7 @@ test_normal_fail__bit_buffer_get_fixed_point_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_fixed_point_safe_null_buffer(
+test_fail__bit_buffer_get_fixed_point_safe_null_buffer(
 	void
 	)
 {
@@ -745,7 +745,7 @@ test_normal_fail__bit_buffer_get_fixed_point_safe_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_fixed_point_safe_null_status(
+test_fail__bit_buffer_get_fixed_point_safe_null_status(
 	void
 	)
 {
@@ -755,7 +755,7 @@ test_normal_fail__bit_buffer_get_fixed_point_safe_null_status(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_fixed_point_safe_null(
+test_fail__bit_buffer_get_fixed_point_safe_null(
 	void
 	)
 {
@@ -764,7 +764,7 @@ test_normal_fail__bit_buffer_get_fixed_point_safe_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_set_signed_fixed_point_null(
+test_fail__bit_buffer_set_signed_fixed_point_null(
 	void
 	)
 {
@@ -773,7 +773,7 @@ test_normal_fail__bit_buffer_set_signed_fixed_point_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_signed_fixed_point_null(
+test_fail__bit_buffer_get_signed_fixed_point_null(
 	void
 	)
 {
@@ -782,7 +782,7 @@ test_normal_fail__bit_buffer_get_signed_fixed_point_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_signed_fixed_point_safe_null_buffer(
+test_fail__bit_buffer_get_signed_fixed_point_safe_null_buffer(
 	void
 	)
 {
@@ -792,7 +792,7 @@ test_normal_fail__bit_buffer_get_signed_fixed_point_safe_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_signed_fixed_point_safe_null_status(
+test_fail__bit_buffer_get_signed_fixed_point_safe_null_status(
 	void
 	)
 {
@@ -802,7 +802,7 @@ test_normal_fail__bit_buffer_get_signed_fixed_point_safe_null_status(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_signed_fixed_point_safe_null(
+test_fail__bit_buffer_get_signed_fixed_point_safe_null(
 	void
 	)
 {
@@ -811,7 +811,7 @@ test_normal_fail__bit_buffer_get_signed_fixed_point_safe_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_set_bytes_null_buffer(
+test_fail__bit_buffer_set_bytes_null_buffer(
 	void
 	)
 {
@@ -820,7 +820,7 @@ test_normal_fail__bit_buffer_set_bytes_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_set_bytes_null_data(
+test_fail__bit_buffer_set_bytes_null_data(
 	void
 	)
 {
@@ -830,7 +830,7 @@ test_normal_fail__bit_buffer_set_bytes_null_data(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_bytes_null_buffer(
+test_fail__bit_buffer_get_bytes_null_buffer(
 	void
 	)
 {
@@ -839,7 +839,7 @@ test_normal_fail__bit_buffer_get_bytes_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_bytes_null_data(
+test_fail__bit_buffer_get_bytes_null_data(
 	void
 	)
 {
@@ -849,7 +849,7 @@ test_normal_fail__bit_buffer_get_bytes_null_data(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_bytes_safe_null_buffer(
+test_fail__bit_buffer_get_bytes_safe_null_buffer(
 	void
 	)
 {
@@ -859,7 +859,7 @@ test_normal_fail__bit_buffer_get_bytes_safe_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_bytes_safe_null_data(
+test_fail__bit_buffer_get_bytes_safe_null_data(
 	void
 	)
 {
@@ -870,7 +870,7 @@ test_normal_fail__bit_buffer_get_bytes_safe_null_data(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_bytes_safe_null_status(
+test_fail__bit_buffer_get_bytes_safe_null_status(
 	void
 	)
 {
@@ -880,7 +880,7 @@ test_normal_fail__bit_buffer_get_bytes_safe_null_status(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_bytes_safe_null(
+test_fail__bit_buffer_get_bytes_safe_null(
 	void
 	)
 {
@@ -889,7 +889,7 @@ test_normal_fail__bit_buffer_get_bytes_safe_null(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_set_str_null_buffer(
+test_fail__bit_buffer_set_str_null_buffer(
 	void
 	)
 {
@@ -899,7 +899,7 @@ test_normal_fail__bit_buffer_set_str_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_str_null_buffer(
+test_fail__bit_buffer_get_str_null_buffer(
 	void
 	)
 {
@@ -908,7 +908,7 @@ test_normal_fail__bit_buffer_get_str_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_str_safe_null_buffer(
+test_fail__bit_buffer_get_str_safe_null_buffer(
 	void
 	)
 {
@@ -918,7 +918,7 @@ test_normal_fail__bit_buffer_get_str_safe_null_buffer(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_str_safe_null_status(
+test_fail__bit_buffer_get_str_safe_null_status(
 	void
 	)
 {
@@ -928,7 +928,7 @@ test_normal_fail__bit_buffer_get_str_safe_null_status(
 
 
 void attr_test_fn
-test_normal_fail__bit_buffer_get_str_safe_null(
+test_fail__bit_buffer_get_str_safe_null(
 	void
 	)
 {

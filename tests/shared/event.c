@@ -33,7 +33,7 @@
 
 
 void attr_test_fn
-test_normal_pass__event_target_init_free(
+test_pass__event_target_init_free(
 	void
 	)
 {
@@ -44,7 +44,7 @@ test_normal_pass__event_target_init_free(
 
 
 void attr_test_fn
-test_normal_fail__event_target_init_null(
+test_fail__event_target_init_null(
 	void
 	)
 {
@@ -53,7 +53,7 @@ test_normal_fail__event_target_init_null(
 
 
 void attr_test_fn
-test_normal_fail__event_target_free_null(
+test_fail__event_target_free_null(
 	void
 	)
 {
@@ -62,7 +62,7 @@ test_normal_fail__event_target_free_null(
 
 
 void attr_test_fn
-test_normal_fail__event_target_add_null_fn(
+test_fail__event_target_add_null_fn(
 	void
 	)
 {
@@ -75,7 +75,7 @@ test_normal_fail__event_target_add_null_fn(
 
 
 void attr_test_fn
-test_normal_pass__event_target_add_remove_listener(
+test_pass__event_target_add_remove_listener(
 	void
 	)
 {
@@ -94,7 +94,7 @@ test_normal_pass__event_target_add_remove_listener(
 
 
 void attr_test_fn
-test_normal_fail__event_target_free_while_non_empty(
+test_fail__event_target_free_while_non_empty(
 	void
 	)
 {
@@ -114,7 +114,7 @@ test_normal_fail__event_target_free_while_non_empty(
 
 
 void attr_test_fn
-test_normal_fail__event_target_add_null_target(
+test_fail__event_target_add_null_target(
 	void
 	)
 {
@@ -127,7 +127,7 @@ test_normal_fail__event_target_add_null_target(
 
 
 void attr_test_fn
-test_normal_fail__event_target_del_null_target(
+test_fail__event_target_del_null_target(
 	void
 	)
 {
@@ -137,7 +137,7 @@ test_normal_fail__event_target_del_null_target(
 
 
 void attr_test_fn
-test_normal_pass__event_target_del_null_listener(
+test_pass__event_target_del_null_listener(
 	void
 	)
 {
@@ -150,7 +150,7 @@ test_normal_pass__event_target_del_null_listener(
 
 
 void attr_test_fn
-test_normal_pass__event_target_fire_empty(
+test_pass__event_target_fire_empty(
 	void
 	)
 {
@@ -172,7 +172,7 @@ event_listener_bool_fn(
 
 
 void attr_test_fn
-test_normal_pass__event_target_fire(
+test_pass__event_target_fire(
 	void
 	)
 {
@@ -198,7 +198,7 @@ test_normal_pass__event_target_fire(
 
 
 void attr_test_fn
-test_normal_pass__event_target_fire_once(
+test_pass__event_target_fire_once(
 	void
 	)
 {
@@ -227,7 +227,7 @@ test_normal_pass__event_target_fire_once(
 
 
 void attr_test_fn
-test_normal_pass__event_target_fire_on_removed_listener(
+test_pass__event_target_fire_on_removed_listener(
 	void
 	)
 {
@@ -252,7 +252,7 @@ test_normal_pass__event_target_fire_on_removed_listener(
 
 
 void attr_test_fn
-test_normal_pass__event_target_fire_on_removed_once_listener(
+test_pass__event_target_fire_on_removed_once_listener(
 	void
 	)
 {
@@ -287,7 +287,7 @@ event_listener_remove_itself_fn(
 
 
 void attr_test_fn
-test_normal_pass__event_listener_remove_itself(
+test_pass__event_listener_remove_itself(
 	void
 	)
 {
@@ -308,7 +308,7 @@ test_normal_pass__event_listener_remove_itself(
 
 
 void attr_test_fn
-test_normal_fail__event_listener_remove_itself_twice(
+test_fail__event_listener_remove_itself_twice(
 	void
 	)
 {
@@ -330,7 +330,7 @@ test_normal_fail__event_listener_remove_itself_twice(
 
 
 void attr_test_fn
-test_normal_fail__event_listener_remove_other(
+test_fail__event_listener_remove_other(
 	void
 	)
 {
@@ -367,7 +367,7 @@ event_target_wait_thread_fn(
 
 
 void attr_test_fn
-test_priority_pass__event_target_wait(
+test_pass__event_target_wait(
 	void
 	)
 {
@@ -394,7 +394,7 @@ test_priority_pass__event_target_wait(
 
 
 void attr_test_fn
-test_normal_fail__event_target_wait_null(
+test_fail__event_target_wait_null(
 	void
 	)
 {
@@ -403,7 +403,7 @@ test_normal_fail__event_target_wait_null(
 
 
 void attr_test_fn
-test_normal_timeout__event_target_wait_timeout(
+test_timeout__event_target_wait_timeout(
 	void
 	)
 {

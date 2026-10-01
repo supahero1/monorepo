@@ -24,7 +24,7 @@
 
 
 void attr_test_fn
-test_normal_pass__time_time_conversion(
+test_pass__time_time_conversion(
 	void
 	)
 {
@@ -69,7 +69,7 @@ test_normal_pass__time_time_conversion(
 
 
 void attr_test_fn
-test_normal_pass__time_timers_init_free(
+test_pass__time_timers_init_free(
 	void
 	)
 {
@@ -79,7 +79,7 @@ test_normal_pass__time_timers_init_free(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_free_null(
+test_fail__time_timers_free_null(
 	void
 	)
 {
@@ -88,7 +88,7 @@ test_normal_fail__time_timers_free_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_lock_null(
+test_fail__time_timers_lock_null(
 	void
 	)
 {
@@ -97,7 +97,7 @@ test_normal_fail__time_timers_lock_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_unlock_null(
+test_fail__time_timers_unlock_null(
 	void
 	)
 {
@@ -106,7 +106,7 @@ test_normal_fail__time_timers_unlock_null(
 
 
 void attr_test_fn
-test_normal_pass__time_timer_init_free(
+test_pass__time_timer_init_free(
 	void
 	)
 {
@@ -117,7 +117,7 @@ test_normal_pass__time_timer_init_free(
 
 
 void attr_test_fn
-test_normal_fail__time_timer_init_null(
+test_fail__time_timer_init_null(
 	void
 	)
 {
@@ -126,7 +126,7 @@ test_normal_fail__time_timer_init_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timer_free_null(
+test_fail__time_timer_free_null(
 	void
 	)
 {
@@ -135,7 +135,7 @@ test_normal_fail__time_timer_free_null(
 
 
 void attr_test_fn
-test_normal_pass__time_timers_is_timer_expired_u(
+test_pass__time_timers_is_timer_expired_u(
 	void
 	)
 {
@@ -151,7 +151,7 @@ test_normal_pass__time_timers_is_timer_expired_u(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_is_timer_expired_u_timers_null(
+test_fail__time_timers_is_timer_expired_u_timers_null(
 	void
 	)
 {
@@ -163,7 +163,7 @@ test_normal_fail__time_timers_is_timer_expired_u_timers_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_is_timer_expired_u_timer_null(
+test_fail__time_timers_is_timer_expired_u_timer_null(
 	void
 	)
 {
@@ -174,7 +174,7 @@ test_normal_fail__time_timers_is_timer_expired_u_timer_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_is_timer_expired_u_null(
+test_fail__time_timers_is_timer_expired_u_null(
 	void
 	)
 {
@@ -183,7 +183,7 @@ test_normal_fail__time_timers_is_timer_expired_u_null(
 
 
 void attr_test_fn
-test_normal_pass__time_timers_is_timer_expired(
+test_pass__time_timers_is_timer_expired(
 	void
 	)
 {
@@ -199,7 +199,7 @@ test_normal_pass__time_timers_is_timer_expired(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_is_timer_expired_timers_null(
+test_fail__time_timers_is_timer_expired_timers_null(
 	void
 	)
 {
@@ -211,7 +211,7 @@ test_normal_fail__time_timers_is_timer_expired_timers_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_is_timer_expired_timer_null(
+test_fail__time_timers_is_timer_expired_timer_null(
 	void
 	)
 {
@@ -222,7 +222,7 @@ test_normal_fail__time_timers_is_timer_expired_timer_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_is_timer_expired_null(
+test_fail__time_timers_is_timer_expired_null(
 	void
 	)
 {
@@ -241,7 +241,7 @@ timer_never_fn(
 
 
 void attr_test_fn
-test_priority_pass__time_timers_add_timeout_and_cancel(
+test_pass__time_timers_add_timeout_and_cancel(
 	void
 	)
 {
@@ -286,7 +286,7 @@ test_priority_pass__time_timers_add_timeout_and_cancel(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_add_timeout_null_fn(
+test_fail__time_timers_add_timeout_null_fn(
 	void
 	)
 {
@@ -298,7 +298,7 @@ test_normal_fail__time_timers_add_timeout_null_fn(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_add_timeout_u_null_fn(
+test_fail__time_timers_add_timeout_u_null_fn(
 	void
 	)
 {
@@ -310,7 +310,7 @@ test_normal_fail__time_timers_add_timeout_u_null_fn(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_add_timeout_null_timers(
+test_fail__time_timers_add_timeout_null_timers(
 	void
 	)
 {
@@ -326,7 +326,7 @@ test_normal_fail__time_timers_add_timeout_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_add_timeout_u_null_timers(
+test_fail__time_timers_add_timeout_u_null_timers(
 	void
 	)
 {
@@ -342,7 +342,7 @@ test_normal_fail__time_timers_add_timeout_u_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_add_timeout_null(
+test_fail__time_timers_add_timeout_null(
 	void
 	)
 {
@@ -351,7 +351,7 @@ test_normal_fail__time_timers_add_timeout_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_add_timeout_u_null(
+test_fail__time_timers_add_timeout_u_null(
 	void
 	)
 {
@@ -360,7 +360,7 @@ test_normal_fail__time_timers_add_timeout_u_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_get_timeout_null_timer(
+test_fail__time_timers_get_timeout_null_timer(
 	void
 	)
 {
@@ -371,7 +371,7 @@ test_normal_fail__time_timers_get_timeout_null_timer(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_get_timeout_u_null_timer(
+test_fail__time_timers_get_timeout_u_null_timer(
 	void
 	)
 {
@@ -382,7 +382,7 @@ test_normal_fail__time_timers_get_timeout_u_null_timer(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_get_timeout_null_timers(
+test_fail__time_timers_get_timeout_null_timers(
 	void
 	)
 {
@@ -394,7 +394,7 @@ test_normal_fail__time_timers_get_timeout_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_get_timeout_u_null_timers(
+test_fail__time_timers_get_timeout_u_null_timers(
 	void
 	)
 {
@@ -406,7 +406,7 @@ test_normal_fail__time_timers_get_timeout_u_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_get_timeout_null(
+test_fail__time_timers_get_timeout_null(
 	void
 	)
 {
@@ -415,7 +415,7 @@ test_normal_fail__time_timers_get_timeout_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_get_timeout_u_null(
+test_fail__time_timers_get_timeout_u_null(
 	void
 	)
 {
@@ -424,7 +424,7 @@ test_normal_fail__time_timers_get_timeout_u_null(
 
 
 void attr_test_fn
-test_normal_pass__time_timers_get_timeout_expired(
+test_pass__time_timers_get_timeout_expired(
 	void
 	)
 {
@@ -440,7 +440,7 @@ test_normal_pass__time_timers_get_timeout_expired(
 
 
 void attr_test_fn
-test_normal_pass__time_timers_get_timeout_u_expired(
+test_pass__time_timers_get_timeout_u_expired(
 	void
 	)
 {
@@ -456,7 +456,7 @@ test_normal_pass__time_timers_get_timeout_u_expired(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_open_timeout_null_timer(
+test_fail__time_timers_open_timeout_null_timer(
 	void
 	)
 {
@@ -467,7 +467,7 @@ test_normal_fail__time_timers_open_timeout_null_timer(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_open_timeout_u_null_timer(
+test_fail__time_timers_open_timeout_u_null_timer(
 	void
 	)
 {
@@ -478,7 +478,7 @@ test_normal_fail__time_timers_open_timeout_u_null_timer(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_open_timeout_null_timers(
+test_fail__time_timers_open_timeout_null_timers(
 	void
 	)
 {
@@ -490,7 +490,7 @@ test_normal_fail__time_timers_open_timeout_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_open_timeout_u_null_timers(
+test_fail__time_timers_open_timeout_u_null_timers(
 	void
 	)
 {
@@ -502,7 +502,7 @@ test_normal_fail__time_timers_open_timeout_u_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_open_timeout_null(
+test_fail__time_timers_open_timeout_null(
 	void
 	)
 {
@@ -511,7 +511,7 @@ test_normal_fail__time_timers_open_timeout_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_open_timeout_u_null(
+test_fail__time_timers_open_timeout_u_null(
 	void
 	)
 {
@@ -520,7 +520,7 @@ test_normal_fail__time_timers_open_timeout_u_null(
 
 
 void attr_test_fn
-test_normal_pass__time_timers_open_timeout_expired(
+test_pass__time_timers_open_timeout_expired(
 	void
 	)
 {
@@ -536,7 +536,7 @@ test_normal_pass__time_timers_open_timeout_expired(
 
 
 void attr_test_fn
-test_normal_pass__time_timers_open_timeout_u_expired(
+test_pass__time_timers_open_timeout_u_expired(
 	void
 	)
 {
@@ -552,7 +552,7 @@ test_normal_pass__time_timers_open_timeout_u_expired(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_close_timeout_null_timer(
+test_fail__time_timers_close_timeout_null_timer(
 	void
 	)
 {
@@ -563,7 +563,7 @@ test_normal_fail__time_timers_close_timeout_null_timer(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_close_timeout_u_null_timer(
+test_fail__time_timers_close_timeout_u_null_timer(
 	void
 	)
 {
@@ -574,7 +574,7 @@ test_normal_fail__time_timers_close_timeout_u_null_timer(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_close_timeout_null_timers(
+test_fail__time_timers_close_timeout_null_timers(
 	void
 	)
 {
@@ -586,7 +586,7 @@ test_normal_fail__time_timers_close_timeout_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_close_timeout_u_null_timers(
+test_fail__time_timers_close_timeout_u_null_timers(
 	void
 	)
 {
@@ -598,7 +598,7 @@ test_normal_fail__time_timers_close_timeout_u_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_close_timeout_null(
+test_fail__time_timers_close_timeout_null(
 	void
 	)
 {
@@ -607,7 +607,7 @@ test_normal_fail__time_timers_close_timeout_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_close_timeout_u_null(
+test_fail__time_timers_close_timeout_u_null(
 	void
 	)
 {
@@ -625,7 +625,7 @@ timer_set_flag_fn(
 
 
 void attr_test_fn
-test_priority_pass__time_timers_set_timeout_u(
+test_pass__time_timers_set_timeout_u(
 	void
 	)
 {
@@ -677,7 +677,7 @@ test_priority_pass__time_timers_set_timeout_u(
 
 
 void attr_test_fn
-test_priority_pass__time_timers_set_timeout_long_u(
+test_pass__time_timers_set_timeout_long_u(
 	void
 	)
 {
@@ -738,7 +738,7 @@ test_priority_pass__time_timers_set_timeout_long_u(
 
 
 void attr_test_fn
-test_priority_pass__time_timers_open_cancel_timeout(
+test_pass__time_timers_open_cancel_timeout(
 	void
 	)
 {
@@ -800,7 +800,7 @@ timer_add_never_timeout(
 
 
 void attr_test_fn
-test_normal_pass__time_timers_cancel_timeout_leaf(
+test_pass__time_timers_cancel_timeout_leaf(
 	void
 	)
 {
@@ -867,7 +867,7 @@ timer_timeout_cancel_timer_fn(
 
 
 void attr_test_fn
-test_priority_pass__time_timers_timeout_cancel_timeout(
+test_pass__time_timers_timeout_cancel_timeout(
 	void
 	)
 {
@@ -925,7 +925,7 @@ timer_nothing_fn(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_timeout_cancel_timeout_too_late(
+test_fail__time_timers_timeout_cancel_timeout_too_late(
 	void
 	)
 {
@@ -968,7 +968,7 @@ test_normal_fail__time_timers_timeout_cancel_timeout_too_late(
 
 
 void attr_test_fn
-test_priority_pass__time_timers_timeout_cancel_interval(
+test_pass__time_timers_timeout_cancel_interval(
 	void
 	)
 {
@@ -1019,7 +1019,7 @@ test_priority_pass__time_timers_timeout_cancel_interval(
 
 
 void attr_test_fn
-test_priority_pass__time_timers_add_interval_and_cancel(
+test_pass__time_timers_add_interval_and_cancel(
 	void
 	)
 {
@@ -1066,7 +1066,7 @@ test_priority_pass__time_timers_add_interval_and_cancel(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_add_interval_null_fn(
+test_fail__time_timers_add_interval_null_fn(
 	void
 	)
 {
@@ -1078,7 +1078,7 @@ test_normal_fail__time_timers_add_interval_null_fn(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_add_interval_u_null_fn(
+test_fail__time_timers_add_interval_u_null_fn(
 	void
 	)
 {
@@ -1090,7 +1090,7 @@ test_normal_fail__time_timers_add_interval_u_null_fn(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_add_interval_null_timers(
+test_fail__time_timers_add_interval_null_timers(
 	void
 	)
 {
@@ -1106,7 +1106,7 @@ test_normal_fail__time_timers_add_interval_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_add_interval_u_null_timers(
+test_fail__time_timers_add_interval_u_null_timers(
 	void
 	)
 {
@@ -1122,7 +1122,7 @@ test_normal_fail__time_timers_add_interval_u_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_add_interval_null(
+test_fail__time_timers_add_interval_null(
 	void
 	)
 {
@@ -1131,7 +1131,7 @@ test_normal_fail__time_timers_add_interval_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_add_interval_u_null(
+test_fail__time_timers_add_interval_u_null(
 	void
 	)
 {
@@ -1140,7 +1140,7 @@ test_normal_fail__time_timers_add_interval_u_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_get_interval_null_timer(
+test_fail__time_timers_get_interval_null_timer(
 	void
 	)
 {
@@ -1151,7 +1151,7 @@ test_normal_fail__time_timers_get_interval_null_timer(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_get_interval_u_null_timer(
+test_fail__time_timers_get_interval_u_null_timer(
 	void
 	)
 {
@@ -1162,7 +1162,7 @@ test_normal_fail__time_timers_get_interval_u_null_timer(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_get_interval_null_timers(
+test_fail__time_timers_get_interval_null_timers(
 	void
 	)
 {
@@ -1174,7 +1174,7 @@ test_normal_fail__time_timers_get_interval_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_get_interval_u_null_timers(
+test_fail__time_timers_get_interval_u_null_timers(
 	void
 	)
 {
@@ -1186,7 +1186,7 @@ test_normal_fail__time_timers_get_interval_u_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_get_interval_null(
+test_fail__time_timers_get_interval_null(
 	void
 	)
 {
@@ -1195,7 +1195,7 @@ test_normal_fail__time_timers_get_interval_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_get_interval_u_null(
+test_fail__time_timers_get_interval_u_null(
 	void
 	)
 {
@@ -1204,7 +1204,7 @@ test_normal_fail__time_timers_get_interval_u_null(
 
 
 void attr_test_fn
-test_normal_pass__time_timers_get_interval_expired(
+test_pass__time_timers_get_interval_expired(
 	void
 	)
 {
@@ -1220,7 +1220,7 @@ test_normal_pass__time_timers_get_interval_expired(
 
 
 void attr_test_fn
-test_normal_pass__time_timers_get_interval_u_expired(
+test_pass__time_timers_get_interval_u_expired(
 	void
 	)
 {
@@ -1236,7 +1236,7 @@ test_normal_pass__time_timers_get_interval_u_expired(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_open_interval_null_timer(
+test_fail__time_timers_open_interval_null_timer(
 	void
 	)
 {
@@ -1247,7 +1247,7 @@ test_normal_fail__time_timers_open_interval_null_timer(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_open_interval_u_null_timer(
+test_fail__time_timers_open_interval_u_null_timer(
 	void
 	)
 {
@@ -1258,7 +1258,7 @@ test_normal_fail__time_timers_open_interval_u_null_timer(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_open_interval_null_timers(
+test_fail__time_timers_open_interval_null_timers(
 	void
 	)
 {
@@ -1270,7 +1270,7 @@ test_normal_fail__time_timers_open_interval_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_open_interval_u_null_timers(
+test_fail__time_timers_open_interval_u_null_timers(
 	void
 	)
 {
@@ -1282,7 +1282,7 @@ test_normal_fail__time_timers_open_interval_u_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_open_interval_null(
+test_fail__time_timers_open_interval_null(
 	void
 	)
 {
@@ -1291,7 +1291,7 @@ test_normal_fail__time_timers_open_interval_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_open_interval_u_null(
+test_fail__time_timers_open_interval_u_null(
 	void
 	)
 {
@@ -1300,7 +1300,7 @@ test_normal_fail__time_timers_open_interval_u_null(
 
 
 void attr_test_fn
-test_normal_pass__time_timers_open_interval_expired(
+test_pass__time_timers_open_interval_expired(
 	void
 	)
 {
@@ -1316,7 +1316,7 @@ test_normal_pass__time_timers_open_interval_expired(
 
 
 void attr_test_fn
-test_normal_pass__time_timers_open_interval_u_expired(
+test_pass__time_timers_open_interval_u_expired(
 	void
 	)
 {
@@ -1332,7 +1332,7 @@ test_normal_pass__time_timers_open_interval_u_expired(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_close_interval_null_timer(
+test_fail__time_timers_close_interval_null_timer(
 	void
 	)
 {
@@ -1343,7 +1343,7 @@ test_normal_fail__time_timers_close_interval_null_timer(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_close_interval_u_null_timer(
+test_fail__time_timers_close_interval_u_null_timer(
 	void
 	)
 {
@@ -1354,7 +1354,7 @@ test_normal_fail__time_timers_close_interval_u_null_timer(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_close_interval_null_timers(
+test_fail__time_timers_close_interval_null_timers(
 	void
 	)
 {
@@ -1366,7 +1366,7 @@ test_normal_fail__time_timers_close_interval_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_close_interval_u_null_timers(
+test_fail__time_timers_close_interval_u_null_timers(
 	void
 	)
 {
@@ -1378,7 +1378,7 @@ test_normal_fail__time_timers_close_interval_u_null_timers(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_close_interval_null(
+test_fail__time_timers_close_interval_null(
 	void
 	)
 {
@@ -1387,7 +1387,7 @@ test_normal_fail__time_timers_close_interval_null(
 
 
 void attr_test_fn
-test_normal_fail__time_timers_close_interval_u_null(
+test_fail__time_timers_close_interval_u_null(
 	void
 	)
 {
@@ -1396,7 +1396,7 @@ test_normal_fail__time_timers_close_interval_u_null(
 
 
 void attr_test_fn
-test_priority_pass__time_timers_set_interval_u(
+test_pass__time_timers_set_interval_u(
 	void
 	)
 {
@@ -1458,7 +1458,7 @@ test_priority_pass__time_timers_set_interval_u(
 
 
 void attr_test_fn
-test_priority_pass__time_timers_set_interval_long_u(
+test_pass__time_timers_set_interval_long_u(
 	void
 	)
 {
@@ -1529,7 +1529,7 @@ test_priority_pass__time_timers_set_interval_long_u(
 
 
 void attr_test_fn
-test_priority_pass__time_timers_open_cancel_interval(
+test_pass__time_timers_open_cancel_interval(
 	void
 	)
 {
@@ -1593,7 +1593,7 @@ timer_add_never_interval(
 
 
 void attr_test_fn
-test_normal_pass__time_timers_cancel_interval_leaf(
+test_pass__time_timers_cancel_interval_leaf(
 	void
 	)
 {
@@ -1658,7 +1658,7 @@ timer_interval_cancel_timer_fn(
 
 
 void attr_test_fn
-test_priority_pass__time_timers_interval_cancel_interval(
+test_pass__time_timers_interval_cancel_interval(
 	void
 	)
 {
@@ -1725,7 +1725,7 @@ timer_cancel_itself(
 
 
 void attr_test_fn
-test_priority_fail__time_timers_interval_cancel_interval_too_late(
+test_fail__time_timers_interval_cancel_interval_too_late(
 	void
 	)
 {
@@ -1774,7 +1774,7 @@ test_priority_fail__time_timers_interval_cancel_interval_too_late(
 
 
 void attr_test_fn
-test_priority_pass__time_timers_interval_cancel_itself_moved(
+test_pass__time_timers_interval_cancel_itself_moved(
 	void
 	)
 {
@@ -1808,7 +1808,7 @@ test_priority_pass__time_timers_interval_cancel_itself_moved(
 
 
 void attr_test_fn
-test_priority_pass__time_timers_interval_cancel_timeout(
+test_pass__time_timers_interval_cancel_timeout(
 	void
 	)
 {

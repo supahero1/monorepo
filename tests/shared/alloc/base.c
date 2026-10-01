@@ -890,7 +890,7 @@ alloc_test_worker_retained_then_exit(
 
 
 void attr_test_fn
-test_priority_pass__alloc_small_matrix(
+test_pass__alloc_small_matrix(
 	void
 	)
 {
@@ -913,7 +913,7 @@ test_priority_pass__alloc_small_matrix(
 
 
 void attr_test_fn
-test_priority_pass__alloc_default_overlap(
+test_pass__alloc_default_overlap(
 	void
 	)
 {
@@ -928,7 +928,7 @@ test_priority_pass__alloc_default_overlap(
 
 
 void attr_test_fn
-test_priority_pass__alloc_aligned_overlap(
+test_pass__alloc_aligned_overlap(
 	void
 	)
 {
@@ -948,7 +948,7 @@ test_priority_pass__alloc_aligned_overlap(
 
 
 void attr_test_fn
-test_priority_pass__alloc_aligned_churn(
+test_pass__alloc_aligned_churn(
 	void
 	)
 {
@@ -1003,7 +1003,7 @@ test_priority_pass__alloc_aligned_churn(
 
 
 void attr_test_fn
-test_priority_pass__alloc_aligned_api_re(
+test_pass__alloc_aligned_api_re(
 	void
 	)
 {
@@ -1021,7 +1021,7 @@ test_priority_pass__alloc_aligned_api_re(
 
 
 void attr_test_fn
-test_priority_pass__alloc_xthread_aligned(
+test_pass__alloc_xthread_aligned(
 	void
 	)
 {
@@ -1066,7 +1066,7 @@ test_priority_pass__alloc_xthread_aligned(
 
 
 void attr_test_fn
-test_priority_pass__alloc_huge_exact_reuse(
+test_pass__alloc_huge_exact_reuse(
 	void
 	)
 {
@@ -1087,7 +1087,7 @@ test_priority_pass__alloc_huge_exact_reuse(
 
 
 void attr_test_fn
-test_priority_pass__alloc_huge_size_miss(
+test_pass__alloc_huge_size_miss(
 	void
 	)
 {
@@ -1109,7 +1109,7 @@ test_priority_pass__alloc_huge_size_miss(
 
 
 void attr_test_fn
-test_priority_pass__alloc_huge_zero_reuse(
+test_pass__alloc_huge_zero_reuse(
 	void
 	)
 {
@@ -1126,7 +1126,7 @@ test_priority_pass__alloc_huge_zero_reuse(
 
 
 void attr_test_fn
-test_priority_pass__alloc_small_pow2_map(
+test_pass__alloc_small_pow2_map(
 	void
 	)
 {
@@ -1146,7 +1146,7 @@ test_priority_pass__alloc_small_pow2_map(
 
 
 void attr_test_fn
-test_priority_pass__alloc_default_idx_map(
+test_pass__alloc_default_idx_map(
 	void
 	)
 {
@@ -1162,7 +1162,7 @@ test_priority_pass__alloc_default_idx_map(
 
 
 void attr_test_fn
-test_priority_pass__alloc_aligned_idx_match(
+test_pass__alloc_aligned_idx_match(
 	void
 	)
 {
@@ -1187,7 +1187,7 @@ test_priority_pass__alloc_aligned_idx_match(
 
 
 void attr_test_fn
-test_priority_pass__alloc_huge_chain_reuse(
+test_pass__alloc_huge_chain_reuse(
 	void
 	)
 {
@@ -1216,7 +1216,7 @@ test_priority_pass__alloc_huge_chain_reuse(
 
 
 void attr_test_fn
-test_priority_pass__alloc_huge_timeout(
+test_pass__alloc_huge_timeout(
 	void
 	)
 {
@@ -1243,7 +1243,7 @@ test_priority_pass__alloc_huge_timeout(
 
 
 void attr_test_fn
-test_priority_pass__alloc_huge_start_idle(
+test_pass__alloc_huge_start_idle(
 	void
 	)
 {
@@ -1268,7 +1268,7 @@ test_priority_pass__alloc_huge_start_idle(
 
 
 void attr_test_fn
-test_priority_pass__alloc_thr_cache_pool(
+test_pass__alloc_thr_cache_pool(
 	void
 	)
 {
@@ -1303,7 +1303,7 @@ test_priority_pass__alloc_thr_cache_pool(
 
 
 void attr_test_fn
-test_priority_pass__alloc_handle_empty_lim(
+test_pass__alloc_handle_empty_lim(
 	void
 	)
 {
@@ -1340,7 +1340,7 @@ test_priority_pass__alloc_handle_empty_lim(
 
 
 void attr_test_fn
-test_priority_pass__alloc_tail_shrink(
+test_pass__alloc_tail_shrink(
 	void
 	)
 {
@@ -1414,7 +1414,7 @@ test_priority_pass__alloc_tail_shrink(
 
 
 void attr_test_fn
-test_priority_pass__alloc_tail_no_shrink(
+test_pass__alloc_tail_no_shrink(
 	void
 	)
 {
@@ -1488,7 +1488,7 @@ test_priority_pass__alloc_tail_no_shrink(
 
 
 void attr_test_fn
-test_priority_pass__alloc_pool_zero_user(
+test_pass__alloc_pool_zero_user(
 	void
 	)
 {
@@ -1530,7 +1530,7 @@ test_priority_pass__alloc_pool_zero_user(
 
 
 void attr_test_fn
-test_priority_pass__alloc_large_cutoff(
+test_pass__alloc_large_cutoff(
 	void
 	)
 {
@@ -1559,7 +1559,7 @@ test_priority_pass__alloc_large_cutoff(
 
 
 void attr_test_fn
-test_priority_pass__alloc_large_virtual(
+test_pass__alloc_large_virtual(
 	void
 	)
 {
@@ -1573,7 +1573,7 @@ test_priority_pass__alloc_large_virtual(
 
 
 void attr_test_fn
-test_priority_pass__alloc_span_fit(
+test_pass__alloc_span_fit(
 	void
 	)
 {
@@ -1591,7 +1591,7 @@ test_priority_pass__alloc_span_fit(
 
 
 void attr_test_fn
-test_priority_pass__alloc_largest_align(
+test_pass__alloc_largest_align(
 	void
 	)
 {
@@ -1610,7 +1610,7 @@ test_priority_pass__alloc_largest_align(
 
 
 void attr_test_fn
-test_priority_pass__alloc_huge_mid_list(
+test_pass__alloc_huge_mid_list(
 	void
 	)
 {
@@ -1647,7 +1647,7 @@ test_priority_pass__alloc_huge_mid_list(
 
 
 void attr_test_fn
-test_priority_pass__alloc_arena_coalesce(
+test_pass__alloc_arena_coalesce(
 	void
 	)
 {
@@ -1694,7 +1694,7 @@ test_priority_pass__alloc_arena_coalesce(
 
 
 void attr_test_fn
-test_priority_pass__alloc_btree_cycles(
+test_pass__alloc_btree_cycles(
 	void
 	)
 {
@@ -1748,7 +1748,7 @@ test_priority_pass__alloc_btree_cycles(
 
 
 void attr_test_fn
-test_priority_pass__alloc_big_to_small(
+test_pass__alloc_big_to_small(
 	void
 	)
 {
@@ -1805,7 +1805,7 @@ test_priority_pass__alloc_big_to_small(
 
 
 void attr_test_fn
-test_priority_pass__alloc_dtor_reclaims(
+test_pass__alloc_dtor_reclaims(
 	void
 	)
 {
@@ -1829,7 +1829,7 @@ test_priority_pass__alloc_dtor_reclaims(
 
 
 void attr_test_fn
-test_priority_pass__alloc_empty_lru_evict(
+test_pass__alloc_empty_lru_evict(
 	void
 	)
 {
@@ -1872,7 +1872,7 @@ test_priority_pass__alloc_empty_lru_evict(
 
 
 void attr_test_fn
-test_priority_pass__alloc_huge_calibrate(
+test_pass__alloc_huge_calibrate(
 	void
 	)
 {
@@ -1915,7 +1915,7 @@ test_priority_pass__alloc_huge_calibrate(
 
 
 void attr_test_fn
-test_priority_pass__alloc_aligned_inplace(
+test_pass__alloc_aligned_inplace(
 	void
 	)
 {
@@ -1959,7 +1959,7 @@ test_priority_pass__alloc_aligned_inplace(
 
 
 void attr_test_fn
-test_priority_pass__alloc_aligned_zeroed(
+test_pass__alloc_aligned_zeroed(
 	void
 	)
 {
@@ -2003,7 +2003,7 @@ test_priority_pass__alloc_aligned_zeroed(
 
 
 void attr_test_fn
-test_priority_pass__alloc_tail_o1(
+test_pass__alloc_tail_o1(
 	void
 	)
 {
@@ -2056,7 +2056,7 @@ test_priority_pass__alloc_tail_o1(
 
 
 void attr_test_fn
-test_priority_pass__alloc_tcache_frag(
+test_pass__alloc_tcache_frag(
 	void
 	)
 {
@@ -2111,7 +2111,7 @@ test_priority_pass__alloc_tcache_frag(
 
 
 void attr_test_fn
-test_priority_pass__alloc_slab_pack_one(
+test_pass__alloc_slab_pack_one(
 	void
 	)
 {
@@ -2151,7 +2151,7 @@ test_priority_pass__alloc_slab_pack_one(
 
 
 void attr_test_fn
-test_priority_pass__alloc_small_no_spread(
+test_pass__alloc_small_no_spread(
 	void
 	)
 {
@@ -2195,7 +2195,7 @@ test_priority_pass__alloc_small_no_spread(
 
 
 void attr_test_fn
-test_priority_pass__alloc_vacancy_cross(
+test_pass__alloc_vacancy_cross(
 	void
 	)
 {
@@ -2219,7 +2219,7 @@ test_priority_pass__alloc_vacancy_cross(
 
 
 void attr_test_fn
-test_priority_pass__alloc_btree_coalesce(
+test_pass__alloc_btree_coalesce(
 	void
 	)
 {
@@ -2259,7 +2259,7 @@ test_priority_pass__alloc_btree_coalesce(
 
 
 void attr_test_fn
-test_priority_pass__alloc_local_cache_reuse(
+test_pass__alloc_local_cache_reuse(
 	void
 	)
 {
@@ -2295,7 +2295,7 @@ test_priority_pass__alloc_local_cache_reuse(
 
 
 void attr_test_fn
-test_priority_pass__alloc_local_empty_zero(
+test_pass__alloc_local_empty_zero(
 	void
 	)
 {
@@ -2343,7 +2343,7 @@ test_priority_pass__alloc_local_empty_zero(
 
 
 void attr_test_fn
-test_priority_pass__alloc_local_empty_hdrs(
+test_pass__alloc_local_empty_hdrs(
 	void
 	)
 {
@@ -2400,7 +2400,7 @@ test_priority_pass__alloc_local_empty_hdrs(
 
 
 void attr_test_fn
-test_priority_pass__alloc_tail_reuse_clean(
+test_pass__alloc_tail_reuse_clean(
 	void
 	)
 {
@@ -2503,7 +2503,7 @@ test_priority_pass__alloc_tail_reuse_clean(
 
 
 void attr_test_fn
-test_priority_pass__alloc_tail_full_release(
+test_pass__alloc_tail_full_release(
 	void
 	)
 {
@@ -2571,7 +2571,7 @@ test_priority_pass__alloc_tail_full_release(
 
 
 void attr_test_fn
-test_priority_pass__alloc_btree_recycle_clean(
+test_pass__alloc_btree_recycle_clean(
 	void
 	)
 {

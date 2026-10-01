@@ -22,7 +22,7 @@
 
 
 void attr_test_fn
-test_normal_pass__assert_eq(
+test_pass__assert_eq(
 	void
 	)
 {
@@ -39,7 +39,7 @@ test_normal_pass__assert_eq(
 
 
 void attr_test_fn
-test_normal_fail__assert_eq_int(
+test_fail__assert_eq_int(
 	void
 	)
 {
@@ -48,7 +48,7 @@ test_normal_fail__assert_eq_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_eq_bool(
+test_fail__assert_eq_bool(
 	void
 	)
 {
@@ -57,7 +57,7 @@ test_normal_fail__assert_eq_bool(
 
 
 void attr_test_fn
-test_normal_fail__assert_eq_negative(
+test_fail__assert_eq_negative(
 	void
 	)
 {
@@ -66,7 +66,7 @@ test_normal_fail__assert_eq_negative(
 
 
 void attr_test_fn
-test_normal_fail__assert_eq_float(
+test_fail__assert_eq_float(
 	void
 	)
 {
@@ -75,7 +75,7 @@ test_normal_fail__assert_eq_float(
 
 
 void attr_test_fn
-test_normal_pass__assert_true(
+test_pass__assert_true(
 	void
 	)
 {
@@ -87,7 +87,7 @@ test_normal_pass__assert_true(
 
 
 void attr_test_fn
-test_normal_fail__assert_true_int(
+test_fail__assert_true_int(
 	void
 	)
 {
@@ -96,7 +96,7 @@ test_normal_fail__assert_true_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_true_false(
+test_fail__assert_true_false(
 	void
 	)
 {
@@ -105,7 +105,7 @@ test_normal_fail__assert_true_false(
 
 
 void attr_test_fn
-test_normal_fail__assert_true_float(
+test_fail__assert_true_float(
 	void
 	)
 {
@@ -114,7 +114,7 @@ test_normal_fail__assert_true_float(
 
 
 void attr_test_fn
-test_normal_pass__assert_false(
+test_pass__assert_false(
 	void
 	)
 {
@@ -125,7 +125,7 @@ test_normal_pass__assert_false(
 
 
 void attr_test_fn
-test_normal_fail__assert_false_int(
+test_fail__assert_false_int(
 	void
 	)
 {
@@ -134,7 +134,7 @@ test_normal_fail__assert_false_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_false_true(
+test_fail__assert_false_true(
 	void
 	)
 {
@@ -143,7 +143,7 @@ test_normal_fail__assert_false_true(
 
 
 void attr_test_fn
-test_normal_fail__assert_false_negative(
+test_fail__assert_false_negative(
 	void
 	)
 {
@@ -152,7 +152,7 @@ test_normal_fail__assert_false_negative(
 
 
 void attr_test_fn
-test_normal_fail__assert_false_float(
+test_fail__assert_false_float(
 	void
 	)
 {
@@ -161,7 +161,7 @@ test_normal_fail__assert_false_float(
 
 
 void attr_test_fn
-test_normal_pass__assert_null(
+test_pass__assert_null(
 	void
 	)
 {
@@ -170,7 +170,7 @@ test_normal_pass__assert_null(
 
 
 void attr_test_fn
-test_normal_fail__assert_null(
+test_fail__assert_null(
 	void
 	)
 {
@@ -179,7 +179,7 @@ test_normal_fail__assert_null(
 
 
 void attr_test_fn
-test_normal_pass__assert_not_null(
+test_pass__assert_not_null(
 	void
 	)
 {
@@ -199,7 +199,7 @@ test_normal_pass__assert_not_null(
 
 
 void attr_test_fn
-test_normal_fail__assert_not_null(
+test_fail__assert_not_null(
 	void
 	)
 {
@@ -208,7 +208,7 @@ test_normal_fail__assert_not_null(
 
 
 void attr_test_fn
-test_normal_pass__assert_ptr(
+test_pass__assert_ptr(
 	void
 	)
 {
@@ -220,7 +220,7 @@ test_normal_pass__assert_ptr(
 
 
 void attr_test_fn
-test_normal_fail__assert_ptr_null_with_non_zero_size(
+test_fail__assert_ptr_null_with_non_zero_size(
 	void
 	)
 {
@@ -229,7 +229,7 @@ test_normal_fail__assert_ptr_null_with_non_zero_size(
 
 
 void attr_test_fn
-test_normal_pass__assert_lt(
+test_pass__assert_lt(
 	void
 	)
 {
@@ -244,7 +244,7 @@ test_normal_pass__assert_lt(
 
 
 void attr_test_fn
-test_normal_fail__assert_lt_different_int(
+test_fail__assert_lt_different_int(
 	void
 	)
 {
@@ -253,7 +253,7 @@ test_normal_fail__assert_lt_different_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_lt_same_int(
+test_fail__assert_lt_same_int(
 	void
 	)
 {
@@ -262,7 +262,7 @@ test_normal_fail__assert_lt_same_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_lt_different_negative_int(
+test_fail__assert_lt_different_negative_int(
 	void
 	)
 {
@@ -271,7 +271,7 @@ test_normal_fail__assert_lt_different_negative_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_lt_same_negative_int(
+test_fail__assert_lt_same_negative_int(
 	void
 	)
 {
@@ -280,7 +280,7 @@ test_normal_fail__assert_lt_same_negative_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_lt_different_ptr(
+test_fail__assert_lt_different_ptr(
 	void
 	)
 {
@@ -289,7 +289,7 @@ test_normal_fail__assert_lt_different_ptr(
 
 
 void attr_test_fn
-test_normal_fail__assert_lt_same_ptr(
+test_fail__assert_lt_same_ptr(
 	void
 	)
 {
@@ -298,7 +298,7 @@ test_normal_fail__assert_lt_same_ptr(
 
 
 void attr_test_fn
-test_normal_fail__assert_lt_different_float(
+test_fail__assert_lt_different_float(
 	void
 	)
 {
@@ -307,7 +307,7 @@ test_normal_fail__assert_lt_different_float(
 
 
 void attr_test_fn
-test_normal_fail__assert_lt_same_float(
+test_fail__assert_lt_same_float(
 	void
 	)
 {
@@ -316,7 +316,7 @@ test_normal_fail__assert_lt_same_float(
 
 
 void attr_test_fn
-test_normal_pass__assert_le(
+test_pass__assert_le(
 	void
 	)
 {
@@ -337,7 +337,7 @@ test_normal_pass__assert_le(
 
 
 void attr_test_fn
-test_normal_fail__assert_le_different_int(
+test_fail__assert_le_different_int(
 	void
 	)
 {
@@ -346,7 +346,7 @@ test_normal_fail__assert_le_different_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_le_different_negative_int(
+test_fail__assert_le_different_negative_int(
 	void
 	)
 {
@@ -355,7 +355,7 @@ test_normal_fail__assert_le_different_negative_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_le_different_ptr(
+test_fail__assert_le_different_ptr(
 	void
 	)
 {
@@ -364,7 +364,7 @@ test_normal_fail__assert_le_different_ptr(
 
 
 void attr_test_fn
-test_normal_fail__assert_le_different_float(
+test_fail__assert_le_different_float(
 	void
 	)
 {
@@ -373,7 +373,7 @@ test_normal_fail__assert_le_different_float(
 
 
 void attr_test_fn
-test_normal_pass__assert_gt(
+test_pass__assert_gt(
 	void
 	)
 {
@@ -388,7 +388,7 @@ test_normal_pass__assert_gt(
 
 
 void attr_test_fn
-test_normal_fail__assert_gt_different_int(
+test_fail__assert_gt_different_int(
 	void
 	)
 {
@@ -397,7 +397,7 @@ test_normal_fail__assert_gt_different_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_gt_same_int(
+test_fail__assert_gt_same_int(
 	void
 	)
 {
@@ -406,7 +406,7 @@ test_normal_fail__assert_gt_same_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_gt_different_negative_int(
+test_fail__assert_gt_different_negative_int(
 	void
 	)
 {
@@ -415,7 +415,7 @@ test_normal_fail__assert_gt_different_negative_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_gt_same_negative_int(
+test_fail__assert_gt_same_negative_int(
 	void
 	)
 {
@@ -424,7 +424,7 @@ test_normal_fail__assert_gt_same_negative_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_gt_different_ptr(
+test_fail__assert_gt_different_ptr(
 	void
 	)
 {
@@ -433,7 +433,7 @@ test_normal_fail__assert_gt_different_ptr(
 
 
 void attr_test_fn
-test_normal_fail__assert_gt_same_ptr(
+test_fail__assert_gt_same_ptr(
 	void
 	)
 {
@@ -442,7 +442,7 @@ test_normal_fail__assert_gt_same_ptr(
 
 
 void attr_test_fn
-test_normal_fail__assert_gt_different_float(
+test_fail__assert_gt_different_float(
 	void
 	)
 {
@@ -451,7 +451,7 @@ test_normal_fail__assert_gt_different_float(
 
 
 void attr_test_fn
-test_normal_fail__assert_gt_same_float(
+test_fail__assert_gt_same_float(
 	void
 	)
 {
@@ -460,7 +460,7 @@ test_normal_fail__assert_gt_same_float(
 
 
 void attr_test_fn
-test_normal_pass__assert_ge(
+test_pass__assert_ge(
 	void
 	)
 {
@@ -481,7 +481,7 @@ test_normal_pass__assert_ge(
 
 
 void attr_test_fn
-test_normal_fail__assert_ge_different_int(
+test_fail__assert_ge_different_int(
 	void
 	)
 {
@@ -490,7 +490,7 @@ test_normal_fail__assert_ge_different_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_ge_different_negative_int(
+test_fail__assert_ge_different_negative_int(
 	void
 	)
 {
@@ -499,7 +499,7 @@ test_normal_fail__assert_ge_different_negative_int(
 
 
 void attr_test_fn
-test_normal_fail__assert_ge_different_ptr(
+test_fail__assert_ge_different_ptr(
 	void
 	)
 {
@@ -508,7 +508,7 @@ test_normal_fail__assert_ge_different_ptr(
 
 
 void attr_test_fn
-test_normal_fail__assert_ge_different_float(
+test_fail__assert_ge_different_float(
 	void
 	)
 {
@@ -517,7 +517,7 @@ test_normal_fail__assert_ge_different_float(
 
 
 void attr_test_fn
-test_normal_pass__assert_unreachable(
+test_pass__assert_unreachable(
 	void
 	)
 {
@@ -529,7 +529,7 @@ test_normal_pass__assert_unreachable(
 
 
 void attr_test_fn
-test_normal_fail__assert_unreachable(
+test_fail__assert_unreachable(
 	void
 	)
 {
@@ -538,7 +538,7 @@ test_normal_fail__assert_unreachable(
 
 
 void attr_test_fn
-test_normal_pass__assert_log(
+test_pass__assert_log(
 	void
 	)
 {

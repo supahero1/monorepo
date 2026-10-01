@@ -23,7 +23,7 @@
 
 
 void attr_test_fn
-test_normal_pass__test_normal_pass(
+test_pass__test_pass(
 	void
 	)
 {
@@ -31,7 +31,7 @@ test_normal_pass__test_normal_pass(
 
 
 void attr_test_fn
-test_normal_fail__test_normal_fail(
+test_fail__test_fail(
 	void
 	)
 {
@@ -40,7 +40,7 @@ test_normal_fail__test_normal_fail(
 
 
 void attr_test_fn
-test_normal_timeout__test_normal_timeout(
+test_timeout__test_timeout(
 	void
 	)
 {

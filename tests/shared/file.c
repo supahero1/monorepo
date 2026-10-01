@@ -38,7 +38,7 @@ uint64_t len = sizeof(data) - 1;
 
 
 void attr_test_fn
-test_normal_pass__file_exists_remove(
+test_pass__file_exists_remove(
 	void
 	)
 {
@@ -70,7 +70,7 @@ test_normal_pass__file_exists_remove(
 
 
 void attr_test_fn
-test_normal_pass__file_read_not_empty(
+test_pass__file_read_not_empty(
 	void
 	)
 {
@@ -86,7 +86,7 @@ test_normal_pass__file_read_not_empty(
 
 
 void attr_test_fn
-test_normal_pass__file_read_empty(
+test_pass__file_read_empty(
 	void
 	)
 {
@@ -101,7 +101,7 @@ test_normal_pass__file_read_empty(
 
 
 void attr_test_fn
-test_normal_pass__file_read_non_existent(
+test_pass__file_read_non_existent(
 	void
 	)
 {
@@ -112,7 +112,7 @@ test_normal_pass__file_read_non_existent(
 
 
 void attr_test_fn
-test_normal_pass__file_read_cap(
+test_pass__file_read_cap(
 	void
 	)
 {
@@ -128,7 +128,7 @@ test_normal_pass__file_read_cap(
 
 
 void attr_test_fn
-test_normal_pass__file_read_cap_too_small(
+test_pass__file_read_cap_too_small(
 	void
 	)
 {
@@ -139,7 +139,7 @@ test_normal_pass__file_read_cap_too_small(
 
 
 void attr_test_fn
-test_normal_pass__file_read_cap_non_existent(
+test_pass__file_read_cap_non_existent(
 	void
 	)
 {
@@ -150,7 +150,7 @@ test_normal_pass__file_read_cap_non_existent(
 
 
 void attr_test_fn
-test_normal_pass__file_write(
+test_pass__file_write(
 	void
 	)
 {
@@ -173,7 +173,7 @@ test_normal_pass__file_write(
 
 
 void attr_test_fn
-test_normal_pass__file_read_multiple_not_move_cursor(
+test_pass__file_read_multiple_not_move_cursor(
 	void
 	)
 {
@@ -197,7 +197,7 @@ test_normal_pass__file_read_multiple_not_move_cursor(
 
 
 void attr_test_fn
-test_normal_pass__file_write_multiple_not_append(
+test_pass__file_write_multiple_not_append(
 	void
 	)
 {
@@ -223,7 +223,7 @@ test_normal_pass__file_write_multiple_not_append(
 
 
 void attr_test_fn
-test_normal_pass__dir_exists_create(
+test_pass__dir_exists_create(
 	void
 	)
 {
