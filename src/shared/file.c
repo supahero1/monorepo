@@ -26,6 +26,10 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#ifndef O_BINARY
+	#define O_BINARY 0
+#endif
+
 
 bool
 file_exists(
@@ -48,7 +52,7 @@ file_write(
 	file_t file
 	)
 {
-	int fd = open(path, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+	int fd = open(path, O_WRONLY | O_CREAT | O_BINARY, S_IRUSR | S_IWUSR);
 	if(fd < 0)
 	{
 		return false;
@@ -78,7 +82,7 @@ file_read_cap(
 	uint64_t cap
 	)
 {
-	int fd = open(path, O_RDONLY);
+	int fd = open(path, O_RDONLY | O_BINARY);
 	if(fd < 0)
 	{
 		return false;
