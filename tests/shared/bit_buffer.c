@@ -104,7 +104,7 @@ test_pass__bit_buffer_set_get_bits(
 
 	assert_eq(bit_buffer_consumed_bytes(&buffer), 9);
 	assert_eq(bit_buffer_consumed_bits(&buffer), 68);
-	assert_eq(bit_buffer_available_bytes(&buffer), 8);
+	assert_eq(bit_buffer_available_bytes(&buffer), 7);
 	assert_eq(bit_buffer_available_bits(&buffer), 60);
 
 	bit_buffer_reset(&buffer);
@@ -122,7 +122,7 @@ test_pass__bit_buffer_set_get_bits(
 
 	assert_eq(bit_buffer_consumed_bytes(&buffer), 9);
 	assert_eq(bit_buffer_consumed_bits(&buffer), 68);
-	assert_eq(bit_buffer_available_bytes(&buffer), 8);
+	assert_eq(bit_buffer_available_bytes(&buffer), 7);
 	assert_eq(bit_buffer_available_bits(&buffer), 60);
 
 	uint8_t data2[64] = {0};
@@ -935,3 +935,26 @@ test_fail__bit_buffer_get_str_safe_null(
 	bit_buffer_get_str_safe(NULL, 0, NULL);
 }
 
+
+void attr_test_fn
+test_pass__bit_buffer_bytes_safe_unaligned(
+	void
+	)
+{
+	bool status;
+	uint8_t data[2] = {0};
+	uint8_t out[2];
+
+	bit_buffer_t buffer;
+	bit_buffer_set(&buffer, data, sizeof(data));
+	bit_buffer_skip_bits(&buffer, 3);
+
+	bit_buffer_get_bytes_safe(&buffer, out, 2, &status);
+	assert_false(status);
+
+	bit_buffer_skip_bytes_safe(&buffer, 2, &status);
+	assert_false(status);
+
+	bit_buffer_get_bytes_safe(&buffer, out, 1, &status);
+	assert_true(status);
+}

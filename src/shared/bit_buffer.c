@@ -73,7 +73,7 @@ bit_buffer_available_bytes(
 {
 	assert_not_null(bit_buffer);
 
-	return MACRO_TO_BYTES(bit_buffer_available_bits(bit_buffer));
+	return bit_buffer_available_bits(bit_buffer) >> 3;
 }
 
 
