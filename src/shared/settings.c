@@ -23,6 +23,7 @@
 #include <shared/debug.h>
 #include <shared/event.h>
 #include <shared/macro.h>
+#include <shared/atomic.h>
 #include <shared/options.h>
 #include <shared/threads.h>
 #include <shared/settings.h>
@@ -49,7 +50,7 @@ struct settings
 	sync_rwlock_t rwlock;
 
 	hash_table_t table;
-	bool dirty;
+	bool _Atomic dirty;
 	bool use_timers;
 	bool sealed;
 
@@ -94,7 +95,7 @@ settings_init(
 	sync_rwlock_init(&settings->rwlock);
 
 	settings->table = hash_table_init(256, NULL, (void*) settings_value_free_fn);
-	settings->dirty = false;
+	atomic_init(&settings->dirty, false);
 	settings->use_timers = !!timers;
 	settings->sealed = false;
 
@@ -257,12 +258,14 @@ settings_save(
 	assert_not_null(settings);
 	assert_true(settings->sealed);
 
-	if(!settings->dirty)
+	if(!atomic_load_acq(&settings->dirty))
 	{
 		return;
 	}
 
 	sync_rwlock_wrlock(&settings->rwlock);
+
+	atomic_store_rel(&settings->dirty, false);
 
 	uint64_t sum = 0;
 	hash_table_for_each(settings->table, (void*) settings_for_each_sum_fn, &sum);
@@ -298,6 +301,11 @@ settings_save(
 
 	bool status = file_write(settings->path, file);
 	alloc_free(compressed, compressed_size);
+
+	if(!status)
+	{
+		atomic_store_rel(&settings->dirty, true);
+	}
 
 	settings_save_event_data_t save_data =
 	{
@@ -729,7 +737,7 @@ settings_modify(
 	settings_t settings
 	)
 {
-	settings->dirty = true;
+	atomic_store_rel(&settings->dirty, true);
 
 	if(settings->use_timers)
 	{
