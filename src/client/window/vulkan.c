@@ -1564,6 +1564,17 @@ vk_copy_to_buffer_explicit(
 
 	vk->table.vkCmdCopyBuffer(command->buffer, staging_buffer->buffer, buffer->buffer, 1, &buffer_copy);
 
+	VkMemoryBarrier barrier =
+	{
+		.sType = VK_STRUCTURE_TYPE_MEMORY_BARRIER,
+		.pNext = NULL,
+		.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT,
+		.dstAccessMask = VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT | VK_ACCESS_INDIRECT_COMMAND_READ_BIT
+	};
+
+	vk->table.vkCmdPipelineBarrier(command->buffer, VK_PIPELINE_STAGE_TRANSFER_BIT,
+		VK_PIPELINE_STAGE_VERTEX_INPUT_BIT | VK_PIPELINE_STAGE_DRAW_INDIRECT_BIT, 0, 1, &barrier, 0, NULL, 0, NULL);
+
 	vk_run_command(vk, command);
 }
 
@@ -3513,7 +3524,7 @@ vulkan_add_draw_data(
 	assert_not_null(vk);
 	assert_not_null(data);
 
-	assert_lt(vk->draw_data_count, VK_DRAW_DATA_BUFFER_SIZE);
+	hard_assert_lt(vk->draw_data_count, VK_DRAW_DATA_BUFFER_SIZE);
 	vk->draw_data[vk->draw_data_count++] = *data;
 }
 
