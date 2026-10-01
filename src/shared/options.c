@@ -71,7 +71,7 @@ options_init(
 	while(arg < arg_end)
 	{
 		const char* key = *(arg++);
-		const char* value = strchrnul(key, '=');
+		const char* value = key + strcspn(key, "=");
 
 		if(strncmp(key, "--", 2))
 		{
