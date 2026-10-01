@@ -227,7 +227,7 @@ def add_test(object):
 	test = env.Command(output, program, "KDE_DEBUG=1 $SOURCE --file > $TARGET 2>&1")
 	valgrind_output = output + ".val"
 	valgrind_test = env.Command(valgrind_output, program,
-		"KDE_DEBUG=1 DEBUGINFOD_URLS=https://debuginfod.archlinux.org valgrind --leak-check=full " +
+		"KDE_DEBUG=1 DEBUGINFOD_URLS=https://debuginfod.archlinux.org valgrind --error-exitcode=1 --leak-check=full " +
 		"--show-leak-kinds=all --suppressions=val_sup.txt -- $SOURCE --file > $TARGET 2>&1")
 	return [test, valgrind_test]
 
