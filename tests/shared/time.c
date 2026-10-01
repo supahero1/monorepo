@@ -14,6 +14,7 @@
  *  limitations under the License.
  */
 
+#include <tests/base.h>
 #include <shared/attr.h>
 #include <shared/time.h>
 #include <shared/debug.h>
@@ -21,6 +22,26 @@
 #include <shared/threads.h>
 
 #include <stddef.h>
+
+#define TIMER_VALGRIND_SCALE 4
+
+
+uint64_t
+timer_scaled_sec(
+	uint64_t sec
+	)
+{
+	return time_sec_to_ns(test_is_on_valgrind ? sec * TIMER_VALGRIND_SCALE : sec);
+}
+
+
+uint64_t
+timer_scaled_get_with_sec(
+	uint64_t sec
+	)
+{
+	return time_get() + timer_scaled_sec(sec);
+}
 
 
 void attr_test_fn
@@ -258,7 +279,7 @@ test_pass__time_timers_add_timeout_and_cancel(
 			.fn = timer_never_fn,
 			.data = NULL
 		},
-		.time = time_get_with_sec(2)
+		.time = timer_scaled_get_with_sec(2)
 	};
 	time_timers_add_timeout(timers, timeout);
 
@@ -279,7 +300,7 @@ test_pass__time_timers_add_timeout_and_cancel(
 
 	time_timer_free(&timer);
 
-	thread_sleep(time_sec_to_ns(4));
+	thread_sleep(timer_scaled_sec(4));
 
 	time_timers_free(timers);
 }
@@ -646,7 +667,7 @@ test_pass__time_timers_set_timeout_u(
 			.fn = (void*) timer_set_flag_fn,
 			.data = &flag
 		},
-		.time = time_get_with_sec(2)
+		.time = timer_scaled_get_with_sec(2)
 	};
 	time_timers_add_timeout_u(timers, timeout);
 
@@ -665,7 +686,7 @@ test_pass__time_timers_set_timeout_u(
 
 	time_timers_unlock(timers);
 
-	thread_sleep(time_sec_to_ns(4));
+	thread_sleep(timer_scaled_sec(4));
 
 	assert_true(flag);
 	assert_true(time_timers_is_timer_expired(timers, &timer));
@@ -698,7 +719,7 @@ test_pass__time_timers_set_timeout_long_u(
 			.fn = (void*) timer_set_flag_fn,
 			.data = &flag
 		},
-		.time = time_get_with_sec(4)
+		.time = timer_scaled_get_with_sec(4)
 	};
 	time_timers_add_timeout_u(timers, timeout);
 
@@ -708,7 +729,7 @@ test_pass__time_timers_set_timeout_long_u(
 	assert_false(flag);
 	assert_false(time_timers_is_timer_expired_u(timers, &timer));
 
-	thread_sleep(time_sec_to_ns(2));
+	thread_sleep(timer_scaled_sec(2));
 
 	assert_false(flag);
 	assert_false(time_timers_is_timer_expired_u(timers, &timer));
@@ -726,7 +747,7 @@ test_pass__time_timers_set_timeout_long_u(
 
 	time_timers_unlock(timers);
 
-	thread_sleep(time_sec_to_ns(2));
+	thread_sleep(timer_scaled_sec(2));
 
 	assert_true(flag);
 	assert_true(time_timers_is_timer_expired(timers, &timer));
@@ -755,7 +776,7 @@ test_pass__time_timers_open_cancel_timeout(
 			.fn = timer_never_fn,
 			.data = NULL
 		},
-		.time = time_get_with_sec(2)
+		.time = timer_scaled_get_with_sec(2)
 	};
 	time_timers_add_timeout(timers, timeout);
 
@@ -768,7 +789,7 @@ test_pass__time_timers_open_cancel_timeout(
 	time_timers_close_timeout(timers, &timer);
 	assert_true(time_timers_is_timer_expired(timers, &timer));
 
-	thread_sleep(time_sec_to_ns(4));
+	thread_sleep(timer_scaled_sec(4));
 
 	time_timer_free(&timer);
 
@@ -806,7 +827,7 @@ test_pass__time_timers_cancel_timeout_leaf(
 {
 	time_timers_t timers = time_timers_init();
 
-	uint64_t time = time_get_with_sec(60);
+	uint64_t time = timer_scaled_get_with_sec(60);
 
 	time_timer_t timer_1;
 	time_timer_t timer_2;
@@ -814,20 +835,20 @@ test_pass__time_timers_cancel_timeout_leaf(
 	time_timer_t timer_4;
 
 	timer_add_never_timeout(timers, &timer_1, time);
-	timer_add_never_timeout(timers, &timer_2, time + time_sec_to_ns(2));
-	timer_add_never_timeout(timers, &timer_3, time + time_sec_to_ns(1));
+	timer_add_never_timeout(timers, &timer_2, time + timer_scaled_sec(2));
+	timer_add_never_timeout(timers, &timer_3, time + timer_scaled_sec(1));
 
 	assert_true(time_timers_cancel_timeout(timers, &timer_2));
 
-	timer_add_never_timeout(timers, &timer_4, time + time_sec_to_ns(3));
+	timer_add_never_timeout(timers, &timer_4, time + timer_scaled_sec(3));
 
 	assert_eq(time_timers_get_timeout(timers, &timer_1), time);
-	assert_eq(time_timers_get_timeout(timers, &timer_3), time + time_sec_to_ns(1));
-	assert_eq(time_timers_get_timeout(timers, &timer_4), time + time_sec_to_ns(3));
+	assert_eq(time_timers_get_timeout(timers, &timer_3), time + timer_scaled_sec(1));
+	assert_eq(time_timers_get_timeout(timers, &timer_4), time + timer_scaled_sec(3));
 
 	assert_true(time_timers_cancel_timeout(timers, &timer_3));
 	assert_eq(time_timers_get_timeout(timers, &timer_1), time);
-	assert_eq(time_timers_get_timeout(timers, &timer_4), time + time_sec_to_ns(3));
+	assert_eq(time_timers_get_timeout(timers, &timer_4), time + timer_scaled_sec(3));
 
 	assert_true(time_timers_cancel_timeout(timers, &timer_4));
 	assert_true(time_timers_cancel_timeout(timers, &timer_1));
@@ -884,7 +905,7 @@ test_pass__time_timers_timeout_cancel_timeout(
 			.fn = timer_never_fn,
 			.data = NULL
 		},
-		.time = time_get_with_sec(2)
+		.time = timer_scaled_get_with_sec(2)
 	};
 	time_timers_add_timeout(timers, timeout);
 
@@ -905,7 +926,7 @@ test_pass__time_timers_timeout_cancel_timeout(
 	};
 	time_timers_add_timeout(timers, cancel_timeout);
 
-	thread_sleep(time_sec_to_ns(4));
+	thread_sleep(timer_scaled_sec(4));
 
 	assert_true(time_timers_is_timer_expired(timers, &timer));
 
@@ -942,7 +963,7 @@ test_fail__time_timers_timeout_cancel_timeout_too_late(
 			.fn = timer_nothing_fn,
 			.data = NULL
 		},
-		.time = time_get_with_sec(2)
+		.time = timer_scaled_get_with_sec(2)
 	};
 	time_timers_add_timeout(timers, timeout);
 
@@ -959,11 +980,11 @@ test_fail__time_timers_timeout_cancel_timeout_too_late(
 			.fn = (void*) timer_timeout_cancel_timer_fn,
 			.data = &data
 		},
-		.time = time_get_with_sec(2)
+		.time = timer_scaled_get_with_sec(2)
 	};
 	time_timers_add_timeout(timers, cancel_timeout);
 
-	thread_sleep(time_sec_to_ns(99));
+	thread_sleep(timer_scaled_sec(99));
 }
 
 
@@ -985,7 +1006,7 @@ test_pass__time_timers_timeout_cancel_interval(
 			.fn = timer_never_fn,
 			.data = NULL
 		},
-		.base_time = time_get_with_sec(2),
+		.base_time = timer_scaled_get_with_sec(2),
 		.count = 0,
 		.interval = 0
 	};
@@ -1008,7 +1029,7 @@ test_pass__time_timers_timeout_cancel_interval(
 	};
 	time_timers_add_timeout(timers, cancel_timeout);
 
-	thread_sleep(time_sec_to_ns(4));
+	thread_sleep(timer_scaled_sec(4));
 
 	assert_true(time_timers_is_timer_expired(timers, &timer));
 
@@ -1038,7 +1059,7 @@ test_pass__time_timers_add_interval_and_cancel(
 		},
 		.base_time = time_get(),
 		.count = 1,
-		.interval = time_sec_to_ns(2)
+		.interval = timer_scaled_sec(2)
 	};
 	time_timers_add_interval(timers, interval);
 
@@ -1059,7 +1080,7 @@ test_pass__time_timers_add_interval_and_cancel(
 
 	time_timer_free(&timer);
 
-	thread_sleep(time_sec_to_ns(4));
+	thread_sleep(timer_scaled_sec(4));
 
 	time_timers_free(timers);
 }
@@ -1419,7 +1440,7 @@ test_pass__time_timers_set_interval_u(
 		},
 		.base_time = time_get(),
 		.count = 99,
-		.interval = time_sec_to_ns(1)
+		.interval = timer_scaled_sec(1)
 	};
 	time_timers_add_interval_u(timers, interval);
 
@@ -1439,12 +1460,12 @@ test_pass__time_timers_set_interval_u(
 		interval.base_time + interval.interval * interval.count
 		);
 
-	time_timers_set_interval_u(timers, &timer, time_get(), time_sec_to_ns(1), 0);
+	time_timers_set_interval_u(timers, &timer, time_get(), timer_scaled_sec(1), 0);
 	time_timers_close_interval_u(timers, &timer);
 
 	time_timers_unlock(timers);
 
-	thread_sleep(time_sec_to_ns(2));
+	thread_sleep(timer_scaled_sec(2));
 
 	assert_true(flag);
 	assert_false(time_timers_is_timer_expired(timers, &timer));
@@ -1481,7 +1502,7 @@ test_pass__time_timers_set_interval_long_u(
 		},
 		.base_time = time_get(),
 		.count = 1,
-		.interval = time_sec_to_ns(2)
+		.interval = timer_scaled_sec(2)
 	};
 	time_timers_add_interval_u(timers, interval);
 
@@ -1491,7 +1512,7 @@ test_pass__time_timers_set_interval_long_u(
 	assert_false(flag);
 	assert_false(time_timers_is_timer_expired_u(timers, &timer));
 
-	thread_sleep(time_sec_to_ns(1));
+	thread_sleep(timer_scaled_sec(1));
 
 	assert_false(flag);
 	assert_false(time_timers_is_timer_expired_u(timers, &timer));
@@ -1510,12 +1531,12 @@ test_pass__time_timers_set_interval_long_u(
 		interval.base_time + interval.interval
 		);
 
-	time_timers_set_interval_u(timers, &timer, time_get(), time_sec_to_ns(1), 0);
+	time_timers_set_interval_u(timers, &timer, time_get(), timer_scaled_sec(1), 0);
 	time_timers_close_interval_u(timers, &timer);
 
 	time_timers_unlock(timers);
 
-	thread_sleep(time_sec_to_ns(2));
+	thread_sleep(timer_scaled_sec(2));
 
 	assert_true(flag);
 	assert_false(time_timers_is_timer_expired(timers, &timer));
@@ -1548,7 +1569,7 @@ test_pass__time_timers_open_cancel_interval(
 		},
 		.base_time = time_get(),
 		.count = 1,
-		.interval = time_sec_to_ns(4)
+		.interval = timer_scaled_sec(4)
 	};
 	time_timers_add_interval(timers, interval);
 
@@ -1586,7 +1607,7 @@ timer_add_never_interval(
 		},
 		.base_time = base_time,
 		.count = 0,
-		.interval = time_sec_to_ns(60)
+		.interval = timer_scaled_sec(60)
 	};
 	time_timers_add_interval(timers, interval);
 }
@@ -1599,7 +1620,7 @@ test_pass__time_timers_cancel_interval_leaf(
 {
 	time_timers_t timers = time_timers_init();
 
-	uint64_t time = time_get_with_sec(60);
+	uint64_t time = timer_scaled_get_with_sec(60);
 
 	time_timer_t timer_1;
 	time_timer_t timer_2;
@@ -1607,20 +1628,20 @@ test_pass__time_timers_cancel_interval_leaf(
 	time_timer_t timer_4;
 
 	timer_add_never_interval(timers, &timer_1, time);
-	timer_add_never_interval(timers, &timer_2, time + time_sec_to_ns(2));
-	timer_add_never_interval(timers, &timer_3, time + time_sec_to_ns(1));
+	timer_add_never_interval(timers, &timer_2, time + timer_scaled_sec(2));
+	timer_add_never_interval(timers, &timer_3, time + timer_scaled_sec(1));
 
 	assert_true(time_timers_cancel_interval(timers, &timer_2));
 
-	timer_add_never_interval(timers, &timer_4, time + time_sec_to_ns(3));
+	timer_add_never_interval(timers, &timer_4, time + timer_scaled_sec(3));
 
 	assert_eq(time_timers_get_interval(timers, &timer_1), time);
-	assert_eq(time_timers_get_interval(timers, &timer_3), time + time_sec_to_ns(1));
-	assert_eq(time_timers_get_interval(timers, &timer_4), time + time_sec_to_ns(3));
+	assert_eq(time_timers_get_interval(timers, &timer_3), time + timer_scaled_sec(1));
+	assert_eq(time_timers_get_interval(timers, &timer_4), time + timer_scaled_sec(3));
 
 	assert_true(time_timers_cancel_interval(timers, &timer_3));
 	assert_eq(time_timers_get_interval(timers, &timer_1), time);
-	assert_eq(time_timers_get_interval(timers, &timer_4), time + time_sec_to_ns(3));
+	assert_eq(time_timers_get_interval(timers, &timer_4), time + timer_scaled_sec(3));
 
 	assert_true(time_timers_cancel_interval(timers, &timer_4));
 	assert_true(time_timers_cancel_interval(timers, &timer_1));
@@ -1677,7 +1698,7 @@ test_pass__time_timers_interval_cancel_interval(
 		},
 		.base_time = time_get(),
 		.count = 1,
-		.interval = time_sec_to_ns(2)
+		.interval = timer_scaled_sec(2)
 	};
 	time_timers_add_interval(timers, interval);
 
@@ -1700,7 +1721,7 @@ test_pass__time_timers_interval_cancel_interval(
 	};
 	time_timers_add_interval(timers, cancel_interval);
 
-	thread_sleep(time_sec_to_ns(4));
+	thread_sleep(timer_scaled_sec(4));
 
 	assert_true(time_timers_is_timer_expired(timers, &timer));
 
@@ -1734,7 +1755,7 @@ test_fail__time_timers_interval_cancel_interval_too_late(
 	time_timer_t timer;
 	time_timer_init(&timer);
 
-	uint64_t time = time_get_with_sec(2);
+	uint64_t time = timer_scaled_get_with_sec(2);
 
 	time_interval_t interval =
 	{
@@ -1769,7 +1790,7 @@ test_fail__time_timers_interval_cancel_interval_too_late(
 	};
 	time_timers_add_interval(timers, cancel_interval);
 
-	thread_sleep(time_sec_to_ns(4));
+	thread_sleep(timer_scaled_sec(4));
 }
 
 
@@ -1781,7 +1802,7 @@ test_pass__time_timers_interval_cancel_itself_moved(
 	time_timers_t timers = time_timers_init();
 
 	time_timer_t timer;
-	timer_add_never_interval(timers, &timer, time_get_with_sec(2));
+	timer_add_never_interval(timers, &timer, timer_scaled_get_with_sec(2));
 
 	time_interval_t interval =
 	{
@@ -1792,11 +1813,11 @@ test_pass__time_timers_interval_cancel_itself_moved(
 		},
 		.base_time = time_get(),
 		.count = 0,
-		.interval = time_sec_to_ns(4)
+		.interval = timer_scaled_sec(4)
 	};
 	time_timers_add_interval(timers, interval);
 
-	thread_sleep(time_sec_to_ns(1));
+	thread_sleep(timer_scaled_sec(1));
 
 	assert_false(time_timers_is_timer_expired(timers, &timer));
 	assert_true(time_timers_cancel_interval(timers, &timer));
@@ -1825,7 +1846,7 @@ test_pass__time_timers_interval_cancel_timeout(
 			.fn = timer_never_fn,
 			.data = NULL
 		},
-		.time = time_get_with_sec(2)
+		.time = timer_scaled_get_with_sec(2)
 	};
 	time_timers_add_timeout(timers, timeout);
 
@@ -1848,7 +1869,7 @@ test_pass__time_timers_interval_cancel_timeout(
 	};
 	time_timers_add_interval(timers, cancel_interval);
 
-	thread_sleep(time_sec_to_ns(4));
+	thread_sleep(timer_scaled_sec(4));
 
 	assert_true(time_timers_is_timer_expired(timers, &timer));
 
