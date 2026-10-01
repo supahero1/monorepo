@@ -88,6 +88,7 @@ color_hsv_to_argb(
 	float    s			= hsv.s * v;
 	uint32_t section	= hsv.h * 6.0f;
 	float    remainder	= hsv.h * 6.0f - section;
+	uint8_t	 full		= nearbyintf(v                         );
 	uint8_t	 zero		= nearbyintf(v - s                     );
 	uint8_t	 dropping	= nearbyintf(v - s *         remainder );
 	uint8_t	 rising		= nearbyintf(v - s * (1.0f - remainder));
@@ -95,13 +96,13 @@ color_hsv_to_argb(
 	switch(section)
 	{
 
-	case 0: return (color_argb_t){ .b = zero	, .g = rising	, .r = v		, .a = 0xFF };
-	case 1: return (color_argb_t){ .b = zero	, .g = v		, .r = dropping	, .a = 0xFF };
-	case 2: return (color_argb_t){ .b = rising	, .g = v		, .r = zero		, .a = 0xFF };
-	case 3: return (color_argb_t){ .b = v		, .g = dropping	, .r = zero		, .a = 0xFF };
-	case 4: return (color_argb_t){ .b = v		, .g = zero		, .r = rising	, .a = 0xFF };
-	case 5: return (color_argb_t){ .b = dropping, .g = zero		, .r = v		, .a = 0xFF };
-	case 6: return (color_argb_t){ .b = zero	, .g = zero		, .r = v		, .a = 0xFF };
+	case 0: return (color_argb_t){ .b = zero	, .g = rising	, .r = full		, .a = 0xFF };
+	case 1: return (color_argb_t){ .b = zero	, .g = full		, .r = dropping	, .a = 0xFF };
+	case 2: return (color_argb_t){ .b = rising	, .g = full		, .r = zero		, .a = 0xFF };
+	case 3: return (color_argb_t){ .b = full	, .g = dropping	, .r = zero		, .a = 0xFF };
+	case 4: return (color_argb_t){ .b = full	, .g = zero		, .r = rising	, .a = 0xFF };
+	case 5: return (color_argb_t){ .b = dropping, .g = zero		, .r = full		, .a = 0xFF };
+	case 6: return (color_argb_t){ .b = zero	, .g = zero		, .r = full		, .a = 0xFF };
 
 	default: assert_unreachable();
 
