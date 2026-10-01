@@ -175,6 +175,7 @@ struct vulkan
 	vk_command_t* command;
 
 	VkExtent2D extent;
+	uint32_t requested_image_count;
 	uint32_t image_count;
 	VkSurfaceTransformFlagBitsKHR transform;
 	VkPresentModeKHR present_mode;
@@ -1123,11 +1124,12 @@ vk_init_device(
 		vk->surface_capabilities.maxImageCount = UINT32_MAX;
 	}
 
-	vk->image_count = MACRO_CLAMP(
+	vk->requested_image_count = MACRO_CLAMP(
 		vk->buffering,
 		vk->surface_capabilities.minImageCount,
 		vk->surface_capabilities.maxImageCount
 		);
+	vk->image_count = vk->requested_image_count;
 	vk->transform = vk->surface_capabilities.currentTransform;
 
 
@@ -2010,23 +2012,30 @@ vk_free_pipeline_cache(
 	assert_not_null(path);
 	assert_not_null(pipeline_cache);
 
-	file_t file;
-	VkResult result = vk->table.vkGetPipelineCacheData(vk->device, pipeline_cache, &file.len, NULL);
+	uint64_t size;
+	VkResult result = vk->table.vkGetPipelineCacheData(vk->device, pipeline_cache, &size, NULL);
 	hard_assert_eq(result, VK_SUCCESS);
 
-	file.data = alloc_malloc(file.data, file.len);
-	assert_ptr(file.data, file.len);
+	file_t file;
+	file.len = size;
+	file.data = alloc_malloc(file.data, size);
+	assert_ptr(file.data, size);
 
 	result = vk->table.vkGetPipelineCacheData(vk->device, pipeline_cache, &file.len, file.data);
-	hard_assert_eq(result, VK_SUCCESS);
-
-	bool status = file_write(path, file);
-	if(!status)
+	if(result == VK_SUCCESS)
 	{
-		hard_assert_log("file_write(\"%s\")\n", path);
+		bool status = file_write(path, file);
+		if(!status)
+		{
+			hard_assert_log("file_write(\"%s\")\n", path);
+		}
+	}
+	else
+	{
+		hard_assert_eq(result, VK_INCOMPLETE);
 	}
 
-	file_free(file);
+	alloc_free(file.data, size);
 
 	vk->table.vkDestroyPipelineCache(vk->device, pipeline_cache, NULL);
 }
@@ -2494,7 +2503,7 @@ vk_init_swapchain(
 		.pNext = NULL,
 		.flags = 0,
 		.surface = vk->surface,
-		.minImageCount = vk->image_count,
+		.minImageCount = vk->requested_image_count,
 		.imageFormat = vk->format,
 		.imageColorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR,
 		.imageExtent = vk->extent,
@@ -2516,6 +2525,15 @@ vk_init_swapchain(
 
 	vk_free_swapchain(vk);
 	vk->swapchain = swapchain;
+
+	uint32_t image_count;
+	result = vk->table.vkGetSwapchainImagesKHR(vk->device, vk->swapchain, &image_count, NULL);
+	hard_assert_eq(result, VK_SUCCESS);
+
+	hard_assert_le(image_count, VK_MAX_IMAGES);
+	assert_ge(image_count, vk->requested_image_count);
+
+	vk->image_count = image_count;
 }
 
 
@@ -2700,17 +2718,9 @@ vk_init_framebuffers(
 {
 	assert_not_null(vk);
 
-	uint32_t image_count;
-	VkResult result = vk->table.vkGetSwapchainImagesKHR(vk->device, vk->swapchain, &image_count, NULL);
-	hard_assert_eq(result, VK_SUCCESS);
-
-	assert_lt(image_count, VK_MAX_IMAGES);
-	assert_ge(image_count, vk->image_count);
-
-	vk->image_count = image_count;
-
+	uint32_t image_count = vk->image_count;
 	VkImage images[image_count];
-	result = vk->table.vkGetSwapchainImagesKHR(vk->device, vk->swapchain, &image_count, images);
+	VkResult result = vk->table.vkGetSwapchainImagesKHR(vk->device, vk->swapchain, &image_count, images);
 	hard_assert_eq(result, VK_SUCCESS);
 
 
