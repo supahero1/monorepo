@@ -17,14 +17,21 @@
 #include <shared/file.h>
 #include <shared/debug.h>
 #include <shared/macro.h>
+#include <shared/atomic.h>
 #include <shared/alloc/base.h>
 
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
+#include <inttypes.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+
+#ifdef _WIN32
+	#include <windows.h>
+#endif
 
 #ifndef O_BINARY
 	#define O_BINARY 0
@@ -52,26 +59,64 @@ file_write(
 	file_t file
 	)
 {
-	int fd = open(path, O_WRONLY | O_CREAT | O_BINARY, S_IRUSR | S_IWUSR);
+	static uint64_t _Atomic tmp_counter;
+
+	alloc_t tmp_path_len = strlen(path) + 1 + 11 + 1 + 20 + 4 + 1;
+	char* tmp_path = alloc_malloc(tmp_path, tmp_path_len);
+	assert_ptr(tmp_path, tmp_path_len);
+
+	snprintf(tmp_path, tmp_path_len, "%s.%d.%" PRIu64 ".tmp",
+		path, getpid(), atomic_fetch_add_rx(&tmp_counter, 1));
+
+	bool status = false;
+
+	int fd = open(tmp_path, O_WRONLY | O_CREAT | O_EXCL | O_BINARY, S_IRUSR | S_IWUSR);
 	if(fd < 0)
 	{
-		return false;
+		goto goto_free;
 	}
 
-	if(ftruncate(fd, file.len) != 0)
+	const uint8_t* data = file.data;
+	uint64_t left = file.len;
+
+	while(left)
 	{
-		return false;
+		ssize_t bytes = write(fd, data, left);
+		if(bytes < 0)
+		{
+			if(errno == EINTR)
+			{
+				continue;
+			}
+
+			break;
+		}
+
+		data += bytes;
+		left -= bytes;
 	}
 
-	if(lseek(fd, 0, SEEK_SET) != 0)
+	status = close(fd) == 0 && !left;
+
+	if(status)
 	{
-		return false;
+#ifdef _WIN32
+		status = MoveFileExA(tmp_path, path, MOVEFILE_REPLACE_EXISTING) != 0;
+#else
+		status = rename(tmp_path, path) == 0;
+#endif
 	}
 
-	ssize_t bytes = write(fd, file.data, file.len);
-	close(fd);
+	if(!status)
+	{
+		unlink(tmp_path);
+	}
 
-	return bytes == file.len;
+	goto_free:
+
+	alloc_free(tmp_path, tmp_path_len);
+
+	return status;
 }
 
 
