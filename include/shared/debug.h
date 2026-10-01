@@ -23,7 +23,7 @@
 
 extern attr_noreturn void
 assert_failed(
-	const char* msg1,
+	const char* assert_str,
 	const char* type1,
 	const char* msg2,
 	const char* type2,
@@ -113,7 +113,7 @@ while(0)
 
 #define assert_fail_base(a, b, Op, ROp, assert_str)	\
 assert_failed(										\
-	"Assertion \"" assert_str "\" failed: '",		\
+	assert_str,										\
 	MACRO_FORMAT_TYPE(a),							\
 	"' " ROp " '",									\
 	MACRO_FORMAT_TYPE(b),							\

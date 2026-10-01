@@ -22,7 +22,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#if __has_include(<dlfcn.h>) && __has_include(<execinfo.h>)
+#if __has_include(<dlfcn.h>) && __has_include(<execinfo.h>) && __has_include(<link.h>)
+	#include <link.h>
 	#include <dlfcn.h>
 	#include <execinfo.h>
 	#define DEBUG_STACK_TRACE
@@ -49,6 +50,7 @@ print_stack_trace(
 	int width = snprintf(NULL, 0, "%d", count);
 
 	off += snprintf(out + off, cap - off, "Stack trace (%d):\n", count);
+	off = MACRO_MIN(off, cap - 1);
 
 	char line[512];
 	char cmd[512];
@@ -59,8 +61,9 @@ print_stack_trace(
 		int digits = snprintf(NULL, 0, "%d", num);
 
 		off += snprintf(out + off, cap - off, "#%d:", num);
+		off = MACRO_MIN(off, cap - 1);
 
-		for(int s = 0; s < width - digits + 1 && off < cap; ++s)
+		for(int s = 0; s < width - digits + 1 && off < cap - 1; ++s)
 		{
 			out[off++] = ' ';
 		}
@@ -70,8 +73,15 @@ print_stack_trace(
 		Dl_info info;
 		if(dladdr(buffer[i], &info) && info.dli_fname)
 		{
-			void* offset = (void*)(buffer[i] - info.dli_fbase);
-			snprintf(cmd, sizeof(cmd), "addr2line -f -p -e %s %p 2>/dev/null", info.dli_fname, offset);
+			void* addr = buffer[i];
+
+			const ElfW(Ehdr)* header = info.dli_fbase;
+			if(header->e_type == ET_DYN)
+			{
+				addr = (void*)(buffer[i] - info.dli_fbase);
+			}
+
+			snprintf(cmd, sizeof(cmd), "addr2line -f -p -e %s %p 2>/dev/null", info.dli_fname, addr);
 
 			FILE* fp = popen(cmd, "r");
 			if(fp)
@@ -86,7 +96,8 @@ print_stack_trace(
 		}
 
 		off += snprintf(out + off, cap - off, ok ? "%s" : "%s\n", ok ? line : symbols[i]);
-		if(off >= cap)
+		off = MACRO_MIN(off, cap - 1);
+		if(off == cap - 1)
 		{
 			break;
 		}
@@ -105,7 +116,7 @@ print_stack_trace(
 
 void
 assert_failed(
-	const char* msg1,
+	const char* assert_str,
 	const char* type1,
 	const char* msg2,
 	const char* type2,
@@ -113,8 +124,10 @@ assert_failed(
 	...
 	)
 {
+	fprintf(stderr, "Assertion \"%s\" failed: '", assert_str);
+
 	char format[4096];
-	sprintf(format, "%s%s%s%s%s", msg1, type1, msg2, type2, msg3);
+	sprintf(format, "%s%s%s%s", type1, msg2, type2, msg3);
 
 	va_list list;
 	va_start(list, msg3);
