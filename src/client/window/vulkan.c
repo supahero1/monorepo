@@ -949,7 +949,8 @@ vk_update_constants(
 
 bool
 vk_get_extent(
-	vulkan_t vk
+	vulkan_t vk,
+	bool wait
 	)
 {
 	assert_not_null(vk);
@@ -969,6 +970,11 @@ vk_get_extent(
 		if(width != 0 && height != 0)
 		{
 			break;
+		}
+
+		if(!wait)
+		{
+			return false;
 		}
 
 		sync_mtx_lock(&vk->resize_mtx);
@@ -1117,7 +1123,9 @@ vk_init_device(
 	vkGetPhysicalDeviceMemoryProperties(vk->physical_device, &vk->memory_properties);
 
 
-	vk_get_extent(vk);
+	/* Runs on the main thread, which is the one delivering resize events, so it can't wait for one. */
+	bool status = vk_get_extent(vk, false);
+	hard_assert_true(status);
 
 	if(!vk->surface_capabilities.maxImageCount)
 	{
@@ -3071,7 +3079,7 @@ vk_recreate_swapchain(
 {
 	assert_not_null(vk);
 
-	if(!vk_get_extent(vk))
+	if(!vk_get_extent(vk, true))
 	{
 		return;
 	}
