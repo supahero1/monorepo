@@ -1605,6 +1605,28 @@ test_pass__quadtree_raycast_length(
 
 
 void attr_test_fn
+test_pass__quadtree_raycast_parallel_on_edge(
+	void
+	)
+{
+	qt_test_t test = qt_test_init(
+		0.0f, 0.0f, 64.0f, 64.0f,
+		(qt_test_opts_t){}
+		);
+
+	qt_test_insert(&test, 5.0f, 20.0f, 5.0f, 5.0f);
+	qt_test_insert(&test, -5.0f, 40.0f, 5.0f, 5.0f);
+
+	memset(test.queried, 0, sizeof(test.queried));
+	quadtree_raycast(&test.qt, 0.0f, 0.0f, 0.0f, 50.0f, qt_test_query_fn, NULL);
+	assert_eq(test.queried[0], 1);
+	assert_eq(test.queried[1], 1);
+
+	qt_test_free(&test);
+}
+
+
+void attr_test_fn
 test_pass__quadtree_raycast_multiple(
 	void
 	)
