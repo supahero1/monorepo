@@ -18,6 +18,7 @@
 #include <shared/attr.h>
 #include <shared/debug.h>
 #include <shared/macro.h>
+#include <shared/alloc/base.h>
 
 #include <unistd.h>
 
@@ -47,4 +48,14 @@ test_timeout__test_timeout(
 	test_set_timeout(1);
 	sleep(99);
 	assert_unreachable();
+}
+
+
+void attr_test_fn
+test_leak__test_leak(
+	void
+	)
+{
+	int* ptr = alloc_malloc(ptr, 1);
+	assert_not_null(ptr);
 }

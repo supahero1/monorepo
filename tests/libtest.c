@@ -20,6 +20,7 @@
 #include <shared/macro.h>
 #include <shared/alloc/base.h>
 
+#include <valgrind/memcheck.h>
 #include <valgrind/valgrind.h>
 
 #include <elf.h>
@@ -27,6 +28,7 @@
 #include <dlfcn.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <dirent.h>
 #include <libelf.h>
 #include <signal.h>
 #include <stdarg.h>
@@ -37,10 +39,14 @@
 #include <sys/wait.h>
 
 
+#define TEST_LEAK_EXIT_CODE 66
+
+
 bool test_is_on_valgrind;
 int tty_fd = 1;
 bool has_file = false;
 char* test_name = NULL;
+int test_name_status = 0;
 
 
 void
@@ -120,11 +126,116 @@ test_set_timeout(
 }
 
 
+typedef struct test_leaks
+{
+	unsigned long leaked;
+	unsigned long dubious;
+	unsigned long reachable;
+}
+test_leaks_t;
+
+test_leaks_t test_leaks_before;
+
+
+test_leaks_t
+test_count_leaks(
+	void
+	)
+{
+	VALGRIND_DO_QUICK_LEAK_CHECK;
+
+	unsigned long leaked = 0;
+	unsigned long dubious = 0;
+	unsigned long reachable = 0;
+	unsigned long suppressed = 0;
+	VALGRIND_COUNT_LEAKS(leaked, dubious, reachable, suppressed);
+
+	(void) suppressed;
+
+	return
+	(test_leaks_t)
+	{
+		.leaked = leaked,
+		.dubious = dubious,
+		.reachable = reachable
+	};
+}
+
+
+uint32_t
+test_count_threads(
+	void
+	)
+{
+	DIR* dir = opendir("/proc/self/task");
+	assert_not_null(dir);
+
+	uint32_t count = 0;
+	struct dirent* entry;
+	while((entry = readdir(dir)) != NULL)
+	{
+		if(entry->d_name[0] != '.')
+		{
+			++count;
+		}
+	}
+
+	closedir(dir);
+
+	return count;
+}
+
+
+void
+test_begin_leak_check(
+	void
+	)
+{
+	if(!test_is_on_valgrind)
+	{
+		return;
+	}
+
+	/* The thread's allocator state lives until the thread exits, so
+	 * create it now to keep it out of the comparison.
+	 */
+	alloc_thread_init();
+	test_leaks_before = test_count_leaks();
+}
+
+
+bool
+test_has_leaks(
+	void
+	)
+{
+	if(!test_is_on_valgrind)
+	{
+		return false;
+	}
+
+	/* Threads that are still exiting haven't released their memory yet */
+	while(test_count_threads() > 1)
+	{
+		usleep(1000);
+	}
+
+	test_leaks_t after = test_count_leaks();
+	test_leaks_t before = test_leaks_before;
+
+	return
+		after.leaked > before.leaked ||
+		after.dubious > before.dubious ||
+		after.reachable > before.reachable;
+}
+
+
 typedef struct test
 {
 	str_t name;
 	bool should_pass;
 	bool should_timeout;
+	bool should_leak;
 	int pid;
 }
 test_t;
@@ -161,14 +272,15 @@ wait_and_run_tests(
 	}
 	else
 	{
-		status = 0;
+		status = test_name_status;
 		test = tests[0];
 	}
 
 	assert_neq(test.pid, -1);
 
 	bool success = WIFEXITED(status) && WEXITSTATUS(status) == 0 && test.should_pass;
-	success |= WIFSIGNALED(status) && WTERMSIG(status) == SIGABRT && !test.should_pass && !test.should_timeout;
+	success |= WIFSIGNALED(status) && WTERMSIG(status) == SIGABRT && !test.should_pass && !test.should_timeout && !test.should_leak;
+	success |= WIFEXITED(status) && WEXITSTATUS(status) == (test_is_on_valgrind ? TEST_LEAK_EXIT_CODE : 0) && test.should_leak;
 	success |= WIFSIGNALED(status) && WTERMSIG(status) == SIGALRM && test.should_timeout;
 
 	if(success)
@@ -182,6 +294,11 @@ wait_and_run_tests(
 		{
 			test_shout("\033[31m%-58s failed: aborted with signal %s\033[39m",
 				(char*) test.name->str, sigabbrev_np(WTERMSIG(status)));
+		}
+		else if(WIFEXITED(status) && WEXITSTATUS(status) == TEST_LEAK_EXIT_CODE)
+		{
+			test_shout("\033[31m%-58s failed: leaked memory\033[39m",
+				(char*) test.name->str);
 		}
 		else if(WIFEXITED(status))
 		{
@@ -310,7 +427,8 @@ main(
 				if(
 					strcmp(method, "fail") &&
 					strcmp(method, "pass") &&
-					strcmp(method, "timeout")
+					strcmp(method, "timeout") &&
+					strcmp(method, "leak")
 					)
 				{
 					test_say("Invalid test method '%s'", method);
@@ -331,11 +449,13 @@ main(
 
 				bool should_pass = !strcmp(method, "pass");
 				bool should_timeout = !strcmp(method, "timeout");
+				bool should_leak = !strcmp(method, "leak");
 
 				void (*test_func)() = dlsym(handle, sym_name);
 				assert_not_null(test_func);
 
-				test_say("%-60s expecting %s", name, should_pass ? "success" : should_timeout ? "timeout" : "failure");
+				test_say("%-60s expecting %s", name, should_pass ? "success" :
+					should_timeout ? "timeout" : should_leak ? "leak" : "failure");
 
 				int pid;
 				if(!test_name)
@@ -352,13 +472,22 @@ main(
 				{
 					alloc_reset();
 					test_set_timeout(60);
+					test_begin_leak_check();
 
 					test_func();
 
+					int exit_code = 0;
+					if((should_pass || should_leak) && test_has_leaks())
+					{
+						exit_code = TEST_LEAK_EXIT_CODE;
+					}
+
 					if(!test_name)
 					{
-						exit(0);
+						exit(exit_code);
 					}
+
+					test_name_status = W_EXITCODE(exit_code, 0);
 				}
 
 				tests = alloc_remalloc(tests, tests_count, tests_count + 1);
@@ -372,6 +501,7 @@ main(
 					.name = name_str,
 					.should_pass = should_pass,
 					.should_timeout = should_timeout,
+					.should_leak = should_leak,
 					.pid = pid
 				};
 
