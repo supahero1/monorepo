@@ -134,11 +134,13 @@ test_pass__bit_buffer_set_get_bits(
 	bit_buffer_set_signed_bits(&buffer, -1, 2);
 	bit_buffer_set_signed_bits(&buffer, 0x7EDCBA9876543210, 63);
 	bit_buffer_set_signed_bits(&buffer, -0x7EDCBA9876543210, 63);
+	bit_buffer_set_signed_bits(&buffer, INT64_MAX, 63);
+	bit_buffer_set_signed_bits(&buffer, INT64_MIN, 63);
 
 	assert_eq(bit_buffer_len_signed_bits(0), 0);
 	assert_eq(bit_buffer_len_signed_bits(63), 64);
 
-	assert_eq(bit_buffer_consumed_bits(&buffer), 135);
+	assert_eq(bit_buffer_consumed_bits(&buffer), 263);
 	bit_buffer_reset(&buffer);
 
 	assert_eq(bit_buffer_get_signed_bits(&buffer, 0), 0);
@@ -147,8 +149,10 @@ test_pass__bit_buffer_set_get_bits(
 	assert_eq(bit_buffer_get_signed_bits(&buffer, 2), -1);
 	assert_eq(bit_buffer_get_signed_bits(&buffer, 63), 0x7EDCBA9876543210);
 	assert_eq(bit_buffer_get_signed_bits(&buffer, 63), -0x7EDCBA9876543210);
+	assert_eq(bit_buffer_get_signed_bits(&buffer, 63), INT64_MAX);
+	assert_eq(bit_buffer_get_signed_bits(&buffer, 63), INT64_MIN);
 
-	assert_eq(bit_buffer_consumed_bits(&buffer), 135);
+	assert_eq(bit_buffer_consumed_bits(&buffer), 263);
 	memset(data2, 0, sizeof(data2));
 	bit_buffer_reset(&buffer);
 
@@ -188,14 +192,18 @@ test_pass__bit_buffer_set_get_bits(
 	bit_buffer_set_signed_bits_var(&buffer, -1, 2);
 	bit_buffer_set_signed_bits_var(&buffer, 0x7EDCBA9876543210, 32);
 	bit_buffer_set_signed_bits_var(&buffer, -0x7EDCBA9876543210, 32);
+	bit_buffer_set_signed_bits_var(&buffer, INT64_MAX, 32);
+	bit_buffer_set_signed_bits_var(&buffer, INT64_MIN, 32);
 
 	assert_eq(bit_buffer_len_signed_bits_var(0, 1), 2);
 	assert_eq(bit_buffer_len_signed_bits_var(2, 1), 6);
 	assert_eq(bit_buffer_len_signed_bits_var(-2, 1), 4);
 	assert_eq(bit_buffer_len_signed_bits_var(0x7EDCBA9876543210, 32), 66);
 	assert_eq(bit_buffer_len_signed_bits_var(-0x7EDCBA9876543210, 32), 66);
+	assert_eq(bit_buffer_len_signed_bits_var(INT64_MAX, 32), 66);
+	assert_eq(bit_buffer_len_signed_bits_var(INT64_MIN, 32), 66);
 
-	assert_eq(bit_buffer_consumed_bits(&buffer), 143);
+	assert_eq(bit_buffer_consumed_bits(&buffer), 275);
 	bit_buffer_reset(&buffer);
 
 	assert_eq(bit_buffer_get_signed_bits_var(&buffer, 1), 0);
@@ -204,8 +212,10 @@ test_pass__bit_buffer_set_get_bits(
 	assert_eq(bit_buffer_get_signed_bits_var(&buffer, 2), -1);
 	assert_eq(bit_buffer_get_signed_bits_var(&buffer, 32), 0x7EDCBA9876543210);
 	assert_eq(bit_buffer_get_signed_bits_var(&buffer, 32), -0x7EDCBA9876543210);
+	assert_eq(bit_buffer_get_signed_bits_var(&buffer, 32), INT64_MAX);
+	assert_eq(bit_buffer_get_signed_bits_var(&buffer, 32), INT64_MIN);
 
-	assert_eq(bit_buffer_consumed_bits(&buffer), 143);
+	assert_eq(bit_buffer_consumed_bits(&buffer), 275);
 }
 
 

@@ -327,7 +327,7 @@ bit_buffer_set_signed_bits(
 		return;
 	}
 
-	uint64_t unum = num << 1;
+	uint64_t unum = (uint64_t) num << 1;
 	if(num < 0)
 	{
 		unum = ~unum;
@@ -549,7 +549,7 @@ bit_buffer_set_signed_bits_var(
 	assert_ge(segment, 1);
 	assert_le(segment, 63);
 
-	uint64_t unum = num << 1;
+	uint64_t unum = (uint64_t) num << 1;
 	if(num < 0)
 	{
 		unum = ~unum;
@@ -620,7 +620,7 @@ bit_buffer_len_signed_bits_var(
 	assert_ge(segment, 1);
 	assert_le(segment, 63);
 
-	uint64_t unum = num << 1;
+	uint64_t unum = (uint64_t) num << 1;
 	if(num < 0)
 	{
 		unum = ~unum;
