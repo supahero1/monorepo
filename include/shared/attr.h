@@ -29,6 +29,7 @@
 #define attr_format(...) attr_attr(format(__VA_ARGS__))
 #define attr_inline attr_attr(always_inline) inline
 #define attr_noinline attr_attr(noinline)
+#define attr_target(x) attr_attr(target(x))
 #define attr_warn_unused_result attr_attr(warn_unused_result)
 #define attr_alloc_fn attr_attr(malloc) attr_warn_unused_result
 #define attr_const_fn attr_attr(const)

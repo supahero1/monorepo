@@ -93,8 +93,7 @@ test_fail__quadtree_remove_invalid_entity_idx_1(
 	)
 {
 	quadtree_t qt = {0};
-	qt.half_extent = (half_extent_t){ .x = 0.0f, .y = 0.0f, .w = 64.0f, .h = 64.0f };
-	qt.rect_extent = half_to_rect_extent(qt.half_extent);
+	qt.rect_extent = half_to_rect_extent((half_extent_t){ .x = 0.0f, .y = 0.0f, .w = 64.0f, .h = 64.0f });
 	quadtree_init(&qt);
 
 	quadtree_insert(&qt, qt.rect_extent, &(qt_test_entity_data_t){ .idx = 0 });
@@ -110,8 +109,7 @@ test_fail__quadtree_remove_invalid_entity_idx_2(
 	)
 {
 	quadtree_t qt = {0};
-	qt.half_extent = (half_extent_t){ .x = 0.0f, .y = 0.0f, .w = 64.0f, .h = 64.0f };
-	qt.rect_extent = half_to_rect_extent(qt.half_extent);
+	qt.rect_extent = half_to_rect_extent((half_extent_t){ .x = 0.0f, .y = 0.0f, .w = 64.0f, .h = 64.0f });
 	quadtree_init(&qt);
 
 	quadtree_insert(&qt, qt.rect_extent, &(qt_test_entity_data_t){ .idx = 0 });
@@ -313,6 +311,7 @@ test_fail__quadtree_raycast_null_query_fn(
 typedef struct qt_test
 {
 	quadtree_t qt;
+	half_extent_t half_extent;
 	uint32_t next_idx;
 	uint32_t remove_idx;
 	uint32_t updated[MAX_ENTITIES];
@@ -355,8 +354,8 @@ qt_test_init(
 
 	test.qt.merge_threshold_set = opts.merge_threshold_set;
 
-	test.qt.half_extent = (half_extent_t){ .x = x, .y = y, .w = w, .h = h };
-	test.qt.rect_extent = half_to_rect_extent(test.qt.half_extent);
+	test.half_extent = (half_extent_t){ .x = x, .y = y, .w = w, .h = h };
+	test.qt.rect_extent = half_to_rect_extent(test.half_extent);
 	quadtree_init(&test.qt);
 
 	return test;
@@ -844,10 +843,10 @@ test_pass__quadtree_remove_one(
 		);
 
 	qt_test_insert(&test, 0.0f, 0.0f, 1.0f, 1.0f);
-	qt_test_query(&test, test.qt.half_extent.x, test.qt.half_extent.y, test.qt.half_extent.w, test.qt.half_extent.h, (uint32_t[]){ 0 }, 1);
+	qt_test_query(&test, test.half_extent.x, test.half_extent.y, test.half_extent.w, test.half_extent.h, (uint32_t[]){ 0 }, 1);
 
 	qt_test_remove(&test, 0);
-	qt_test_query(&test, test.qt.half_extent.x, test.qt.half_extent.y, test.qt.half_extent.w, test.qt.half_extent.h, NULL, 0);
+	qt_test_query(&test, test.half_extent.x, test.half_extent.y, test.half_extent.w, test.half_extent.h, NULL, 0);
 
 	qt_test_collide(&test, NULL, 0);
 	qt_test_update(&test, NULL, 0);
@@ -909,7 +908,7 @@ test_pass__quadtree_lazy_merge_one_at_a_time(
 	assert_neq(test.qt.nodes[0].type, QUADTREE_NODE_TYPE_LEAF);
 
 	qt_test_remove(&test, 0);
-	qt_test_query(&test, test.qt.half_extent.x, test.qt.half_extent.y, test.qt.half_extent.w, test.qt.half_extent.h, NULL, 0);
+	qt_test_query(&test, test.half_extent.x, test.half_extent.y, test.half_extent.w, test.half_extent.h, NULL, 0);
 
 	/* Two overlapping entities will cause tens of splits, which
 	 * can't be merged with one normalization (in query above),
@@ -941,7 +940,7 @@ test_pass__quadtree_lazy_merge_successful(
 	assert_neq(test.qt.nodes[0].type, QUADTREE_NODE_TYPE_LEAF);
 
 	qt_test_remove(&test, 0);
-	qt_test_query(&test, test.qt.half_extent.x, test.qt.half_extent.y, test.qt.half_extent.w, test.qt.half_extent.h, NULL, 0);
+	qt_test_query(&test, test.half_extent.x, test.half_extent.y, test.half_extent.w, test.half_extent.h, NULL, 0);
 	assert_eq(test.qt.nodes[0].type, QUADTREE_NODE_TYPE_LEAF);
 
 	qt_test_free(&test);
@@ -961,16 +960,16 @@ test_pass__quadtree_compaction_on_remove(
 	qt_test_insert(&test, -10.0f, -10.0f, 1.0f, 1.0f);
 	qt_test_insert(&test, 0.0f, 0.0f, 1.0f, 1.0f);
 	qt_test_insert(&test, 10.0f, 10.0f, 1.0f, 1.0f);
-	qt_test_query(&test, test.qt.half_extent.x, test.qt.half_extent.y, test.qt.half_extent.w, test.qt.half_extent.h, (uint32_t[]){ 0, 1, 2 }, 3);
+	qt_test_query(&test, test.half_extent.x, test.half_extent.y, test.half_extent.w, test.half_extent.h, (uint32_t[]){ 0, 1, 2 }, 3);
 
 	qt_test_remove(&test, 1);
-	qt_test_query(&test, test.qt.half_extent.x, test.qt.half_extent.y, test.qt.half_extent.w, test.qt.half_extent.h, (uint32_t[]){ 0, 2 }, 2);
+	qt_test_query(&test, test.half_extent.x, test.half_extent.y, test.half_extent.w, test.half_extent.h, (uint32_t[]){ 0, 2 }, 2);
 
 	qt_test_insert(&test, 20.0f, 20.0f, 1.0f, 1.0f);
-	qt_test_query(&test, test.qt.half_extent.x, test.qt.half_extent.y, test.qt.half_extent.w, test.qt.half_extent.h, (uint32_t[]){ 0, 2, 3 }, 3);
+	qt_test_query(&test, test.half_extent.x, test.half_extent.y, test.half_extent.w, test.half_extent.h, (uint32_t[]){ 0, 2, 3 }, 3);
 
 	qt_test_remove(&test, 0);
-	qt_test_query(&test, test.qt.half_extent.x, test.qt.half_extent.y, test.qt.half_extent.w, test.qt.half_extent.h, (uint32_t[]){ 2, 3 }, 2);
+	qt_test_query(&test, test.half_extent.x, test.half_extent.y, test.half_extent.w, test.half_extent.h, (uint32_t[]){ 2, 3 }, 2);
 
 	qt_test_free(&test);
 }
@@ -988,13 +987,13 @@ test_pass__quadtree_remove_all_stable_ids(
 
 	qt_test_insert(&test, -10.0f, -10.0f, 1.0f, 1.0f);
 	qt_test_insert(&test, 10.0f, 10.0f, 1.0f, 1.0f);
-	qt_test_query(&test, test.qt.half_extent.x, test.qt.half_extent.y, test.qt.half_extent.w, test.qt.half_extent.h, (uint32_t[]){ 0, 1 }, 2);
+	qt_test_query(&test, test.half_extent.x, test.half_extent.y, test.half_extent.w, test.half_extent.h, (uint32_t[]){ 0, 1 }, 2);
 
 	qt_test_remove(&test, 1);
-	qt_test_query(&test, test.qt.half_extent.x, test.qt.half_extent.y, test.qt.half_extent.w, test.qt.half_extent.h, (uint32_t[]){ 0 }, 1);
+	qt_test_query(&test, test.half_extent.x, test.half_extent.y, test.half_extent.w, test.half_extent.h, (uint32_t[]){ 0 }, 1);
 
 	qt_test_remove(&test, 0);
-	qt_test_query(&test, test.qt.half_extent.x, test.qt.half_extent.y, test.qt.half_extent.w, test.qt.half_extent.h, (uint32_t[]){}, 0);
+	qt_test_query(&test, test.half_extent.x, test.half_extent.y, test.half_extent.w, test.half_extent.h, (uint32_t[]){}, 0);
 
 	qt_test_free(&test);
 }

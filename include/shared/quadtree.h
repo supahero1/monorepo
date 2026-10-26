@@ -30,6 +30,18 @@
 	#define QUADTREE_SORT_BY y
 #endif
 
+#ifndef QUADTREE_REORDER_SHIFT
+	#define QUADTREE_REORDER_SHIFT 6
+#endif
+
+#ifndef QUADTREE_LEAF_BUFFER_SIZE
+	#define QUADTREE_LEAF_BUFFER_SIZE 256
+#endif
+
+#ifndef QUADTREE_GATHER_PREFETCH
+	#define QUADTREE_GATHER_PREFETCH 64
+#endif
+
 #define QUADTREE_SORT_BY_MEMBER_IMPL(x, y) x##y
 #define QUADTREE_SORT_BY_MEMBER_EXPAND(x, y) QUADTREE_SORT_BY_MEMBER_IMPL(x, y)
 #define QUADTREE_SORT_BY_MEMBER_MIN QUADTREE_SORT_BY_MEMBER_EXPAND(min_, QUADTREE_SORT_BY)
@@ -42,6 +54,9 @@ typedef enum quadtree_node_type
 	MACRO_ENUM_BITS(QUADTREE_NODE_TYPE)
 }
 quadtree_node_type_t;
+
+
+#define QUADTREE_NODE_DIRTY (UINT32_C(1) << 31)
 
 
 typedef union quadtree_node
@@ -92,7 +107,7 @@ typedef struct quadtree_entity
 		uint32_t next;
 	};
 
-	uint32_t in_nodes_minus_one;
+	uint32_t in_nodes;
 	uint32_t query_tick;
 	uint8_t update_tick;
 	uint8_t reinsertion_tick;
@@ -104,7 +119,7 @@ quadtree_entity_t;
 typedef struct quadtree_node_info
 {
 	uint32_t node_idx;
-	half_extent_t extent;
+	rect_extent_t extent;
 }
 quadtree_node_info_t;
 
@@ -261,14 +276,23 @@ struct quadtree
 	uint32_t reinsertions_used;
 	uint32_t reinsertions_size;
 
+	uint32_t reorder_churn;
+	uint32_t live_entities;
+	uint32_t region_size;
+	uint32_t region_cursor[2];
+	uint8_t home_region;
+	uint32_t migrate_position;
+	bool force_reorder;
+
 	uint32_t query_tick;
 	uint8_t update_tick;
 
 	quadtree_normalized_t normalization;
+	uint32_t iterating;
+	bool querying;
 	bool merge_threshold_set;
 
 	rect_extent_t rect_extent;
-	half_extent_t half_extent;
 };
 
 
