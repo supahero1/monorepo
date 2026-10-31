@@ -856,6 +856,28 @@ test_pass__quadtree_remove_one(
 
 
 void attr_test_fn
+test_pass__quadtree_collide_after_remove_one_scalar(
+	void
+	)
+{
+	qt_test_simd = false;
+
+	qt_test_t test = qt_test_init(
+		0.0f, 0.0f, 64.0f, 64.0f,
+		(qt_test_opts_t){}
+		);
+
+	qt_test_insert(&test, 0.0f, 0.0f, 1.0f, 1.0f);
+	qt_test_collide(&test, NULL, 0);
+
+	qt_test_remove(&test, 0);
+	qt_test_collide(&test, NULL, 0);
+
+	qt_test_free(&test);
+}
+
+
+void attr_test_fn
 test_pass__quadtree_split_then_merge(
 	void
 	)

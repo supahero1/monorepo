@@ -15,4 +15,36 @@
  */
 
 #include <tests/quadtree_static.h>
+
+#include <string.h>
+
+
+bool qt_test_simd = true;
+
+
+int
+qt_test_cpu_supports(
+	const char* feature
+	)
+{
+	if(!qt_test_simd)
+	{
+		return 0;
+	}
+
+	if(!strcmp(feature, "avx"))
+	{
+		return __builtin_cpu_supports("avx");
+	}
+
+	if(!strcmp(feature, "sse"))
+	{
+		return __builtin_cpu_supports("sse");
+	}
+
+	return 0;
+}
+
+#define __builtin_cpu_supports(feature) qt_test_cpu_supports(feature)
+
 #include <shared/quadtree.c>

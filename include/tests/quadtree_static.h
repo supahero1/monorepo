@@ -29,3 +29,6 @@ qt_test_entity_data_t;
 
 #define quadtree_entity_data qt_test_entity_data_t
 #include <shared/quadtree.h>
+
+
+extern bool qt_test_simd;
